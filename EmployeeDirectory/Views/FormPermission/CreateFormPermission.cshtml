@@ -1,0 +1,162 @@
+﻿@model EmployeeDirectory.Entity.FormPermissionEntity
+
+@{
+    ViewBag.Title = "CreateFormPermission";
+    var gridFormPermissions = new WebGrid(Model.lstFormPermissionEntity, canPage: true, canSort: false, rowsPerPage: 5, selectionFieldName: "selectedRow");
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Form Permission</h3>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+
+                        @using (Html.BeginForm("CreateFormPermission", "FormPermission", FormMethod.Post, new { @class = "form-horizontal", @id = "FormPermissionDetail" }))
+                        {
+                            @Html.ValidationSummary(false)
+                            <div class="col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label class="col-sm-4 control-label">User Type</label>
+                                    <div class="col-sm-8 control-label">
+                                        @*@Html.DropDownListFor(model => model.ID, ViewBag.UserTypeList as IEnumerable<SelectListItem>, new { id = "ddlUserType", @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.UserType, new SelectList(ViewBag.UserTypeList, "Value", "Text"), new { id = "ddlUserType", @class = "form-control" })
+
+                                    </div>
+                                    <div>@Html.HiddenFor(m => m.FormPermissionGridXML)</div>
+                                </div>
+
+                                <div class="form-group col-md-8" style="padding: 6px;">
+                                    <label for="exampleInputFile" class="col-sm-3 control-label">Select All</label>
+                                    <div class="col-sm-1 control-label">
+                                        <input type="checkbox" id="ChckAllPermission" style="float:left;" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12" id="FormPermissionGridList">
+                                        @if (Model.lstFormPermissionEntity.Count() > 0)
+                                        {
+                                            @Html.Partial("_FormPermissionGrid", Model.lstFormPermissionEntity)
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#ChckAllPermission").on('change', function () {
+        if ($(this).is(":checked") == true) {
+            $("#tblFormPermissionList").find("input[type=checkbox]").prop("checked",true);
+        }
+        else {
+            $("#tblFormPermissionList").find("input[type=checkbox]").prop("checked", false);
+        }
+    });
+
+    $("#ddlUserType").on('change', function () {
+
+        if ($(this).val() == 0 || $(this).val() == '') {
+            $("#FormPermissionGridList").html('');
+        }
+
+        var UserTypeId = $("#ddlUserType").val();
+
+        if (UserTypeId == 0) {
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "FormPermission/GetFormPermissionListById?UserTypeId=" + UserTypeId;
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: {},
+            success: function (result) {
+                $("#FormPermissionGridList").html(result);
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+
+
+    });
+
+
+
+    $("#FormPermissionDetail").live('submit', function (e) {
+        e.preventDefault();
+
+        var UserTypeId = $(this).find("#ddlUserType").val();
+        var FormPermissionGridXML = '<root>';
+
+        $(this).find("#divFormPermissionsList table tbody").find("tr").each(function (e) {
+            var me = $(this);
+
+            var Id = $(this).find('td:eq(0)').find('span').attr('data-id');
+
+            var IsAdd = false;
+            var IsEdit = false;
+            var IsView = false;
+            var IsDelete = false;
+            var IsApprove = false;
+
+
+            if ($(this).find("#IsAdd").is(":checked")) { IsAdd = true; }
+            if ($(this).find("#IsEdit").is(":checked")) { IsEdit = true; }
+            if ($(this).find("#IsView").is(":checked")) { IsView = true; }
+            if ($(this).find("#IsDelete").is(":checked")) { IsDelete = true; }
+            if ($(this).find("#IsApprove").is(":checked")) { IsApprove = true; }
+
+            FormPermissionGridXML += '<FormPermissionGrid><Id>' + Id + '</Id><IsAdd>' + IsAdd + '</IsAdd><IsEdit>' + IsEdit + '</IsEdit><IsView>' + IsView + '</IsView><IsDelete>' + IsDelete + '</IsDelete><IsApprove>' + IsApprove + '</IsApprove></FormPermissionGrid>'
+        });
+
+
+        FormPermissionGridXML += '</root>'
+
+        $(this).find("#FormPermissionGridXML").val(FormPermissionGridXML);
+        var form = $(this).serialize();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "FormPermission/CreateFormPermission";
+        $("#modalWindow,#ui-loader").show();
+
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            data: form,
+            success: function (result) {
+                if (result > 0) {
+                    alert('Inserted Successfully.');
+                }
+                else {
+                    $("#ddlUserType").find('option:eq(0)').attr('selected', 'selected');
+                    $("#FormPermissionGridList").html('');
+                    alert('An error is occured.');
+                }
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+
+    });
+
+
+</script>

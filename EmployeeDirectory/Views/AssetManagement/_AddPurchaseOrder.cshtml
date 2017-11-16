@@ -1,0 +1,437 @@
+﻿@model EmployeeDirectory.Entity.AssetEntity
+
+
+@using EmployeeDirectory.Entity;
+<style>
+    /*div.tooltip-inner {
+        width: 500px !important;
+    }*/
+    .webgrid tbody tr:hover {
+        background-color: rgb(235,239,242) !important;
+    }
+
+    .webgrid tr th {
+        color: black;
+    }
+</style>
+
+
+
+
+
+
+<div id="SuccessMessage" class="alert alert-success" style="display:none">
+</div>
+<div id="ErrorMessage" class="validation-summary-errors" style="display:none">
+</div>
+<div id="Message" class="alert" style="display:none">
+</div>
+
+<div class="">
+    <div class="tblAssetPurchaseOrder">
+
+
+        <table class="webgrid">
+            <thead>
+                <tr class="webgrid-header" style="background-color: rgb(212,214,221) !important; ">
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                    <th>warranty Cost</th>
+                    <th>warranty Month</th>
+                    <th>Total</th>
+                    <th colspan="3" style="text-align: center;" id="AddPurchaseOrdertr"><a class="fa fa-2x fa-plus-circle" style="color: green !important;" onclick="AddPurchaseOrdertr(this)"></a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="display:none;" class="trPurchaseOrder" data-assignqty="0" data-returnqty="0" data-retireqty="0" data-poid="0">
+                    <td width="20%">@Html.DropDownListFor(model => model.ItemId, ViewBag.ItemDetailList as IEnumerable<SelectListItem>, new { id = "ddlItemDetail", @class = "form-control ClsItemDetail" })</td>
+                    <td width="30%">@Html.TextBoxFor(m => m.ItemDescription, new { @class = "form-control" })</td>
+                    <td width="10%">@Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", onkeyup = "return validateIntKeyPressQty(this,event);", @type = "number", @min = "1" })</td>
+                    <td width="10%">@Html.TextBoxFor(m => m.Cost, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                    <td width="10%">@Html.TextBoxFor(m => m.WarrantyCost, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                    <td width="10%">@Html.TextBoxFor(m => m.AdditionalWarrantyMonth, new { @class = "form-control", @type = "number", @min = "0" })</td>
+                    <td width="10%">@Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = "readonly" })</td>
+                    <td style="text-align: center;" id="RemovePurchaseOrdertr"><a class="fa fa-2x fa-minus-circle" onclick="RemovePurchaseOrdertr(this)"></a></td>
+                </tr>
+                @if (Model.lstAssetEntity.Count() > 0)
+                {
+
+                    foreach (var item in Model.lstAssetEntity)
+                    {
+                        //DateTime dt = Convert.ToDateTime(item.ReflectedDate);
+                        //item.ReflectedDate = String.Format("{0:MM/d/yyyy}", dt);
+                        item.Total = (item.Quantity * item.Cost) + (item.Quantity * item.WarrantyCost);
+                        var minQty = item.AssignQty + item.ReturnQty + item.RetireQty;
+                        <tr class="trPurchaseOrder" data-assignqty="@item.AssignQty" data-returnqty="@item.ReturnQty" data-retireqty="@item.RetireQty" data-poid="@item.POID">
+                            @if (item.UsedQty == 0)
+                            {
+                                <td width="20%">@Html.DropDownListFor(m => item.ItemId, new SelectList(ViewBag.ItemDetailList, "Value", "Text", item.ItemId), new { @id = "ddlItemDetail", @class = "form-control ClsItemDetail" })</td>
+                            }
+                            else
+                            {
+                                <td width="20%">@Html.DropDownListFor(m => item.ItemId, new SelectList(ViewBag.ItemDetailList, "Value", "Text", item.ItemId), new { @id = "ddlItemDetail", @class = "form-control ClsItemDetail", @disabled = "disabled" })</td>
+                            }
+                            <td width="30%">@Html.TextBoxFor(m => item.ItemDescription, new { @id = "ItemDescription", @class = "form-control" })</td>
+                            <td width="10%">@Html.TextBoxFor(m => item.Quantity, new { @id = "Quantity", @class = "form-control", @type = "number", @min = item.UsedQty })</td>
+                            <td width="10%">@Html.TextBoxFor(m => item.Cost, new { @id = "Cost", @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                            <td width="10%">@Html.TextBoxFor(m => item.WarrantyCost, new { @id = "WarrantyCost", @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                            @if (item.UsedQty == 0)
+                            {
+                                <td width="10%">@Html.TextBoxFor(m => item.AdditionalWarrantyMonth, new { @id = "AdditionalWarrantyMonth", @class = "form-control", @type = "number", @min = "0" })</td>
+                            }
+                            else
+                            {
+                                <td width="10%">@Html.TextBoxFor(m => item.AdditionalWarrantyMonth, new { @id = "AdditionalWarrantyMonth", @class = "form-control", @type = "number", @min = "0", @readonly = "readonly" })</td>
+                            }
+                                <td width="10%">@Html.TextBoxFor(m => item.Total, new { id = "Total", @class = "form-control", @readonly = "readonly" })</td>
+                           
+                            <td style="text-align: center;" id="RemovePurchaseOrdertr">
+                                @if (item.UsedQty == 0)
+                                {
+                                    <a class="fa fa-2x fa-minus-circle" onclick="RemovePurchaseOrdertr(this)"></a>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+
+                    <tr class="trPurchaseOrder" data-assignqty="0" data-returnqty="0" data-retireqty="0" data-poid="0">
+                        <td width="20%">@Html.DropDownListFor(model => model.ItemId, ViewBag.ItemDetailList as IEnumerable<SelectListItem>, new { id = "ddlItemDetail", @class = "form-control ClsItemDetail" })</td>
+                        <td width="30%">@Html.TextBoxFor(m => m.ItemDescription, new { @class = "form-control" })</td>
+                        <td width="10%">@Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", onkeyup = "return validateIntKeyPressQty(this,event);", @type = "number", @min = "1" })</td>
+                        <td width="10%">@Html.TextBoxFor(m => m.Cost, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                        <td width="10%">@Html.TextBoxFor(m => m.WarrantyCost, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })</td>
+                        <td width="10%">@Html.TextBoxFor(m => m.AdditionalWarrantyMonth, new { @class = "form-control", @type = "number", @min = "0" })</td>
+                        <td width="10%">@Html.TextBoxFor(m => m.Total, new { @class = "form-control", @readonly = "readonly" })</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<div class="modal-dialog" id="ItemViewDialog" style="display:none;">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Item</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Item Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Category Name</label>
+                        <div class="col-sm-7">
+                            @Html.DropDownListFor(model => model.ItemCategoryID, ViewBag.ItemCategoryList as IEnumerable<SelectListItem>, new { id = "ddlItemCategoryList", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Description</label>
+                        <div class="col-sm-7">
+                            @Html.TextAreaFor(m => m.ItemDescription, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" onclick="SaveItemDetail(this)" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="hidden" id="trindex" />
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="modal-dialog" id="VendorViewDialog" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Vendor</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Vendor Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.POVendorName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Company Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="SaveVendorDetail(this)" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="hidden" id="trindex" />
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        // $.validator.unobtrusive.parse("#FormAssetPurchaseOrder");
+        //Costonfocus($("#Cost"));
+
+        //$('[data-toggle="tooltip"]').tooltip();
+
+        if ("@ViewBag.Success" != "") {
+            $("#SuccessMessage").html("@ViewBag.Success");
+            $("#SuccessMessage").show().delay(5000).fadeOut();
+        }
+        else {
+            $("#SuccessMessage").hide();
+        }
+
+        if ("@ViewBag.Error" != "") {
+            $("#ErrorMessage").html("@ViewBag.Error");
+            $("#ErrorMessage").show().delay(5000).fadeOut();
+        }
+        else {
+            $("#Error").hide();
+        }
+
+        if ("@ViewBag.Message" != "") {
+            $("#Message").html("@ViewBag.Message");
+            $("#Message").show().delay(5000).fadeOut();
+        }
+        else {
+            $("#Message").hide();
+        }
+    });
+
+
+
+    function AddPurchaseOrdertr() {
+        $('.tblAssetPurchaseOrder tbody').append($('.tblAssetPurchaseOrder tbody tr:eq(0)').clone().show());
+    }
+
+    function RemovePurchaseOrdertr(me) {
+
+        $(me).closest('tr').remove();
+
+        setTimeout(function () {
+            Shippingonfocus();
+        }, 200)
+
+    }
+
+    function ViewItemPopUp(me) {
+        $("#parentModal").html("");
+
+        //var FacilityName = $(me).closest('tr').find('td:eq(2)').text();
+        //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+        $("#parentModal").html($("#ItemViewDialog").clone().show()).modal('show');
+
+    }
+
+
+    function ViewVendorPopUp(me) {
+        $("#parentModal").html("");
+
+        //var FacilityName = $(me).closest('tr').find('td:eq(2)').text();
+        //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+        $("#parentModal").html($("#VendorViewDialog").clone().show()).modal('show');
+
+    }
+
+    function validateFloatKeyPress(el, e) {
+        //var re = /^-?\d*\.?\d{0,6}$/;
+        var re = /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/;
+        var text = $(el).val();
+
+        var isValid = (text.match(re) !== null);
+        if (isValid == true) {
+            return true;
+        }
+        else {
+            $(el).val("0");
+        }
+    }
+
+    function validateIntKeyPressQty(el, e) {
+        var re = /^\d+$/;
+        var text = $(el).val();
+
+        var isValid = (text.match(re) !== null);
+        if (isValid == true) {
+            return true;
+        }
+        else {
+            $(el).val("1");
+        }
+    }
+
+    $(".webgrid tr").find("#Quantity,#Cost,#WarrantyCost").live('focusout', function () {
+
+        var me = $(this);
+        Costonfocus(me);
+    });
+
+    $("#FormAssetPurchaseOrder").find("#POShipping,#POTax").live('focusout', function () {
+
+        Shippingonfocus();
+
+    });
+
+    function Shippingonfocus() {
+
+        var POTax = $("#FormAssetPurchaseOrder").find("#POTax").val();
+        var POShipping = $("#FormAssetPurchaseOrder").find("#POShipping").val();
+        var totaltr = 0;
+        $(".tblAssetPurchaseOrder").find(".trPurchaseOrder").each(function () {
+            var t3 = $(this).find("#Total").val();
+            totaltr = parseFloat(totaltr) + parseFloat(t3);
+        });
+
+
+        var POTotal = parseFloat(totaltr) + parseFloat(POTax) + parseFloat(POShipping)
+
+        $("#FormAssetPurchaseOrder").find("#POTotal").val(POTotal.toFixed(2));
+
+    }
+
+    function Costonfocus(me) {
+
+        var Qty = $(me).closest('tr').find("#Quantity").val();
+        var Cost = $(me).closest('tr').find("#Cost").val();
+        var WarrantyCost = $(me).closest('tr').find("#WarrantyCost").val();
+
+        var t1 = Qty * Cost;
+        var t2 = Qty * WarrantyCost;
+        var Total = parseFloat(t1) + parseFloat(t2);
+        $(me).closest('tr').find("#Total").val(Total.toFixed(2));
+
+
+        var POTax = $("#FormAssetPurchaseOrder").find("#POTax").val();
+        var POShipping = $("#FormAssetPurchaseOrder").find("#POShipping").val();
+
+        var totaltr = 0;
+        $(".tblAssetPurchaseOrder").find(".trPurchaseOrder").each(function () {
+
+            var t3 = $(this).find("#Total").val();
+            totaltr = parseFloat(totaltr) + parseFloat(t3);
+        })
+
+        var POTotal = parseFloat(totaltr) + parseFloat(POTax) + parseFloat(POShipping)
+
+        $("#FormAssetPurchaseOrder").find("#POTotal").val(POTotal.toFixed(2));
+
+    }
+
+    function SaveItemDetail(me) {
+
+        var ItemName = $('.modal').find('#ItemViewDialog').find('#ItemName').val();
+        var ItemCategoryID = $('.modal').find('#ItemViewDialog').find('#ddlItemCategoryList').val();
+        var ItemDescription = $('.modal').find('#ItemViewDialog').find('#ItemDescription').val();
+        if (ItemName.trim() == "") {
+            $('.modal').find('#ItemViewDialog').find('#ItemName').css('border', 'red 1px solid');
+            return false;
+        }
+        if (ItemCategoryID.trim() == "" || ItemCategoryID == 0) {
+            $('.modal').find('#ItemViewDialog').find('#ddlItemCategoryList').css('border', 'red 1px solid');
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetItem";
+
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: { ItemName: ItemName, ItemCategoryID: ItemCategoryID, ItemDescription: ItemDescription },
+            success: function (result) {
+                if (result > 0) {
+                    $(".ClsItemDetail").append('<option value=' + result + '>' + ItemName + '</option>')
+                    $("#parentModal").modal('toggle');
+                    alert("Inserted Successfully.")
+
+                }
+
+            }
+        });
+
+
+    }
+
+
+    function SaveVendorDetail(me) {
+
+        var VendorName = $('.modal').find('#VendorViewDialog').find('#POVendorName').val();
+        var CompanyName = $('.modal').find('#VendorViewDialog').find('#CompanyName').val();
+        if (VendorName.trim() == "") {
+            $('.modal').find('#VendorViewDialog').find('#POVendorName').css('border', 'red 1px solid');
+            return false;
+        }
+
+        if (CompanyName.trim() == "") {
+            $('.modal').find('#VendorViewDialog').find('#CompanyName').css('border', 'red 1px solid');
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetVendor";
+
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: { POVendorName: VendorName, CompanyName: CompanyName },
+            success: function (result) {
+                if (result > 0) {
+                    $("#FormAssetPurchaseOrder").find("#ddlVendorDetail").append('<option value=' + result + '>' + VendorName + '</option>')
+                    $("#parentModal").modal('toggle');
+                    alert("Inserted Successfully.");
+                }
+
+            }
+        });
+
+
+    }
+
+
+</script>

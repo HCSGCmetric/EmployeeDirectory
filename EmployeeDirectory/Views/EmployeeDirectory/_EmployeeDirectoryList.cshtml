@@ -1,0 +1,506 @@
+﻿@model List<EmployeeDirectory.Entity.EmployeeDirectoryEntity>
+
+
+@{
+    
+     var EEID = false;
+     var COID = false;
+     var Firstname = false;
+     var Middlename = false;
+     var LastName = false;
+     var Social = false;
+     var DEPT = false;
+     var JobTitle = false;
+     var ShortSocial = false;
+    if (Model.Count() > 0)
+    {
+        EEID = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "EEID");
+        COID = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "COID");
+        Firstname = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "Firstname");
+        Middlename = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "Middlename");
+        LastName = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "LastName");
+        Social = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "Social");
+        DEPT = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "DEPT");
+        JobTitle = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "JobTitle");
+        ShortSocial = Model[0].lstFieldPermissionEntity.Any(i => i.FieldName == "ShortSocial");
+    }
+  
+
+
+    var gdUserList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+
+
+    var gridColumns = new List<WebGridColumn>();
+
+
+    if (EEID == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "EEID").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("EE ID", format: @<text> <a href="#" onclick="ViewEmployeeDEtailById('@item.EEID')">@item.EEID</a> </text>));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("EE ID", format: @<text> <a href="#" onclick="ViewEmployeeDEtailById('@item.EEID')">@item.EEID</a> </text>));
+    }
+    if (COID == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "COID").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("COID", "COID"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("COID", "COID"));
+    }
+    if (Firstname == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "Firstname").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("Firstname", "First Name"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("Firstname", "First Name"));
+    }
+    if (Middlename == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "Middlename").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("Middlename", "Middle Name"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("Middlename", "Middle Name"));
+    }
+    if (LastName == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "LastName").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("LastName", "Last Name"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("LastName", "Last Name"));
+    }
+    if (DEPT == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "DEPT").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("DEPT", "Department Code"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("DEPT", "Department Code"));
+    }
+
+    gridColumns.Add(gdUserList.Column("customer_code", "Facility Code"));
+
+    if (JobTitle == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "JobTitle").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("JobTitle", "Job Title"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("JobTitle", "Job Title"));
+    }
+
+    if (ShortSocial == true)
+    {
+        if (Model[0].lstFieldPermissionEntity.Where(i => i.FieldName == "ShortSocial").Select(m => m.IsDisplay).FirstOrDefault() == true)
+        {
+            gridColumns.Add(gdUserList.Column("ShortSocial", "Social"));
+        }
+    }
+    else
+    {
+        gridColumns.Add(gdUserList.Column("ShortSocial", "Social"));
+    }
+    gridColumns.Add(gdUserList.Column("SA", "Status"));
+    gridColumns.Add(gdUserList.Column("DIV", "DIV"));
+    gridColumns.Add(gdUserList.Column("REG", "REG"));
+    gridColumns.Add(gdUserList.Column("DIST", "DIST"));
+    gridColumns.Add(gdUserList.Column("ST", "State"));
+    gridColumns.Add(gdUserList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRecord" />, style: "headerhide"));
+    gridColumns.Add(gdUserList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide"));
+
+
+
+}
+
+<div>
+    @gdUserList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                htmlAttributes: new { Id = "tblEmployeeDirectoryList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                        columns: gdUserList.Columns(gridColumns.ToArray())
+                        @*gdUserList.Columns(
+                                                gdUserList.Column("EE ID", format: @<text> <a href="#" onclick="ViewEmployeeDEtailById('@item.EEID')">@item.EEID</a> </text>
+                            ),
+
+                            gdUserList.Column("Firstname", "First Name"),
+                            gdUserList.Column("Middlename", "Middle Name"),
+                            gdUserList.Column("LastName", "Last Name"),
+                            gdUserList.Column("DEPT", "Department Code"),
+                            gdUserList.Column("customer_code", "Facility Code"),
+                            gdUserList.Column("JobTitle", "Job Title"),
+                            gdUserList.Column("DIV", "DIV"),
+                            gdUserList.Column("REG", "REG"),
+                            gdUserList.Column("DIST", "DIST"),
+
+                            gdUserList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRecord" />, style: "headerhide"),
+                            gdUserList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide")*@
+                        @*gdUserList.Column("Action", format: @<text>
+                            <a href="#myModal" title="Add User" onclick="setpopupvalue(@item.ID)" data-toggle="modal">Add</a>
+                            </text>, style: "webgrid-action-column")*@
+)
+
+</div>
+
+
+<script>
+
+    function ViewEmployeeDEtailById(EEID) {
+
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/ViewEmployeeDirectoryDetail?ID="+EEID;
+      
+        $("#parentModal").html("");
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            traditional: true,
+            async: false,
+            success: function (result) {
+                $("#parentModal").html(result).modal('show');
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        GeneratePagingFooter();
+
+        var allheader = $('#tblEmployeeDirectoryList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            if (USERTYPE != su) {
+                if (headertext == 'Action') {
+                    header.setAttribute('class', 'headerhide');
+                    //"webgrid-action-column
+                }
+
+            }
+
+        }
+        if (USERTYPE != su) {
+            $('#tblEmployeeDirectoryList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        }
+
+        $('div #divpagging a').click(function () {
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+
+            var EEID = $('#EEID').val();
+
+            var firstName = $('#Firstname').val();
+            var lastName = $('#LastName').val();
+            var DEPT = $('#DEPT').val();
+            var JobTitle = $('#JobTitle').val();
+            var DIV = $('#DIV').val();
+            var REG = $('#REG').val();
+            var DIST = $('#DIST').val();
+            var State = $('#state').val();
+            var FacilityCode = $('#customer_code').val();
+            var Social = $('#Social').val();
+            Social = Social == null || undefined ? "" : Social;
+
+            var status = $('#ddlStatus').val();
+            if (JobTitle == null) {
+                JobTitle = '';
+            }
+
+            if (State == null) {
+                State = '';
+            }
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+
+            Pageindex = $("#lblPageindex").text();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "EmployeeDirectory/EmpDirectoryListPagingSortingList?EEID=" + EEID + "&firstName=" + firstName + "&lastName=" + lastName + "&Social=" + Social + "&DEPT=" + DEPT + "&FacilityCode=" + FacilityCode + "&JobTitle=" + JobTitle + "&State=" + State + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST + "&Status=" + status + "&Pageindex=" + Pageindex + "&pagesize=" + pagesize + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    $("#PartialEmployeeDirectory").html('');
+                    $("#PartialEmployeeDirectory").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        });
+    });
+
+
+    function Sorting(ColumnName) {
+
+
+        var Pageindex = $("#lblPageindex").text();
+        var Sortorder = $("#hdnSortOrder").val();
+
+        if (ColumnName == 'EE ID') {
+            ColumnName = 'EEID';
+        }
+        else if (ColumnName == 'First Name')
+        {
+            ColumnName = 'FirstName';
+        }
+        else if (ColumnName == 'Middle Name') {
+            ColumnName = 'MiddleName';
+        }
+        else if (ColumnName == 'Department Code') {
+            ColumnName = 'DepartmentCode';
+        }
+        else if (ColumnName == 'Last Name') {
+            ColumnName = 'LastName';
+        }
+        else if (ColumnName == 'Facility Code') {
+            ColumnName = 'FacilityCode';
+        }
+        else if (ColumnName == 'Job Title') {
+            ColumnName = 'JobTitle';
+        }
+        else if (ColumnName == 'DIV') {
+            ColumnName = 'DIV';
+        }
+        else if (ColumnName == 'REG') {
+            ColumnName = 'REG';
+        }
+        else if (ColumnName == 'DIST') {
+            ColumnName = 'DIST';
+        }
+
+        //var Social = $('#Social').val();
+        //Social = Social == null || undefined ? "" : Social;
+
+        $("#hdnSortColumn").text(ColumnName);
+        var SortColumn = $("#hdnSortColumn").val();
+
+        if (Sortorder == '') {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").val('ASC');
+        }
+        else if (Sortorder == 'ASC') {
+            Sortorder = 'DESC'
+            $("#hdnSortOrder").val('DESC');
+        }
+        else {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").val('ASC');
+        }
+
+
+        var EEID = $('#EEID').val();
+        EEID = EEID == null || undefined ? "" : EEID;
+
+        var Firstname = $('#Firstname').val();
+        Firstname = Firstname == null || undefined ? "" : Firstname;
+
+        var LastName = $('#LastName').val();
+        LastName = LastName == null || undefined ? "" : LastName;
+
+        var Social = $('#Social').val();
+        Social = Social == null || undefined ? "" : Social;
+
+        var DEPT = $('#DEPT').val();
+        DEPT = DEPT == null || undefined ? "" : DEPT;
+
+        var JobTitle = '';
+        $('#JobTitle').next('div').find('ul li').each(function () {
+
+            if ($(this).hasClass('active')) {
+                JobTitle += $(this).find('label').text().trim() + ',';
+            }
+
+        })
+
+        JobTitle = JobTitle == null || undefined ? "" : JobTitle;
+
+        var state = '';
+        $('#state').next('div').find('ul li').each(function () {
+
+            if ($(this).hasClass('active')) {
+                state += $(this).find('label').text().trim() + ',';
+            }
+
+        });
+
+        state = state == null || undefined ? "" : state;
+
+
+        var DIV = $('#DIV').val();
+        DIV = DIV == null || undefined ? "" : DIV;
+
+        var REG = $('#REG').val();
+        REG = REG == null || undefined ? "" : REG;
+
+        var DIST = $('#DIST').val();
+        DIST = DIST == null || undefined ? "" : DIST;
+        var Status = $('#ddlStatus').val();
+        var Status = $('#ddlStatus').val();
+
+        //Status = Status = "select" ? "" : Status;
+        Status = Status == null || undefined ? "" : Status;
+
+        if (Status == "select") {
+            Status = "";
+        }
+
+
+
+        var FacilityCode = $('#customer_code').val();
+        FacilityCode = FacilityCode == null || undefined ? "" : FacilityCode;
+
+
+
+        var pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+
+        //var arcustViewSearchEntity = { EEID: EEID, LastName: LastName, DEPT: DEPT, JobTitle: JobTitle, DIV: DIV, REG: REG, DIST: DIST, state: state, pagesize: pagesize, pageindex: Pageindex, columnName: ColumnName, sortorder: Sortorder };
+        var arcustViewSearchEntity = { EEID: EEID, firstName: Firstname, lastName: LastName, Social: Social, DEPT: DEPT, FacilityCode: FacilityCode, JobTitle: JobTitle, State: state, DIV: DIV, REG: REG, DIST: DIST, Status: Status, Pageindex: Pageindex, pagesize: pagesize, columnName: ColumnName, sortOrder: Sortorder };
+        
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/EmpDirectoryListPagingSortingList";
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            url: Liveurl,
+            dataType: "html",
+            data: arcustViewSearchEntity,
+            success: function (data) {
+                $("#PartialEmployeeDirectory").html('');
+                $("#PartialEmployeeDirectory").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+
+    }
+
+
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        var TotalRecord = $("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblEmployeeDirectoryList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+        if ($("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblEmployeeDirectoryList tbody').append(text);
+
+            $("#lblPageindex").text(PageIndex);
+            $("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $("#lblMaxpage").text(MaxPage);
+        }
+    }
+
+
+
+</script>

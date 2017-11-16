@@ -1,0 +1,576 @@
+﻿@model EmployeeDirectory.Entity.EmployeeDirectoryEntity
+
+<script src="~/js/bootstrap-multiselect.js"></script>
+<link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+
+@{
+    var EEID = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "EEID");
+    var Firstname = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Firstname");
+    var LastName = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "LastName");
+    var Social = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Social");
+    var DEPT = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "DEPT");
+    var JobTitle = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "JobTitle");
+
+    if (Model.lstEmployeeDirectoryEntity.Count() == 0)
+    {
+        //EmployeeDirectory.Entity.EmployeeDirectoryEntity single = new EmployeeDirectory.Entity.EmployeeDirectoryEntity();
+        //.lstEmployeeDirectoryEntity.Add(single));
+    }
+    else { Model.lstEmployeeDirectoryEntity[0].lstFieldPermissionEntity = Model.lstFieldPermissionEntity; }
+
+    ViewBag.Title = "Employee Directory";
+}
+
+<style>
+
+    .multiselect.dropdown-toggle.btn.btn-default {
+        /*margin-right: 5px;*/
+        max-width: 130px;
+        overflow: hidden;
+
+    }
+
+     .dropdown-menu {
+        max-height: 158px;
+        overflow: auto;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Employee Directory</h3>
+                    </div>
+                </div>
+
+                <form role="form" id="FormFieldPermission" class="form-horizontal">
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="clearfix" style="clear: both"></div>
+                            @if (EEID == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "EEID").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">EE ID</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.EEID, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">EE ID</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.EEID, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+
+                            @if (Firstname == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Firstname").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">First Name</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">First Name</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            @if (LastName == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "LastName").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Last Name</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Last Name</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            @if (Social == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Social").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Social</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.Social, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Social</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.Social, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            @if (DEPT == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "DEPT").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Department</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.DEPT, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Department</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.DEPT, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            @if (JobTitle == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "JobTitle").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Job Title</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.JobTitle, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.JobTitle, ViewBag.JobTitleList as List<SelectListItem>, new { @id = "JobTitle", @class = "form-control selectmultidata", @multiple = "multiple" })
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Job Title</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.JobTitle, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.JobTitle, ViewBag.JobTitleList as List<SelectListItem>, new { @id = "JobTitle", @class = "form-control selectmultidata", @multiple = "multiple" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">DIV</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.DIV, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.DIV, ViewBag.DivListTr as List<SelectListItem>, new { @id = "DIV", @class = "form-control" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">REG</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.REG, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.REG, ViewBag.RegListTr as List<SelectListItem>, new { @id = "REG", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">DIST</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.DIST, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.DIST, ViewBag.DistListTr as List<SelectListItem>, new { @id = "DIST", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">State</label>
+                                    <div class="col-sm-7">
+                                        @*@Html.TextBoxFor(m => m.state, new { @class = "form-control" })*@
+                                        @Html.DropDownListFor(m => m.state, ViewBag.ArcustStateList as List<SelectListItem>, new { @id = "state", @class = "form-control selectmultidata", @multiple = "multiple" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Facility Code</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.customer_code, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="ddlStatus" class="col-sm-5 control-label">Status</label>
+                                    <div class="col-sm-7">
+                                        <select id="ddlStatus" class="form-control">
+                                            <option value="">select</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Termed">Termed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="clear: both"></div>
+                            <div class="col-xs-12">
+                                <div class="form-group pull-right">
+                                    @*<label for="txtSearchFirstName" class="col-sm-5 control-label">&nbsp;</label>*@
+                                    <div class="col-sm-12">
+                                        <a href="#" class="btneffect" onclick="ExportToExcelEmployeeDirectory();">Export To Excel</a>
+                                        <a id="btnSearchEmpDirectory" style="cursor:pointer;" name="Search Facility" class="btneffect">Search</a>
+                                        <a href="~/EmployeeDirectory/EmployeeDirectoryList" id="btnClearForm" name="Clear Form" class="btneffect">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="row">
+                    <!-- /.box-header -->
+                    <div class="col-md-12" id="">
+                        <div class="table-responsive" id="PartialEmployeeDirectory">
+                            @Html.Partial("_EmployeeDirectoryList", Model.lstEmployeeDirectoryEntity)
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+        <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+    </div>
+</div>
+
+
+<script>
+    var jq = $.noConflict();
+   
+    jq(document).ready(function () {
+        jq('#JobTitle,#state').multiselect({
+            numberdisplayed: 1,
+            //buttonwidth: '100%',
+            maxheight: 150,
+            includeselectalloption: true,
+            enableClickableOptGroups: true
+
+        });
+
+        
+
+        //jq('#JobTitle').multiselect('refresh');
+        //jq('#JobTitle').multiselect();
+
+    });
+
+    $(document).live('click', function (e) {
+        
+        if ($(e.target).closest('div').attr('class') != 'btn-group') {
+            
+            $('.multiselect').closest('div').find('ul').hide();
+        }
+    })
+
+    $('.multiselect').live('click',function () {
+        $(this).closest('div').find('ul').toggle();
+
+    });
+
+
+    $('#FormFieldPermission').find('#DIV').live('change', function (e) {
+        e.preventDefault();
+        var me = $(this);
+        var Div = me.val();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureRegionList";
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: { Div: Div },
+            success: function (result) {
+                $('#FormFieldPermission').find("#REG").html('<option value="">select</option>');
+               
+                $.each(result, function (key, value) {
+                    $('#FormFieldPermission').find("#REG").append($("<option></option>").val(value.Name).html(value.Name));
+                });
+                
+               
+            }
+        });
+      
+        var Reg = "";
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureDistictList";
+        
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: { Reg: Reg, Div: Div },
+            success: function (result) {
+                $('#FormFieldPermission').find("#DIST").html('<option value="">select</option>');
+
+                $.each(result, function (key, value) {
+                    $('#FormFieldPermission').find("#DIST").append($("<option></option>").val(value.Name).html(value.Name));
+                });
+              
+            }
+        });
+        $("#modalWindow,#ui-loader").hide();
+
+    });
+
+
+    $('#FormFieldPermission').find('#REG').live('change', function (e) {
+        e.preventDefault();
+        var me = $(this);
+        var Reg = me.val();
+        var Div = $('#FormFieldPermission').find('#DIV').val();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureDistictList";
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: { Reg: Reg, Div: Div },
+            success: function (result) {
+                $('#FormFieldPermission').find("#DIST").html('<option value="">select</option>');
+                
+                $.each(result, function (key, value) {
+                    $('#FormFieldPermission').find("#DIST").append($("<option></option>").val(value.Name).html(value.Name));
+                });
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+
+    });
+    
+   
+
+    $('#btnSearchEmpDirectory').click(function () {
+        $("#lblPageindex").text("1")
+        BindEmpDirectoryView();
+    });
+
+    function BindEmpDirectoryView() {
+        var EEID = $('#EEID').val();
+        EEID = EEID == null || undefined ? "" : EEID;
+
+        var Firstname = $('#Firstname').val();
+        Firstname = Firstname == null || undefined ? "" : Firstname;
+
+        var LastName = $('#LastName').val();
+        LastName = LastName == null || undefined ? "" : LastName;
+
+        var Social = $('#Social').val();
+        Social = Social == null || undefined ? "" : Social;
+
+        var DEPT = $('#DEPT').val();
+        DEPT = DEPT == null || undefined ? "" : DEPT;
+
+        var JobTitle = '';
+        $('#JobTitle').next('div').find('ul li').each(function () {
+
+            if ($(this).hasClass('active')) {
+                JobTitle += $(this).find('label').text().trim() +',';
+            }
+
+        })
+        
+        JobTitle = JobTitle == null || undefined ? "" : JobTitle;
+
+        var state = '';
+        $('#state').next('div').find('ul li').each(function () {
+
+            if ($(this).hasClass('active')) {
+                state += $(this).find('label').text().trim() + ',';
+            }
+
+        });
+
+        state = state == null || undefined ? "" : state;
+        
+
+        var DIV = $('#DIV').val();
+        DIV = DIV == null || undefined ? "" : DIV;
+
+        var REG = $('#REG').val();
+        REG = REG == null || undefined ? "" : REG;
+
+        var DIST = $('#DIST').val();
+        DIST = DIST == null || undefined ? "" : DIST;
+
+        var Status = $('#ddlStatus').val();
+        
+        //Status = Status = "select" ? "" : Status;
+        Status = Status == null || undefined ? "" : Status;
+
+        if (Status == "select") {
+            Status = "";
+        }
+
+        
+
+        var FacilityCode = $('#customer_code').val();
+        FacilityCode = FacilityCode == null || undefined ? "" : FacilityCode;
+
+        Pageindex = $("#lblPageindex").text();
+        var pagesize = 50;
+        var arcustViewSearchEntity = { EEID: EEID, firstName: Firstname, lastName: LastName, Social: Social, DEPT: DEPT, FacilityCode: FacilityCode, JobTitle: JobTitle, State: state, DIV: DIV, REG: REG, DIST: DIST, Status: Status, Pageindex: Pageindex, pagesize: pagesize, columnName: "", sortOrder: "" };
+        debugger;
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/EmpDirectoryListPagingSortingList";
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            //traditional: true,
+            url: Liveurl,
+            dataType: "html",
+            data: arcustViewSearchEntity,
+            success: function (data) {
+                $("#PartialEmployeeDirectory").html('');
+                $("#PartialEmployeeDirectory").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+    }
+
+
+    function ExportToExcelEmployeeDirectory() {
+        
+        var EEID = $('#EEID').val();
+        EEID = EEID == null || undefined ? "" : EEID;
+
+        var Firstname = $('#Firstname').val();
+        Firstname = Firstname == null || undefined ? "" : Firstname;
+
+        var LastName = $('#LastName').val();
+        LastName = LastName == null || undefined ? "" : LastName;
+
+        var Social = $('#Social').val();
+        Social = Social == null || undefined ? "" : Social;
+
+        var DEPT = $('#DEPT').val();
+        DEPT = DEPT == null || undefined ? "" : DEPT;
+
+        var JobTitle = '';
+        $('#JobTitle').next('div').find('ul li').each(function () {
+
+            if ($(this).hasClass('active')) {
+                JobTitle += $(this).find('label').text().trim() + ',';
+            }
+
+        });
+
+        JobTitle = JobTitle == null || undefined ? "" : JobTitle;
+
+        var state = '';
+        $('#state').next('div').find('ul li').each(function () {
+            if ($(this).hasClass('active')) {
+                state += $(this).find('label').text().trim() + ',';
+            }
+        });
+
+        state = state == null || undefined ? "" : state;
+
+        var DIV = $('#DIV').val();
+        DIV = DIV == null || undefined ? "" : DIV;
+
+        var REG = $('#REG').val();
+        REG = REG == null || undefined ? "" : REG;
+
+        var DIST = $('#DIST').val();
+        DIST = DIST == null || undefined ? "" : DIST;
+
+        var Status = $('#ddlStatus').val();
+
+        //Status = Status = "select" ? "" : Status;
+        Status = Status == null || undefined ? "" : Status;
+
+        if (Status == "select") {
+            Status = "";
+        }
+
+        var FacilityCode = $('#customer_code').val();
+        FacilityCode = FacilityCode == null || undefined ? "" : FacilityCode;
+
+        var arcustViewSearchEntity = { EEID: EEID, firstName: Firstname, lastName: LastName, Social: Social, DEPT: DEPT, JobTitle: JobTitle, DIV: DIV, REG: REG, DIST: DIST, State: state, Status: Status, FacilityCode: FacilityCode };
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/ExporttoExcelEmpDirectoryist?EEID=" + EEID + "&firstName=" + Firstname + "&lastName=" + LastName + "&Social=" + Social + "&DEPT=" + DEPT + "&FacilityCode=" + FacilityCode + "&JobTitle=" + JobTitle + "&State=" + state + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST + "&Status=" + Status;
+
+        //var Liveurl = "../EmployeeDirectory/ExporttoExcelEmpDirectoryist?EEID=" + EEID + "&FirstName=" + FirstName + "&LastName=" + LastName +
+        //    "&Department=" + Department + "&FacilityCode=" + FacilityCode + "&JobTitle=" + JobTitle + "&State=" + State;
+        //window.location.href = Liveurl;
+        window.open(Liveurl, '_blank');
+    }
+
+</script>

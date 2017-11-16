@@ -1,0 +1,209 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+<div class="modal-dialog" style="margin: 0px; height: 76%; width: 100%; padding: 24px 10px 24px 24px;" id="">
+    <div class="modal-content">
+        <div class="modal-header" style="background: #4c4743 none repeat scroll 0 0">
+            <button type="button" style="color:white; opacity:1;" class="close" data-dismiss="modal">&times;</button>
+            <h4 style="color:white;" class="modal-title">Asset Retire For @Model.ItemName</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="">
+
+                        @using (Html.BeginForm("SearchAssetRetireDetail", "AssetManagement", FormMethod.Post, new { @class = "form-horizontal", @id = "FormSearchAssetRetireDetail", @style = "" }))
+                        {
+                            @Html.ValidationSummary(true)
+
+                            <div class="col-md-12 box-body">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFill" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Retire From Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.RetireDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "RetireFromDate" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Retire To Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.RetireDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "RetireToDate" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">PO Number<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.DropDownListFor(m => m.PONumber, ViewBag.PODetailList as List<SelectListItem>, new { @id = "ddlPOList", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">DIV<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.DIV, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">REG<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.REG, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">DIST<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.DIST, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="">
+
+                                                <div class="pull-right">
+                                                    <div class="col-md-12">
+                                                        <div class="col-sm-6">
+                                                            @Html.HiddenFor(m => m.ItemId)
+                                                            <button type="button" id="SearchAssetRetireListbyParam" data-style="slide-up" style="z-index: 10;" class="ladda-button btneffect pull-right">Search</button>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <a id="ClearRetireListbyParam" class="btneffect pull-right ladda-button">Clear</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+                        <div class="DivAssetRetireList">
+                            <!-- /.box-header -->
+                            @Html.Partial("_AssetRetireListItemWise", Model.lstAssetAssignEntity)
+
+                        </div>
+
+
+                        <!-- /.box-body -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btneffect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />*@
+
+<script type="text/javascript">
+
+     $(document).ready(function () {
+
+         $("#ClearRetireListbyParam").on('click', function () {
+             $('#FormSearchAssetRetireDetail').find('#AssetTagNumber,#ddlPOList,#EmployeeId,#FacilityCode,#RetireFromDate,#RetireToDate,#DIV,#REG,#DIST').val("");
+
+             var TagNo = "";
+             var ItemId = $('#FormSearchAssetRetireDetail').find('#ItemId').val().trim();
+
+             var PONumber = "";
+             var EEID = "";
+             var FacilityCode = "";
+             var AssetFromDate = "";
+             var AssetToDate = "";
+             var DIV = "";
+             var REG = "";
+             var DIST = "";
+
+             var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+             Liveurl = "/" + Liveurl + "AssetManagement/AssetStockRetirePagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&AssetFromDate=" + AssetFromDate + "&AssetToDate=" + AssetToDate + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST;
+             $.ajax({
+                 url: Liveurl,
+                 type: "GET",
+                 data: {},
+                 success: function (result) {
+                     $('.DivAssetRetireList').html(result);
+                 }
+             });
+         });
+
+        $('#SearchAssetRetireListbyParam').on('click', function () {
+
+            var TagNo = $('#FormSearchAssetRetireDetail').find('#AssetTagNumber').val().trim();
+            var ItemId = $('#FormSearchAssetRetireDetail').find('#ItemId').val().trim();
+            var RetireFromDate = $('#FormSearchAssetRetireDetail').find('#RetireFromDate').val().trim();
+            var RetireToDate = $('#FormSearchAssetRetireDetail').find('#RetireToDate').val().trim();
+            var PONumber = $('#FormSearchAssetRetireDetail').find('#ddlPOList').val().trim();
+            var EEID = $('#FormSearchAssetRetireDetail').find('#EmployeeId').val().trim();
+            var FacilityCode = $('#FormSearchAssetRetireDetail').find('#FacilityCode').val().trim();
+            var DIV = $('#FormSearchAssetRetireDetail').find('#DIV').val().trim();
+            var REG = $('#FormSearchAssetRetireDetail').find('#REG').val().trim();
+            var DIST = $('#FormSearchAssetRetireDetail').find('#DIST').val().trim();
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AssetStockRetirePagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&RetireFromDate=" + RetireFromDate + "&RetireToDate=" + RetireToDate + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST;
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    $('.DivAssetRetireList').html(result);
+                }
+            });
+
+
+        });
+     });
+
+    @*var jquery = $.noConflict();
+    jquery('#FormSearchAssetRetireDetail').find('.AssetTagAutoFill').live('focusin', function (e) {
+        e.preventDefault();
+        var me = $(this);
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagList))');
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+
+            result.push(name);
+        }
+
+        jquery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jquery(me).trigger('keydown');
+
+    });*@
+
+
+
+
+</script>
+

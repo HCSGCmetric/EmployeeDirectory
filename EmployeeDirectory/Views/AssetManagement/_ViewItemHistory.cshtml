@@ -1,0 +1,160 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+<div class="modal-dialog modal-lg" id="PoAssignDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Item History</h4>
+        </div>
+        <div class="modal-body" style="max-height: 550px; overflow: auto;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Item Name<span class="field-validation-error"></span></label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.lstAssetAssignEntity[0].ItemName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Purchase Date<span class="field-validation-error"></span></label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.lstAssetAssignEntity[0].PODate,"{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">PO #<span class="field-validation-error"></span></label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.lstAssetAssignEntity[0].PONumber, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Add Warranty Month<span class="field-validation-error"></span></label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.lstAssetAssignEntity[0].AdditionalWarrantyMonth, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Vendor Name<span class="field-validation-error"></span></label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.lstAssetAssignEntity[0].POVendorName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="tblAssetPODetail">
+
+
+                        <table class="webgrid">
+                            <thead>
+                                @*<tr class="webgrid-header">
+                                        <th></th>
+                                        <th>Assign Date</th>
+                                        <th>Assign Person/Facility</th>
+
+
+                                    </tr>*@
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.lstAssetAssignEntity)
+                                {
+                                    <tr class="group">
+                                        @if (item.IsEmployee == true)
+                                        {
+
+                                            <td colspan="13"><a class="fa fa-2x plusicon fa-plus-circle" style="margin-right: 11px;" onclick="ToggleAssignDetail(this)"></a><label>Assign Date - @item.AssignDate &nbsp;&nbsp;&nbsp;&nbsp; Assign Person - @item.EmployeeName  &nbsp;&nbsp;&nbsp;&nbsp;   </label></td>
+
+
+                                        }
+                                        else
+                                        {
+
+                                            <td colspan="13"><a class="fa fa-2x plusicon fa-plus-circle" style="margin-right: 11px;" onclick="ToggleAssignDetail(this)"></a><label>Assign Date - @item.AssignDate &nbsp;&nbsp;&nbsp;&nbsp; Assign Facility - @item.FacilityName  &nbsp;&nbsp;&nbsp;&nbsp;   </label></td>
+
+
+                                        }
+                                    </tr>
+                                  
+
+                                        List<int> listOfIds = new List<int>
+                                                    (Model.lstReturnItem.Select(m => m.AssignMasterId).ToList());
+
+
+                                        if (Model.lstReturnItem.Where(m => listOfIds.Contains(item.ID)).Count() > 0)
+                                        {
+                                            var item1 = Model.lstReturnItem.Where(m => m.AssignMasterId == item.ID).FirstOrDefault();
+
+                                              if (item.IsTermed == true)
+                                            {
+                                                <tr style="display:none">
+                                                    <td colspan="3">
+                                                       <span style="font-weight: bold;">Term Date : </span> @if (item.TermedDate != null)
+                                                        { @item.TermedDate }
+                                                    </td>
+
+
+                                                </tr>
+                                            }else
+                                            {
+                                                <tr style="display:none">
+                                                    <td colspan="1">
+                                                        <span style="font-weight: bold;">Return Date :</span>    @if (item1.ReturnDate != null)
+                                                        { @item1.ReturnDate }
+
+
+                                                    </td>
+                                                    <td colspan="1"><span style="font-weight: bold;">Return Reason :</span>  @item1.ReturnReason</td>
+                                                    <td colspan="1"><span style="font-weight: bold;">HelpDesk Ticket No :</span>  @item1.HelpDeskNo</td>
+                                                </tr>
+                                                <tr style="display:none">
+                                                    <td colspan="1">
+                                                        <span style="font-weight: bold;">Receive Date :</span>  @if (item1.ReceivedDate != null)
+                                                        { @item1.ReceivedDate }
+                                                    </td>
+                                                    <td colspan="2"><span style="font-weight: bold;">Additional Note :</span>  @item1.ReceivedAdditionalNote</td>
+                                                </tr>
+                                                <tr style="display:none">
+                                                    <td colspan="1">
+                                                        <span style="font-weight: bold;">Resolve Date :</span> @if (item1.ResolvedDate != null)
+                                                        { @item1.ResolvedDate }
+                                                    </td>
+                                                    <td colspan="2"><span style="font-weight: bold;">Additional Note :</span>  @item1.ResolvedAdditionalNote</td>
+                                                </tr>
+                                            }
+                                        }
+
+
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="hidden" id="trindex" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function ToggleAssignDetail(me) {
+
+
+        $(me).closest('tr').nextUntil('.group').slideToggle();
+        if ($(me).hasClass('fa-minus-circle')) {
+            $(me).removeClass('fa-minus-circle');
+            $(me).addClass('fa-plus-circle');
+        }
+        else {
+            $(me).addClass('fa-minus-circle');
+            $(me).removeClass('fa-plus-circle');
+        }
+
+
+    };
+
+</script>

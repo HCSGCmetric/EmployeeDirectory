@@ -1,0 +1,1180 @@
+﻿@model EmployeeDirectory.Entity.AllEmployeeDirectoryEntity
+
+
+@{
+    ViewBag.Title = "Reference Details";
+    Layout = null;
+    var test = Model.lstFieldPermissionEntity;
+
+}
+<style>
+    label {
+        margin-top: 7px;
+    }
+</style>
+
+@{
+    var COID = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "COID");
+    var WageRate = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "WageRate");
+    var LOC = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "LOC");
+    var SUBLOC = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "SUBLOC");
+    var EEID = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "EEID");
+    var EMPLOYEENAME = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "EMPLOYEENAME");
+    var SA = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "SA");
+    var TYP = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "TYP");
+    var SH = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "SH");
+    var PP = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "PP");
+    var HRS = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "HRS");
+    var PG = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "PG");
+    var ADDRESSONE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "ADDRESSONE");
+    var ADDRESSTWO = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "ADDRESSTWO");
+    var CITY = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "CITY");
+    var ST = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "ST");
+    var ZIP = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "ZIP");
+    var BIRTHDATE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "BIRTHDATE");
+    var HIREDATE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "HIREDATE");
+    var TERMDATE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "TERMDATE");
+    var TERMREASON = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "TERMREASON");
+    var EMAIL = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "EMAIL");
+    var JOBTITLE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "JOBTITLE");
+    var Firstname = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Firstname");
+    var Lastname = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Lastname");
+    var MiddleName = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "MiddleName");
+    var Social = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Social");
+    var PrimaryPhone = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "PrimaryPhone");
+    var DEPT = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "DEPT");
+    var Sex = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Sex");
+    var Ethnicity = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "Ethnicity");
+    var FilingStatus = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "FilingStatus");
+    var FederalExemptions = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "FederalExemptions");
+    var LASTHIREDATE = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "LASTHIREDATE");
+    var SeniorityDate = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "SeniorityDate");
+    //var customer_code = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "customer_code");
+    //var state = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "state");
+    //var DIV = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "DIV");
+    //var REG = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "REG");
+    //var DIST = Model.lstFieldPermissionEntity.Any(i => i.FieldName == "DIST");
+
+
+}
+
+<style>
+    /*.border {
+        border: 1px solid lightgray;
+    }*/
+    .row .col-sm-6.col-md-3.col-xs-12 {
+        margin-bottom: 12px;
+    }
+
+    .employeedirectorydetail div label.control-label {
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+</style>
+
+<div class="modal-dialog" style="width: 96%;">
+
+    <div class="modal-content">
+        <div class="col-xs-12">
+            <div class="modal-header" style="background:#ddd;margin-top:15px;border-bottom-color:#ddd;">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Employee Directory Detail</h4>
+            </div>
+        </div>
+        <div class="modal-body" style="margin-top: -17px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="box-body" style="border: 1px solid #ddd; margin-bottom: 20px;">
+                        <div class="row employeedirectorydetail" style="">
+                            @if (COID == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "COID").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">COID</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.COID" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">COID</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" id="txtCO2" value="@Model.COID" class="form-control" name="COID" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if (LOC == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "LOC").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">LOC</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.LOC" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">LOC</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.LOC" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (SUBLOC == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "SUBLOC").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">SUBLOC:</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.SUBLOC" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">SUBLOC:</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.SUBLOC" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (EEID == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "EEID").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">EEID</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.EEID" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">EEID</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.EEID" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                            @if (EMPLOYEENAME == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "EMPLOYEENAME").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                                                       
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">EMPLOYEE NAME</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Firstname @Model.Lastname" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">EMPLOYEE NAME</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Firstname @Model.Lastname" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (SA == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "SA").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Status</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.SA" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Status</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.SA" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (TYP == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "TYP").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">TYP</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.TYP" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">TYP</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.TYP" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (SH == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "SH").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">SH</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.SH" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">SH</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.SH" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            }
+
+
+                            @if (PP == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "PP").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">PP</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.PP" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">PP</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.PP" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            @if (HRS == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "HRS").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">HRS</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.HRS" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">HRS</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.HRS" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            @if (PG == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "PG").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">PG</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.PG" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">PG</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.PG" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (ADDRESSONE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "ADDRESSONE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">ADDRESS ONE</label>
+                                            <div class="col-xs-6 border">
+                                                <textarea class="form-control" readonly="readonly">@Model.ADDRESSONE</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">ADDRESS ONE</label>
+                                        <div class="col-xs-6 border">
+                                            <textarea class="form-control" readonly="readonly">@Model.ADDRESSONE</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ADDRESSTWO == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "ADDRESSTWO").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">ADDRESS TWO</label>
+                                            <div class="col-xs-6 border">
+                                                <textarea class="form-control" readonly="readonly">@Model.ADDRESSTWO</textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">ADDRESS TWO</label>
+                                        <div class="col-xs-6 border">
+                                            <textarea class="form-control" readonly="readonly">@Model.ADDRESSTWO</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (CITY == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "CITY").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">CITY</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.CITY" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">CITY</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.CITY" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (ST == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "ST").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">ST</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.ST" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">ST</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.ST" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (ZIP == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "ZIP").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">ZIP</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.ZIP" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">ZIP</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.ZIP" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (BIRTHDATE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "BIRTHDATE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">BIRTH DATE</label>
+                                            <div class="col-xs-6 border">
+                                                @{
+                                    if (Model.BIRTHDATE == "")
+                                    { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.BIRTHDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.BIRTHDATE).ToString("M/dd/yyyy") })
+                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">BIRTH DATE</label>
+                                        <div class="col-xs-6 border">
+                                            @{
+                                if (Model.BIRTHDATE == "")
+                                { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.BIRTHDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.BIRTHDATE).ToString("M/dd/yyyy") })
+                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (HIREDATE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "HIREDATE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">HIRE DATE</label>
+                                            <div class="col-xs-6 border">
+                                                @{
+                                    if (Model.HIREDATE == "")
+                                    { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.HIREDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.HIREDATE).ToString("M/dd/yyyy") })
+                                    }
+                                                }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">HIRE DATE</label>
+                                        <div class="col-xs-6 border">
+                                            @{
+                                if (Model.HIREDATE == "")
+                                { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.HIREDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.HIREDATE).ToString("M/dd/yyyy") })
+                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (TERMDATE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "TERMDATE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">TERM DATE</label>
+                                            <div class="col-xs-6 border">
+                                                @{
+                                    if (Model.TERMDATE == "")
+                                    { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.TERMDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.TERMDATE).ToString("M/dd/yyyy") })
+                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">TERM DATE</label>
+                                        <div class="col-xs-6 border">
+                                            @{
+                                if (Model.TERMDATE == "")
+                                { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.TERMDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.TERMDATE).ToString("M/dd/yyyy") })
+                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            @if (TERMREASON == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "TERMREASON").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">TERM REASON</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.TERMREASON" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">TERM REASON</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.TERMREASON" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if (EMAIL == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "EMAIL").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">EMAIL</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.EMAIL" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">EMAIL</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.EMAIL" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            @if (JOBTITLE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "JOBTITLE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">JOB TITLE</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.JOBTITLE" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">JOB TITLE</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.JOBTITLE" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Firstname == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Firstname").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">First Name</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Firstname" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">First Name</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Firstname" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Lastname == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Lastname").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Last Name</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Lastname" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Last Name</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Lastname" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if (MiddleName == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "MiddleName").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Middle Name</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.MiddleName" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Middle Name</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.MiddleName" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Social == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Social").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Social</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Social" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Social</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Social" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (PrimaryPhone == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "PrimaryPhone").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Primary Phone</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.PrimaryPhone" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Primary Phone</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.PrimaryPhone" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (DEPT == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "DEPT").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">DEPT</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.DEPT" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">DEPT</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.DEPT" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (WageRate == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "WageRate").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Wage Rate</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.WageRate" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Wage Rate</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.WageRate" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (Sex == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Sex").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Sex</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Sex" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Sex</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Sex" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Ethnicity == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "Ethnicity").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Ethnicity</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.Ethnicity" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Ethnicity</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.Ethnicity" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (FilingStatus == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "FilingStatus").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Filing Status</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.FilingStatus" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Filing Status</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.FilingStatus" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+
+                            @if (LASTHIREDATE == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "LASTHIREDATE").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Last Hire Date:</label>
+                                            <div class="col-xs-6 border">
+                                                @{
+                                    if (Model.LASTHIREDATE == "")
+                                    { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.LASTHIREDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.LASTHIREDATE).ToString("M/dd/yyyy") })
+                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Last Hire Date:</label>
+                                        <div class="col-xs-6 border">
+                                            @{
+                                if (Model.LASTHIREDATE == "")
+                                { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.LASTHIREDATE, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.LASTHIREDATE).ToString("M/dd/yyyy") })
+                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (SeniorityDate == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "SeniorityDate").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Seniority Date</label>
+                                            <div class="col-xs-6 border">
+                                                @{
+                                    if (Model.SeniorityDate == "")
+                                    { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.SeniorityDate, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.SeniorityDate).ToString("M/dd/yyyy") })
+                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Seniority Date</label>
+                                        <div class="col-xs-6 border">
+                                            @{
+                                if (Model.SeniorityDate == "")
+                                { <input type="text" value="" class="form-control" readonly="readonly" /> }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.SeniorityDate, new { @class = "form-control", @readonly = "readonly", @Value = Convert.ToDateTime(Model.SeniorityDate).ToString("M/dd/yyyy") })
+                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (FederalExemptions == true)
+                            {
+                                if (Model.lstFieldPermissionEntity.Where(i => i.FieldName == "FederalExemptions").Select(m => m.IsDisplay).FirstOrDefault() == true)
+                                {
+
+
+                                    <div class="col-sm-6 col-md-3 col-xs-12">
+                                        <div class="row">
+                                            <label for="exampleInputEmail1" class="col-xs-6 control-label">Federal Exemptions</label>
+                                            <div class="col-xs-6 border">
+                                                <input type="text" value="@Model.FederalExemptions" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-sm-6 col-md-3 col-xs-12">
+                                    <div class="row">
+                                        <label for="exampleInputEmail1" class="col-xs-6 control-label">Federal Exemptions</label>
+                                        <div class="col-xs-6 border">
+                                            <input type="text" value="@Model.FederalExemptions" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+
+                    <div class="group" style="background-color:#DDDDDD; padding:7px;">
+                        <a class="fa fa-2x plusicon fa-plus-circle EmployeeDirectoryBuilding" style="margin-right: 11px; cursor:pointer; margin-top:6px;"></a>
+                        <label>Building Detail &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    </div>
+                    <table class="table table-bordered table-striped dataTable no-footer" style="display:none;">
+                        <tbody>
+                            <tr style="display: table-row;"><th>Facility Code</th><th>Facility Name</th><th>Address</th><th>city</th><th>state</th><th>Zip</th><th>phone</th><th>District Manager Name</th><th>Region Manager Name</th><th>Account Manager Name</th></tr>
+                            @foreach (var item in Model.lstEmployeeDirectoryEntity)
+                            {
+                                <tr>
+                                    <td>@item.customer_code</td>
+                                    <td>@item.customer_name</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.city</td>
+                                    <td>@item.state</td>
+                                    <td>@item.Zip</td>
+                                    <td>@item.phone</td>
+                                    <td>@item.DistinctManagerName</td>
+                                    <td>@item.RegionManagerName</td>
+                                    <td>@item.AccountManagerName</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <div class="pull-right">
+                <button type="button" class="btneffect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.EmployeeDirectoryBuilding').on('click', function () {
+            $(this).toggleClass('fa-minus-circle');
+            $(this).closest('div').next('table').toggle();
+
+        });
+    });
+
+
+</script>

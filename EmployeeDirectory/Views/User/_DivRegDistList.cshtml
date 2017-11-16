@@ -1,0 +1,32 @@
+﻿@model List<EmployeeDirectory.Entity.DivRegDistEntity>
+
+@{
+    Layout = null;
+}
+
+@{
+    var gdDivRegDistList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 10, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+@if (Model.Count() > 0)
+{
+    <div>
+        @gdDivRegDistList.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                mode: WebGridPagerModes.Numeric,
+                htmlAttributes: new { Id = "tblDivRegDist" },
+                columns: gdDivRegDistList.Columns(
+                gdDivRegDistList.Column("Title", "Title"),
+                gdDivRegDistList.Column("Div", "Div"),
+                gdDivRegDistList.Column("Reg", "Reg"),
+                gdDivRegDistList.Column("Dist", "Dist"),
+                gdDivRegDistList.Column("Action", format: @<text>
+        @if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser))
+        {
+            <a onclick="javascript: EditDivRegDistDetails('@item.RowNumber');"><i class="fa fa-edit"></i></a>
+            <a onclick="return DeleteDivRegDistDetails('@item.RowNumber');"><i class="fa fa-trash"></i></a>
+        }
+        </text>, style: "webgrid-action-column")
+         ))
+    </div>
+}
+
+

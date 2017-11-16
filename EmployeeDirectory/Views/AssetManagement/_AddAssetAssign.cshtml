@@ -1,0 +1,767 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+@{
+    ViewBag.Title = "Add Asset Assign";
+    Layout = null;
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: right;
+        padding-right: 0;
+    }
+
+    .ui-autocomplete {
+        z-index: 1051 !important;
+    }
+</style>
+
+
+<div class="modal-dialog" style="margin: 0px; height: 76%; width: 100%; padding: 24px 10px 24px 24px;" id="">
+    <div class="modal-content">
+        <div class="modal-header" style="background: #4c4743 none repeat scroll 0 0">
+            <button type="button" style="color:white; opacity:1;" class="close" data-dismiss="modal">&times;</button>
+            @if (Model.AssetTagNumber == "")
+            {
+                <h4 style="color:white;" class="modal-title">Assign Asset</h4>
+            }
+            else
+            {     <h4 style="color:white;" class="modal-title">Re-Assign Asset</h4>}
+        </div>
+        @using (Html.BeginForm("SaveAssetAssignOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetAssignOrderNew" }))
+        {
+            <div class="modal-body">
+                <div class="row">
+
+
+                    @Html.ValidationSummary(true)
+                    <div class="col-md-12 box-body" style="margin-top: 20px;">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @if (Model.AssetTagNumber == "")
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">&nbsp;</label>
+                                            <div class="col-sm-8">
+                                                @if (ViewBag.AvailAssignAssetQty > 0)
+                                                {
+                                                    <label class="radio-inline">
+                                                        @Html.RadioButton("ChckReassign", "true", true, new { @itemid = "NewAssign" })New
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        @Html.RadioButton("ChckReassign", "false", false, new { @itemid = "ReAssign" })ReAssign
+                                                    </label>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="AssignDiv">
+                                        @if (ViewBag.AvailAssignAssetQty > 0)
+                                        {
+                                            <div class="NewAssign">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                                    <div class="col-sm-7">
+                                                        @*@Html.DropDownListFor(m => m.AssetTagNumber, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                                                        @if (Model.AssetTagNumber == "")
+                                                        {
+                                                            @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFillNewAssign" })
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="input-group">
+                                                                @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFillNewAssign", @readonly = "readonly" })
+                                                                <span id="btnItemHistoryDetail" onclick="ViewItemHistoryPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">History</span>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Item Name<span class="field-validation-error"></span></label>
+                                                    <div class="col-sm-7">
+                                                        @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                                                        @Html.HiddenFor(m => m.ItemId, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="ReAssign">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                                    <div class="col-sm-7">
+                                                        <div class="input-group">
+                                                            @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFillReAssign" })
+                                                            @*<span id="btnGetItemDetail" onclick="GetReturnItemDetail(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>*@
+                                                            <span id="btnItemHistoryDetail" onclick="ViewItemHistoryPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">History</span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Item Name<span class="field-validation-error"></span></label>
+                                                    <div class="col-sm-7">
+                                                        @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                                                        @Html.HiddenFor(m => m.ItemId, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">PO #<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Assign Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-4 control-label">Tracking No<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.FacTrackingNo, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">&nbsp;</label>
+                                        <div class="col-sm-8">
+                                            <label class="radio-inline">
+                                                @Html.RadioButton("ChckDiv", "true", true, new { @itemid = "IsEmployee" })Is Employee<span class="field-validation-error"></span>
+                                            </label>
+                                            <label class="radio-inline">
+                                                @Html.RadioButton("ChckDiv", "false", false, new { @itemid = "IsFacility" })Is Facility<span class="field-validation-error"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="divEmployee">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                                                    <span id="btnGetEmpDetail" onclick="GetEmpDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpAddress, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpState, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Phone No<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpPhoneNo, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row divFacility" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                                                    <span id="btnGetFacilityDetail" onclick="GetFacilityDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacilityName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacAddress, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacState, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-12">
+                            <button type="button" id="btnViewItemPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-left text-center" onclick="ViewItemPopUp(this)" style="padding: 7px 15px 7px 7px">Add Item</button>
+                            <button type="button" id="btnViewVendorPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-right text-center" onclick="ViewVendorPopUp(this)" style="padding: 7px 15px 7px 7px">Add Vendor</button>
+                        </div>*@
+                    <!-- /.box-header -->
+                    @*<div class="footer-header">
+                            <div class="col-xs-12">
+
+                                <div class="col-xs-12">
+
+                                </div>
+                            </div>
+                        </div>*@
+
+
+                </div>
+                <div class="CloneAssign" style="display:none;">
+                    <div class="ReAssign">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Tag Number<span class="field-validation-error"></span></label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFillReAssign" })
+                                    @*<span id="btnGetItemDetail" onclick="GetReturnItemDetail(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>*@
+                                    <span id="btnItemHistoryDetail" onclick="ViewItemHistoryPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">History</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Item Name<span class="field-validation-error"></span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control" })
+                                @Html.HiddenFor(m => m.ItemId, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="NewAssign">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Tag Number<span class="field-validation-error"></span></label>
+                            <div class="col-sm-7">
+                                @*@Html.TextBoxFor(m => m.PONumber, new { @class = "form-control" })*@
+                                @*@Html.DropDownListFor(m => m.AssetTagNumber, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                                @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFillNewAssign" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Item Name<span class="field-validation-error"></span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control" })
+                                @Html.HiddenFor(m => m.ItemId, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+                <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+            </div>
+            <div class="modal-footer">
+                @Html.HiddenFor(m => m.AdditionalWarrantyMonth)
+                @Html.HiddenFor(m => m.IsEmployee)
+                @Html.HiddenFor(m => m.IsFacility)
+                @Html.HiddenFor(m => m.POId)
+                @Html.HiddenFor(m => m.ReAssign)
+                @*@Html.HiddenFor(m => m.isView)
+                    @Html.HiddenFor(m => m.isAdd)
+                    @Html.HiddenFor(m => m.isApprove)
+                    @Html.HiddenFor(m => m.isEdit)
+                    @Html.HiddenFor(m => m.isDelete)
+                    @Html.HiddenFor(m => m.FormPermission)*@
+                <button type="submit" id="btnSavePurchaseOrderDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center m-t-0" style="width: auto;">Save</button>
+                @*<a href="~/AssetManagement/AssetAssignList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center m-t-0" style="width: auto;">Back</a>*@
+                <button id="closePopAssign" type="button" class="DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center m-t-0" data-dismiss="modal">Close</button>
+            </div>
+        }
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryPart")
+@Styles.Render("~/Content/cssPart")
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+    <link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />*@
+
+
+
+<script type="text/javascript">
+    var jQuery = $.noConflict(true);
+    jQuery('#AssignDate').datepicker();
+    jQuery.validator.unobtrusive.parse("form");
+
+    jQuery(document).ready(function () {
+
+        $("#FormAssetAssignOrderNew").find("#IsEmployee").val('True');
+        $("#FormAssetAssignOrderNew").find("#ChckReassign[itemid=NewAssign]").attr("checked", true);
+
+
+        jQuery("#FormAssetAssignOrderNew").on('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#modalWindow,#ui-loader").show();
+            //$(this).find("#ddlItemDetail,#Quantity").css('border', '');
+            //var PONumber = $(".tblAssetPurchaseOrder").find("#PONumber").val();
+            //var PODate = $(".tblAssetPurchaseOrder").find("#PODate").val();
+            //var VendorId = $(".tblAssetPurchaseOrder").find("#ddlVendorDetail").val();
+            if (jQuery('#FormAssetAssignOrderNew').find('#AssetTagNumber').val().trim() == "") {
+                jQuery('#FormAssetAssignOrderNew').find('#AssetTagNumber').css('border', 'red 1px solid');
+                return false;
+            }
+            if (jQuery('#FormAssetAssignOrderNew').find('#AssignDate').val().trim() == "") {
+                jQuery('#FormAssetAssignOrderNew').find('#AssignDate').css('border', 'red 1px solid');
+                return false;
+            }
+
+            if (jQuery('input:radio[itemid="IsEmployee"]').is(':checked') && ($("#FormAssetAssignOrderNew").find("#EmployeeId").val() == "" || $("#FormAssetAssignOrderNew").find("#EmployeeName").val() == "")) {
+                jQuery("#FormAssetAssignOrderNew").find("#EmployeeId,#EmployeeName").css('border', 'red 1px solid');
+                return false;
+            }
+            if (jQuery('input:radio[itemid="IsFacility"]').is(':checked') && ($("#FormAssetAssignOrderNew").find("#FacilityCode").val() == "" || $("#FormAssetAssignOrderNew").find("#FacilityName").val() == "")) {
+                jQuery("#FormAssetAssignOrderNew").find("#FacilityCode,#FacilityName").css('border', 'red 1px solid');
+                return false;
+            }
+
+            var form = jQuery(this).serialize();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetAssignOrder";
+            jQuery.ajax({
+                url: Liveurl,
+                type: "POST",
+                cache: false,
+                data: form,
+                success: function (result) {
+                    if (result > 0) {
+                        //AlertMessage([success,fail,warning],msg,Description)
+                        jQuery("#ChildModal").find("#closePopAssign").click();
+                        jQuery("#ChildModal").html("");
+
+                        jQuery("#SearchAssetAvailableListbyParam,#SearchAssetTermListbyParam").click();
+                        jQuery("#FormSearchAssetStockDetail").find("#SearchAssetStockListbyParam").click();
+                        $("#modalWindow,#ui-loader").hide();
+                        alert('Inserted Successfully.');
+
+
+                    }
+                    else {
+                        alert('An error is occured.');
+                    }
+
+                }
+            });
+
+        });
+    });
+
+
+
+
+
+    function ViewItemHistoryPopUp(me) {
+
+        var TagNo = $(me).closest('.input-group').find("#AssetTagNumber").val();
+
+        if (TagNo == "") {
+            alert('Please fill tag number.');
+            return false;
+        }
+
+
+        //var ItemId = $("#FormAssetAssignOrderNew").find("#ddlItemList").val().trim();
+        //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+        //var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/GetItemHistoryByTagNo";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { TagNo: TagNo },
+            success: function (result) {
+                $("#SubChildModal").html(result).modal('show');
+
+            }
+        });
+
+
+
+    }
+
+
+    function GetReturnItemDetail(me) {
+        var TagNo = $(me).closest('.input-group').find("#AssetTagNumber").val();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/getReturnItemDetailByTagNo";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { TagNo: TagNo },
+            success: function (result) {
+                if (result.ID == -1) {
+                    $("#FormAssetAssignOrderNew").find("#PONumber,#AssignDate,#AssetTagNumber").val("");
+                    $("#FormAssetAssignOrderNew").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo,#FacAddress,#FacState,#FacilityName,#FacilityCode").val("");
+                    alert("This Item is retired.")
+                    return false;
+                }
+                else if (result == "") {
+                    $(".ReAssign").find("#ItemName").val("");
+                    $("#FormAssetAssignOrderNew").find("#PONumber,#AssignDate,#AssetTagNumber").val("");
+                    $("#FormAssetAssignOrderNew").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo,#FacAddress,#FacState,#FacilityName,#FacilityCode").val("");
+                    alert("This tag not available in returned item.")
+                    return false;
+                }
+
+                //var date = new Date(parseInt(result.AssignDate.substr(6)));
+                //var fStart = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+                $("#FormAssetAssignOrderNew").find("#ItemName").val(result.ItemName);
+                $("#FormAssetAssignOrderNew").find("#ItemId").val(result.ItemId);
+                $("#FormAssetAssignOrderNew").find("#PONumber").val(result.PONumber);
+                $("#FormAssetAssignOrderNew").find("#POId").val(result.POId);
+                $("#FormAssetAssignOrderNew").find("#AdditionalWarrantyMonth").val(result.AdditionalWarrantyMonth);
+                //$(".ReAssign").find("#AssignDate").val(fStart);
+
+
+            }
+        });
+
+
+    }
+
+
+    $('input:radio[name="ChckReassign"]').on('change', function () {
+        if ($(this).is(':checked') && $(this).attr('itemid') == 'ReAssign') {
+
+            $(".AssignDiv").html($(".CloneAssign").find(".ReAssign").clone().show());
+            //$("#FormAssetAssignOrderNew").find("#PONumber,#ItemName").val("");
+            $("#FormAssetAssignOrderNew").find("#ItemName,#PONumber").attr("readonly", true);
+            $("#FormAssetAssignOrderNew").find("#ReAssign").val(true);
+
+        }
+        else {
+
+            $(".AssignDiv").html($(".CloneAssign").find(".NewAssign").clone().show());
+            //$("#FormAssetAssignOrderNew").find("#PONumber").val("");
+            $("#FormAssetAssignOrderNew").find("#ItemName,#PONumber").attr("readonly", true);
+            $("#FormAssetAssignOrderNew").find("#ReAssign").val(false);
+
+        }
+
+        $("#FormAssetAssignOrderNew").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo,#FacAddress,#FacState,#FacilityName,#FacilityCode").val("");
+
+    });
+
+    $('input:radio[name="ChckDiv"]').on('change', function () {
+        if ($(this).is(':checked') && $(this).attr('itemid') == 'IsEmployee') {
+            $('.divEmployee').show();
+            $('.divFacility').hide();
+
+            $("#FormAssetAssignOrderNew").find("#FacilityCode,#FacilityName,#FacAddress,#FacState").val("");
+
+            $("#FormAssetAssignOrderNew").find("#IsFacility").val('False');
+            $("#FormAssetAssignOrderNew").find("#IsEmployee").val('True');
+
+        }
+        else {
+            $('.divFacility').show();
+            $('.divEmployee').hide();
+
+            $("#FormAssetAssignOrderNew").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+            $("#FormAssetAssignOrderNew").find("#IsEmployee").val('False');
+            $("#FormAssetAssignOrderNew").find("#IsFacility").val('True');
+        }
+    });
+
+
+    function GetEmpDetailPopUp(me) {
+        var EEID = $(me).closest('.input-group').find("#EmployeeId").val();
+
+
+        var ItemId = $('#FormAssetAssignOrderNew').find('.form-control[name="ItemId"]').val();
+        if (ItemId == "" || ItemId == 0) {
+            alert("Please select item for this employee");
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/getEmployeeDirectoryDetailByEEIDForAsset";
+
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { EEID: EEID, ItemId: ItemId },
+            success: function (result) {
+                $("#FormAssetAssignOrderNew").find("#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+                if (result.EEID == "-1") {
+                    $("#FormAssetAssignOrderNew").find("#EmployeeId").val("");
+                    alert("This employee is already have selected Item.")
+                    return false;
+                }
+                if (result.EEID == "-2") {
+                    $("#FormAssetAssignOrderNew").find("#EmployeeId").val("");
+                    alert("Employee Not Available.")
+                    return false;
+                }
+                $("#FormAssetAssignOrderNew").find("#EmployeeName").val(result.EMPLOYEENAME);
+                $("#FormAssetAssignOrderNew").find("#EmpAddress").val(result.ADDRESSONE);
+                $("#FormAssetAssignOrderNew").find("#EmpState").val(result.ST);
+                $("#FormAssetAssignOrderNew").find("#EmpPhoneNo").val(result.PrimaryPhone);
+
+            }
+        });
+
+
+    }
+
+    $('#FormAssetAssignOrderNew').find("#ddlItemList").on('change', function () {
+
+        $("#FormAssetAssignOrderNew").find("#EmployeeId").val("");
+        $("#FormAssetAssignOrderNew").find("#EmployeeName").val("");
+        $("#FormAssetAssignOrderNew").find("#EmpAddress").val("");
+        $("#FormAssetAssignOrderNew").find("#EmpState").val("");
+        $("#FormAssetAssignOrderNew").find("#EmpPhoneNo").val("");
+        $("#FormAssetAssignOrderNew").find("#PONumber").val("");
+
+        $("#FormAssetAssignOrderNew").find("#FacAddress").val("");
+        $("#FormAssetAssignOrderNew").find("#FacState").val("");
+        $("#FormAssetAssignOrderNew").find("#FacilityName").val("");
+        $("#FormAssetAssignOrderNew").find("#FacilityCode").val("");
+
+
+    });
+
+
+
+    function GetFacilityDetailPopUp(me) {
+        var facilityCode = $(me).closest('.input-group').find("#FacilityCode").val();
+        var ItemId = $('#FormAssetAssignOrderNew').find('.form-control[name="ItemId"]').val();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "ArcustView/GetDetailsByfacilityCodeForAsset";
+
+        if (ItemId == "" || ItemId == 0) {
+            alert("Please select item for this employee");
+            return false;
+        }
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { facilityCode: facilityCode, ItemId: ItemId },
+            success: function (result) {
+                $("#FormAssetAssignOrderNew").find("#FacilityName,#FacAddress,#FacState").val("");
+
+                if (result == "") {
+                    $("#FormAssetAssignOrderNew").find("#FacilityCode").val("");
+                    alert("This Facility Not Exist.");
+                    return false;
+                }
+                else if (result.customer_code == "-1") {
+                    $("#FormAssetAssignOrderNew").find("#FacilityCode").val("");
+                    alert("This Facility is already have selected Item.");
+                    return false;
+                }
+                $("#FormAssetAssignOrderNew").find("#FacAddress").val(result.addr1);
+                $("#FormAssetAssignOrderNew").find("#FacState").val(result.state);
+                $("#FormAssetAssignOrderNew").find("#FacilityName").val(result.customer_name);
+
+            }
+        });
+
+    }
+
+    function SavePoDetail(me) {
+
+
+        var POId = $('input:radio[name="PONew"]:checked').closest('tr').find('.tdPOID').attr('itemid').trim();
+        var ID = $('input:radio[name="PONew"]:checked').closest('tr').find('.tdAddWaranty').text().trim();
+        var PONumber = $('input:radio[name="PONew"]:checked').closest('tr').find('.tdPONumber').text().trim();
+
+        $("#FormAssetAssignOrderNew").find("#POId").val(POId);
+        $("#FormAssetAssignOrderNew").find("#PONumber").val(PONumber);
+        $("#FormAssetAssignOrderNew").find('#AdditionalWarrantyMonth').val(ID);
+        $("#parentModal").modal('hide');
+
+    }
+
+
+    jQuery('#FormAssetAssignOrderNew').find('.AssetTagAutoFillNewAssign').live('focusin', function (e) {
+
+        e.preventDefault();
+        var me = jQuery(this);
+
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagListNew))');
+
+        @*var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagListReassign))');*@
+
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+            result.push(name);
+        }
+
+        jQuery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jQuery(me).trigger('keydown');
+
+    });
+
+    jQuery('#FormAssetAssignOrderNew').find('.AssetTagAutoFillReAssign').live('focusin', function (e) {
+
+        e.preventDefault();
+        var me = jQuery(this);
+
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagListReassign))');
+
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+            result.push(name);
+        }
+
+        jQuery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jQuery(me).trigger('keydown');
+
+    });
+
+    jQuery("#ChildModal").find('#FormAssetAssignOrderNew').find('.AssetTagAutoFillNewAssign').live('focusout', function (e) {
+        e.preventDefault();
+
+        var me = jQuery(this);
+        var TagNo = jQuery(me).val().trim();
+
+        if (TagNo == "") {
+            return false;
+        }
+
+        var IsExist = false;
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagListNew))');
+
+        for (var item, i = 0; item = items[i++];) {
+            if (item.Value == TagNo) {
+                IsExist = true;
+                break;
+            }
+        }
+
+
+
+        //setTimeout(function () {
+            if (IsExist == false) {
+
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "AssetManagement/AddAssetTagDetail";
+                if (confirm("This tag number is not exist do you want to add as a new tag.?")) {
+                    jQuery.ajax({
+                        url: Liveurl,
+                        type: "GET",
+                        data: { TagNo: TagNo },
+                        success: function (result) {
+                            if (result > 0) {
+                                alert('Inserted Successfully.');
+                                return false;
+                            }
+                            else if (result == -1) {
+                                alert('This tag Number is already exist.');
+                                location.href = "../AssetManagement/AddAssetAssign";
+                            }
+                            else {
+                                alert('An error is occured.');
+                                location.href = "../AssetManagement/AddAssetAssign";
+                            }
+
+                        }
+                    });
+                }
+                else {
+                    jQuery(me).val("");
+                    return false;
+                }
+
+            }
+        //}, 300);
+
+
+
+
+    });
+
+
+    jQuery("#ChildModal").find('#FormAssetAssignOrderNew').find('.AssetTagAutoFillReAssign').live('focusout', function (e) {
+        var me = jQuery(this);
+        var TagNo = jQuery(me).val().trim();
+        if (TagNo == "") {
+            return false;
+        }
+
+        var IsExist = false;
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagListReassign))');
+
+        for (var item, i = 0; item = items[i++];) {
+            if (item.Value == TagNo) {
+                IsExist = true;
+                break;
+            }
+        }
+
+
+        //setTimeout(function () {
+            if (IsExist == false) {
+                jQuery(me).val("");
+                return false;
+            }
+        //}, 300);
+
+
+
+
+    });
+
+
+
+
+</script>

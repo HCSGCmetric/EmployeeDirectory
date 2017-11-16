@@ -1,0 +1,262 @@
+﻿@{
+
+    var permission = EmployeeDirectory.Helper.CommonMethods.CheckPermission(EmployeeDirectory.Helper.StringEnum.GetStringValue(EmployeeDirectory.Helper.ScreenAlias.CorporateContact));
+    if (permission != null)
+    {
+        ViewBag.IsAdd = EmployeeDirectory.Helper.CommonMethods.GetFormPermission(permission).IsAdd;
+        ViewBag.IsEdit = EmployeeDirectory.Helper.CommonMethods.GetFormPermission(permission).IsEdit;
+        ViewBag.IsDelete = EmployeeDirectory.Helper.CommonMethods.GetFormPermission(permission).IsDelete;
+    }
+
+
+    var grid = Html.DevExpress().GridView(settings=>
+    {
+        settings.Name = "GridView";
+        settings.CallbackRouteValues = new { Controller = "CorporateContact", Action = "GridViewPartial" };
+        settings.Styles.RowHotTrack.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFC");
+        settings.Styles.AlternatingRow.BackColor = System.Drawing.ColorTranslator.FromHtml("#F3F2F3");
+        settings.SettingsBehavior.EnableRowHotTrack = true;
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "CorporateContact", Action = "GridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "CorporateContact", Action = "GridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "CorporateContact", Action = "GridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Styles.Header.BackColor = System.Drawing.ColorTranslator.FromHtml("#4c4743");
+        settings.Styles.Header.ForeColor = System.Drawing.Color.White;
+        settings.Styles.Header.Font.Bold = true;
+
+        if (Convert.ToBoolean(ViewBag.IsAdd) != true)
+        {
+            settings.CommandColumn.Visible = false;
+        }
+        else
+        {
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButtonInHeader = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+
+            settings.SettingsCommandButton.NewButton.Text = "Add New Hire";
+        }
+
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.KeyFieldName = "id";
+        settings.Settings.VerticalScrollableHeight = 660;
+        settings.SettingsPager.Mode = GridViewPagerMode.EndlessPaging;
+        settings.SettingsPager.PageSize = 100;
+        settings.SettingsPager.Visible = true;
+        //settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        //settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "First Name";
+            column.FieldName = "FirstName";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.ValidationSettings.CausesValidation = true;
+            TextProperties.ValidationSettings.RequiredField.IsRequired = true;
+            TextProperties.ValidationSettings.ErrorText = "Enter First Name";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Last Name";
+            column.FieldName = "LastName";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.ValidationSettings.CausesValidation = true;
+            TextProperties.ValidationSettings.RequiredField.IsRequired = true;
+            TextProperties.ValidationSettings.ErrorText = "Enter Last Name";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Department";
+            column.FieldName = "Department";
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.Department;
+            comboBoxProperties.TextField = "Department";
+            comboBoxProperties.ValueField = "Department";
+            comboBoxProperties.ValidationSettings.CausesValidation = true;
+            comboBoxProperties.ValidationSettings.RequiredField.IsRequired = true;
+            //comboBoxProperties.ValueType = typeof(int);
+            column.CellStyle.Wrap = DefaultBoolean.False;
+            comboBoxProperties.ClientSideEvents.SelectedIndexChanged = "function(s,e) { AccessType.SetText(s.GetValue()); }";
+        });
+
+        settings.Columns.Add("JobTitle");
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "BusinessPhone";
+            column.FieldName = "BusinessPhone";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.MaskSettings.Mask = "999-999-9999";
+            TextProperties.ValidationSettings.CausesValidation = false;
+
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "FaxNumber";
+            column.FieldName = "FaxNumber";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.MaskSettings.Mask = "999-999-9999";
+            TextProperties.ValidationSettings.CausesValidation = false;
+
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Extension";
+            column.FieldName = "Extension";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.ValidationSettings.CausesValidation = true;
+            TextProperties.ValidationSettings.RegularExpression.ValidationExpression = "^([1-9][0-9]{0,2}|1000)$";
+
+            TextProperties.ValidationSettings.ErrorText = "Improper Format";
+        });
+
+
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "EmailAddress";
+            column.FieldName = "EmailAddress";
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            var TextProperties = column.PropertiesEdit as TextBoxProperties;
+            TextProperties.ValidationSettings.CausesValidation = true;
+            TextProperties.ValidationSettings.RegularExpression.ValidationExpression = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
+
+            TextProperties.ValidationSettings.ErrorText = "Improper Format";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Office";
+            column.FieldName = "Office";
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.Office;
+            comboBoxProperties.TextField = "Office";
+            comboBoxProperties.ValueField = "Office";
+            // comboBoxProperties.ValueType = typeof(int);
+            comboBoxProperties.ValidationSettings.CausesValidation = true;
+            comboBoxProperties.ValidationSettings.RequiredField.IsRequired = true;
+            column.CellStyle.Wrap = DefaultBoolean.False;
+        });
+
+        if (Convert.ToBoolean(ViewBag.IsAdd) != true)
+        {
+
+        }
+        else
+        {
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "Start Date";
+                column.FieldName = "StartDate";
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var DateEditProperties = column.PropertiesEdit as DateEditProperties;
+                column.CellStyle.Wrap = DefaultBoolean.False;
+            });
+
+            //settings.Columns.Add("AccessType");
+
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "AccessType";
+                column.FieldName = "AccessType";
+                column.ColumnType = MVCxGridViewColumnType.TextBox;
+                var TextProperties = column.PropertiesEdit as TextBoxProperties;
+                TextProperties.ValidationSettings.CausesValidation = true;
+                TextProperties.ValidationSettings.RequiredField.IsRequired = true;
+                TextProperties.ValidationSettings.ErrorText = "Enter AccessType";
+                TextProperties.ClientInstanceName = "AccessType";
+            });
+
+
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "Supervisor";
+                column.FieldName = "Supervisor";
+                column.ColumnType = MVCxGridViewColumnType.TextBox;
+                var TextProperties = column.PropertiesEdit as TextBoxProperties;
+                TextProperties.ValidationSettings.CausesValidation = true;
+                TextProperties.ValidationSettings.RequiredField.IsRequired = true;
+                TextProperties.ValidationSettings.ErrorText = "Enter Supervisor";
+            });
+            settings.Columns.Add("employee_id");
+
+
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "Term Date";
+                column.FieldName = "TermDate";
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var DateEditProperties = column.PropertiesEdit as DateEditProperties;
+                column.CellStyle.Wrap = DefaultBoolean.False;
+                //column.SetEditItemTemplateContent(c =>
+                //{
+                //    Html.DevExpress().DateEdit(dateedit =>
+                //    {
+                //        dateedit.Name = "TermDate";
+                //        dateedit.Enabled = c.Grid.IsNewRowEditing;
+                //    }).GetHtml();
+                //});
+            });
+            settings.CellEditorInitialize = (sender, e) =>
+            {
+                if (e.Column.FieldName == "StartDate")
+                {
+                    MVCxGridView g = sender as MVCxGridView;
+                    if (g.IsNewRowEditing)
+                        e.Editor.ReadOnly = false;
+                    else
+                        e.Editor.ReadOnly = true;
+                }
+                if (e.Column.FieldName == "TermDate")
+                {
+                    MVCxGridView g = sender as MVCxGridView;
+                    if (g.IsNewRowEditing)
+                        e.Editor.ReadOnly = true;
+                    else
+                        e.Editor.ReadOnly = false;
+                }
+
+            };
+        }
+    });
+
+
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+@*@Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+        )
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+            new Script { ExtensionSuite = ExtensionSuite.Editors },
+            new Script { ExtensionSuite = ExtensionSuite.GridView }
+        )*@

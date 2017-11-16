@@ -1,0 +1,215 @@
+﻿@model EmployeeDirectory.Entity.LinkEntity
+@using EmployeeDirectory.Helper
+
+@{
+    ViewBag.Title = "Link Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    span.highlight {
+        /*background: #f1c40f;*/
+        background: #00FF00;
+    }
+
+    .Document-Header {
+        background: #e5e5e5;
+    }
+
+        .Document-Header h5 {
+            width: 100%;
+            text-align: center;
+        }
+
+    .content {
+        border: 1px solid #e5e5e5;
+        position: relative;
+        float: left;
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .contentfiles {
+        /*max-height: 350px;*/
+        overflow: hidden;
+    }
+
+    .contentfilesheader {
+        background: transparent;
+        color: #4c4743;
+        font-size: 18px;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: bold;
+    }
+
+    .contentfiles ul {
+        margin-top: 20px;
+        padding-left: 0;
+    }
+
+        .contentfiles ul a {
+            list-style: none;
+            font-size: 14px;
+            font-family: 'Noto Sans', sans-serif;
+            margin: 8px 0 8px 0;
+            position: relative;
+            float: left;
+            cursor: pointer;
+            width: 100%;
+        }
+
+    .Common-Documents, .Common-Links {
+        margin: 20px 0;
+    }
+
+    .contentfiles ul a img {
+        max-width: 5%;
+        position: relative;
+        float: left;
+    }
+
+    /*.contentfiles ul a h2 {
+        width: 93%;
+        float: left;
+        position: relative;
+        margin-left: 2%;
+        margin-top: 4px;
+        margin-bottom: 0;
+        font-size: 13px;
+        color: #333;
+    }*/
+
+    .contentfiles ul a h6 {
+        width: 93%;
+        float: left;
+        position: relative;
+        margin-left: 2%;
+        margin-top: 4px;
+        margin-bottom: 0;
+        /*color: #333;*/
+    }
+
+    .content .col-xs-12 .row {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .subbox, .subbox .box-title {
+        background: #e5e5e5;
+        color: #4c4743;
+        font-size: 23px;
+        background: #e5e5e5;
+        font-family: 'Noto Sans', sans-serif;
+        margin-top: 0;
+        font-weight: 400;
+    }
+
+    h5 {
+        margin: 0;
+    }
+
+    .contentfiles ul {
+        overflow: auto;
+        max-height: 320px;
+    }
+</style>
+
+<!-- Banner -->
+<!-- /Banner -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <!---->
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-xs-8">
+                        <h3 class="box-title">Links</h3>
+                    </div>
+                    <div class="col-lg-2" style="margin-top: 16px;">
+                        <input type="text" placeholder="Enter search text here" id="SearchHilightLink" value="@ViewBag.SearchValue" class="form-control" />
+                    </div>
+                    <div class="col-lg-2" style="margin-top: 16px;">
+                        <button id="btnhighlightLinkSearch" class="tabeditbtn" onclick="highlightLinkSearch(this)" style="padding: 4px;">Search</button>
+                        <a id="" class="tabeditbtn" style="padding: 6px;" href="../Link/ViewLinkList">Clear</a>
+                    </div>
+                </div>
+
+                <div class="col-xs-12" id="LinkGroup">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-xs-12">
+                            @foreach (var item in Model.lstLinkEntity.GroupBy(x => new { x.LinkDisplayIDs, x.LinkDisplayName }).Select(u => new { LinkDisplayName = u.Key.LinkDisplayName, LinkDisplayIDs = u.Key.LinkDisplayIDs }).ToList())
+                            {
+                                <div class="Common-Links">
+                                    <div class="Link-Header subbox row Document-Header">
+                                        <div class="">
+                                            <h5 class="box-title">@item.LinkDisplayName</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="content">
+                                            <div class="col-xs-12">
+                                                <div class="col-md-12">
+                                                    @foreach (var itemDep in Model.lstLinkEntity.Where(m => m.LinkDisplayIDs == item.LinkDisplayIDs).GroupBy(x => new { x.DepartmentId, x.DepartmentName }).Select(u => new { DepartmentId = u.Key.DepartmentId, DepartmentName = u.Key.DepartmentName }).ToList())
+                                                    {
+                                                        var index = Model.lstLinkEntity.Where(m => m.LinkDisplayIDs == item.LinkDisplayIDs).GroupBy(x => new { x.DepartmentId, x.DepartmentName }).Select(u => new { DepartmentId = u.Key.DepartmentId, DepartmentName = u.Key.DepartmentName }).ToList().IndexOf(itemDep);
+
+                                                        <div class="contentfiles">
+                                                            <h4 class="contentfilesheader">@itemDep.DepartmentName</h4>
+                                                            <div class="ScrollableDocument">
+
+                                                                @foreach (var itemField in Model.lstLinkEntity.Where(m => m.LinkDisplayIDs == item.LinkDisplayIDs).Where(m => m.DepartmentId == itemDep.DepartmentId).OrderBy(i => i.Name).ToList())
+                                                                { <ul class="col-md-4" style="margin-bottom:0px; margin-top:4px;">
+                                                                    <a target="_blank" href="@itemField.Link" class="span4">
+                                                                        <img src="~/Icons/Link.png" alt="download" /><h6>@itemField.Name</h6>
+
+                                                                    </a>
+                                                                </ul>
+                                                                }
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+    function highlightLinkSearch(me) {
+
+        var $input = $(me).closest('.box-header').find("#SearchHilightLink");
+        var searchTerm = $input.val();
+        location.href = "../Link/ViewLinkList?SearchValue=" + searchTerm;
+
+
+
+        //var $context = $("#LinkGroup");
+        //var $input = $(me).closest('.box-header').find("#SearchHilightLink");
+        //var searchTerm = $input.val();
+        //$context.removeHighlight();
+        //$context.highlight(searchTerm);
+        //$context.trigger("onkeyup.perform");
+    };
+
+
+
+</script>

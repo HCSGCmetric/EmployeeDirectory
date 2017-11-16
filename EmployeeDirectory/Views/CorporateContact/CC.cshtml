@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "CC";
+}
+
+
+<style>
+    a.dxbButton {
+        color: #3c8dbc !important;
+        text-decoration: none !important;
+    }
+
+    #GridView_DXCBtn0 {
+        color: white !important;
+    }
+</style>
+
+
+
+<div class="box">
+
+    <div class="box-header">
+        <div class="col-sm-5 col-xs-12">
+            <h3 class="box-title">Corporate Contact</h3>
+        </div>
+    </div>
+    <div class="col-md-12 box-body">
+        <div class="row">
+            <div class="clearfix" style="clear: both"></div><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="Export To Excel" class="btneffect" onclick="location.href='@Url.Action("ExportTo", "CorporateContact") '" />
+            @*@Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "Button";
+                    settings.UseSubmitBehavior = false;
+                    settings.Text = "ExportTo Excel";
+                    settings.RouteValues = new { Controller = "CorporateContact", Action = "ExportTo" };
+                }).GetHtml()*@
+            <br /><br />
+        </div>
+    </div>
+    </div>
+    <script src="~/Scripts/jquery-1.11.1.js"></script>
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+    )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.GridView }
+    )
+
+
+
+
+    @Html.Action("GridViewPartial")

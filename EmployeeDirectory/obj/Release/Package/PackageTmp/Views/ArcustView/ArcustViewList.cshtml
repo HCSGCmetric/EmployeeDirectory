@@ -1,0 +1,910 @@
+﻿@model List<EmployeeDirectory.Entity.ArcustViewEntity>
+
+@{
+    ViewBag.Title = "ArcustViewList";
+}
+
+@*<h2>ArcustViewList</h2>*@
+
+<script src="~/js/bootstrap-multiselect.js"></script>
+<link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />
+
+<style>
+    .multiselect.dropdown-toggle.btn.btn-default {
+        /*margin-right: 5px;*/
+        max-width: 130px;
+        overflow: hidden;
+    }
+
+    .dropdown-menu {
+        max-height: 158px;
+        overflow: auto;
+    }
+</style>
+
+
+
+<script>
+    $('.datepicker').datepicker({
+        format: 'mmddyyyy',
+        startDate: '-3d'
+    })
+
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Reference List</h3>
+                    </div>
+                </div>
+
+                <form role="form" id="ContactBenefitList" class="form-horizontal">
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-5 control-label">Facility Code</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchFacilityCode" name="txtSearchFacilityCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityName" class="col-sm-5 control-label">Facility Name</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchFacilityName" name="txtSearchFacilityName" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchDepartmentCode" class="col-sm-5 control-label">Dept Code</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchDepartmentCode" name="txtSearchDepartmentCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:none">
+                                <div class="form-group">
+                                    <label for="txtSearchPayrollCode" class="col-sm-5 control-label">Payroll Code</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchPayrollCode" name="txtSearchPayrollCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchTerritoryCode" class="col-sm-5 control-label">Territory Code</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchTerritoryCode" name="txtSearchTerritoryCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="clear: both"></div>
+                            <div id="divAdvanceSearch" style="display: none;">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchCollectorCode" class="col-sm-5 control-label">Collector Code</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchCollectorCode" name="txtSearchCollectorCode" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchManagementCode" class="col-sm-5 control-label">Management Code</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchManagementCode" name="txtSearchManagementCode" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchManagementName" class="col-sm-5 control-label">Management Name</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchManagementName" name="txtSearchManagementName" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchAddress" class="col-sm-5 control-label">Address</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchAddress" name="txtSearchAddress" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix" style="clear: both"></div>
+
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchState" class="col-sm-5 control-label">State</label>
+                                        <div class="col-sm-7">
+                                            @*<input type="text" id="txtSearchState" name="txtSearchState" class="form-control" />*@
+                                            @Html.DropDownListFor(m => m[0].state, ViewBag.ArcustStateList as List<SelectListItem>, new { @id = "txtSearchState", @class = "form-control selectmultidata", @multiple = "multiple" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchCity" class="col-sm-5 control-label">City</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchCity" name="txtSearchCity" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchZipCode" class="col-sm-5 control-label">Zip Code</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchZipCode" name="txtSearchZipCode" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="ddlStatus" class="col-sm-5 control-label">Status</label>
+                                        <div class="col-sm-7">
+                                            <select id="ddlStatus" class="form-control">
+                                                <option id="">select</option>
+                                                <option id="Active">Active</option>
+                                                <option id="Termed">Termed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                              
+
+                                <div class="clearfix" style="clear: both"></div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchStartDate" class="col-sm-5 control-label">Facility Start Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchStartDate" name="txtSearchStartDate" data-provide="datepicker" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchEndDate" class="col-sm-5 control-label">Facility End Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchEndDate" name="txtSearchEndDate" data-provide="datepicker" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchTermStartDate" class="col-sm-5 control-label">Term Start Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchTermStartDate" name="txtSearchTermStartDate" data-provide="datepicker" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchTermEndDate" class="col-sm-5 control-label">Term End Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtSearchTermEndDate" name="txtSearchTermEndDate" data-provide="datepicker" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix" style="clear: both"></div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchDiv" class="col-sm-5 control-label">Div</label>
+                                        <div class="col-sm-7">
+                                            @*<input type="text" id="txtSearchDiv" name="txtSearchDiv" class="form-control" />*@
+                                            @Html.DropDownListFor(m => m[0].DIV, ViewBag.DivListTr as List<SelectListItem>, new { @id = "txtSearchDiv", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchReg" class="col-sm-5 control-label">Reg</label>
+                                        <div class="col-sm-7">
+                                            @*<input type="text" id="txtSearchReg" name="txtSearchReg" class="form-control" />*@
+                                            @Html.DropDownListFor(m => m[0].REG, ViewBag.RegListTr as List<SelectListItem>, new { @id = "txtSearchReg", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="txtSearchDist" class="col-sm-5 control-label">Dist</label>
+                                        <div class="col-sm-7">
+                                            @*<input type="text" id="txtSearchDist" name="txtSearchDist" class="form-control" />*@
+                                            @Html.DropDownListFor(m => m[0].DIST, ViewBag.DistListTr as List<SelectListItem>, new { @id = "txtSearchDist", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="clear: both; margin-top: 10px;"></div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-sm-8">
+                                        <button type="button" id="btnAdvanceSearch" name="Advance Search" class="btneffect">Advanced Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFirstName" class="col-sm-5 control-label">&nbsp;</label>
+                                    <div class="col-sm-7">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    @*<label for="txtSearchFirstName" class="col-sm-5 control-label">&nbsp;</label>*@
+                                    <div class="col-sm-12">
+
+                                        <button type="button" id="btnSearchFacility" name="Search Facility" class="btneffect">Search Facility</button>
+                                        <a id="btnClearForm" name="Clear Form" class="btneffect" href="~/ArcustView/ArcustViewList">Clear</a>
+                                        <button type="button" id="btnExportToExcel" name="ExportToExcel" class="btneffect">Export To Excel</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix" style="clear: both; margin-bottom: 20px;"></div>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <!-- /.box-header -->
+                    <div class="col-md-12" id="divArcustViewList_div">
+                        <div class="table-responsive" id="divArcustViewList">
+                            @Html.Partial("_ArcustViewList", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type='hidden' name='SortOrder' id='hdnSortOrder' value='ASC' />
+        <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+    </div>
+</div>
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog" style="width: 1200px;">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #00264B; color: #ffffff">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #ffffff; opacity: 1;">&times;</button>
+                        <h4 class="modal-title text-center">Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div role="main" class="ui-content" style="background-color: white; padding: 10px">
+                            <input type="hidden" id="hdnid" value="" />
+                            <table style="width: 100%;">
+                                <tr>
+                                    @*<td style="padding: 5px;">CO1:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtCO1" class="form-control" name="CO1" />
+                                        </td>*@
+                                    <td style="padding: 5px;">
+                                        CO2:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCO2" class="form-control" name="CO2" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        CO3:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCO3" class="form-control" name="CO3" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Facility Code:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCustomerCode" class="form-control" name="CustomerCode" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Department:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtDepartment" class="form-control" name="Department" readonly="readonly" />
+                                    </td>
+
+                                </tr>
+                                <tr style="padding: 5px;">
+                                    <td style="padding: 5px;">
+                                        Div:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtDiv" class="form-control" name="Div" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Reg:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtReg" class="form-control" name="Reg" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Dist:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtDist" class="form-control" name="Dist" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        FacilityEmail:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtFacilityEmail" class="form-control" name="FacilityEmail" readonly="readonly" />
+                                    </td>
+                                    @*  <td style="padding: 5px;">SubReg:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtSubReg" class="form-control" name="SubReg" />
+                                        </td>
+                                        <td style="padding: 5px;">SubReg-2:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtSubReg2" class="form-control" name="SubReg2" />
+                                        </td>*@
+                                </tr>
+                                <tr style="padding: 5px;">
+
+
+                                    <td style="padding: 5px;">
+                                        Start Date:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtStartDate" class="form-control" name="StartDate" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Term Date:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtTermDate" class="form-control" name="TermDate" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Customer Name:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCustomerName" class="form-control" name="CustomerName" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Attention Name:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtAttentionName" class="form-control" name="AttentionName" readonly="readonly" />
+                                    </td>
+                                </tr>
+                                <tr style="padding: 5px;">
+
+                                    <td style="padding: 5px;">
+                                        Mgmt Code:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtAffiliatedCustCode" class="form-control" name="AffiliatedCustCode" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Mgmt Name:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtManagementName" class="form-control" name="ManagementName" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Contact Name:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtContactName" class="form-control" name="ContactName" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Attention Phone:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtAttentionPhone" class="form-control" name="AttentionPhone" readonly="readonly" />
+                                    </td>
+                                </tr>
+
+                                <tr style="padding: 5px;">
+                                    <td style="padding: 5px;">
+                                        Address:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtAddress" class="form-control" name="Address" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Contact Phone:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtContactPhone" class="form-control" name="Contact Phone" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Tax Code:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtTaxCode" class="form-control" name="TaxCode" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Territory Code:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtTerritoryCode" class="form-control" name="TerritoryCode" readonly="readonly" />
+                                    </td>
+                                </tr>
+
+                                <tr style="padding: 5px;">
+
+                                    @*<td style="padding: 5px;">Phone1:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtPhone1" class="form-control" name="Phone1" />
+                                        </td>
+                                        <td style="padding: 5px;">Phone2:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtPhone2" class="form-control" name="Phone2" />
+                                        </td>
+                                        <td style="padding: 5px;">Ship To Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtShipToCode" class="form-control" name="ShipToCode" />
+                                        </td>*@
+                                </tr>
+
+                                <tr style="padding: 5px;">
+
+                                    @*<td style="padding: 5px;">Terms Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtTermsCode" class="form-control" name="TermsCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Fob Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtFobCode" class="form-control" name="FobCode" />
+                                        </td>*@
+
+                                </tr>
+
+                                <tr style="padding: 5px;">
+
+                                    @*<td style="padding: 5px;">Sales Person:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtSalesPerson" class="form-control" name="SalesPerson" />
+                                        </td>
+                                        <td style="padding: 5px;">Message Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtMessageCode" class="form-control" name="MessageCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Dunn Message Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtDunnMessageCode" class="form-control" name="DunnMessageCode" />
+                                        </td>*@
+                                </tr>
+
+
+                                <tr style="padding: 5px;">
+                                    <td style="padding: 5px;">
+                                        Country:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCountry" class="form-control" name="Country" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        State:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtState" class="form-control" name="State" readonly="readonly" />
+                                        
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        City:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCity" class="form-control" name="City" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Postal Code:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtPostalCode" class="form-control" name="PostalCode" readonly="readonly" />
+                                    </td>
+                                </tr>
+
+                                @*<tr style="padding: 5px;">
+                                        <td style="padding: 5px;">Note:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtNote" class="form-control" name="Note" />
+                                        </td>
+                                        <td style="padding: 5px;">Remit Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtRemitCode" class="form-control" name="RemitCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Forwarder Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtForwarderCode" class="form-control" name="ForwarderCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Freight To Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtFreightToCode" class="form-control" name="FreightToCode" />
+                                        </td>
+                                    </tr>
+
+                                    <tr style="padding: 5px;">
+                                        <td style="padding: 5px;">Route Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtRouteCode" class="form-control" name="RouteCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Route No:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtRouteNo" class="form-control" name="RouteNo" />
+                                        </td>
+                                        <td style="padding: 5px;">Ship Via Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtShipViaCode" class="form-control" name="ShipViaCode" />
+                                        </td>
+                                        <td style="padding: 5px;">Dest Zone Code:
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            <input type="text" id="txtDestZoneCode" class="form-control" name="DestZoneCode" />
+                                        </td>
+                                    </tr>*@
+
+                                <tr>
+                                    <td style="padding: 5px;">
+                                        Hospital:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtHospital" class="form-control" name="Hospital" readonly="readonly" />
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        Collector:
+                                    </td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" id="txtCollector" class="form-control" name="Collector" readonly="readonly" />
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <a href="#" data-dismiss="modal" class="btn btn-default" data-rel="back">Cancel</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            var jq = $.noConflict();
+
+            jq(document).ready(function () {
+                jq('#txtSearchState').multiselect({
+                    numberdisplayed: 1,
+                    //buttonwidth: '100%',
+                    maxheight: 150,
+                    includeselectalloption: true,
+                    enableClickableOptGroups: true
+
+                });
+
+
+
+                //jq('#JobTitle').multiselect('refresh');
+                //jq('#JobTitle').multiselect();
+
+            });
+
+            $(document).live('click', function (e) {
+
+                if ($(e.target).closest('div').attr('class') != 'btn-group') {
+
+                    $('.multiselect').closest('div').find('ul').hide();
+                }
+            })
+
+            $('.multiselect').live('click', function () {
+                $(this).closest('div').find('ul').toggle();
+
+            });
+
+            $('#btnAdvanceSearch').click(function () {
+                if (this.textContent.toLowerCase() == "advanced search") {
+                    $("#divAdvanceSearch").show();
+                    $("#btnAdvanceSearch").text("Hide Advanced Search");
+                }
+                else {
+                    $("#divAdvanceSearch").hide();
+                    $("#btnAdvanceSearch").text("Advanced Search");
+                }
+
+            });
+
+
+            $('form').find('#txtSearchDiv').live('change', function (e) {
+                e.preventDefault();
+                var me = $(this);
+                var Div = me.val();
+
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureRegionList";
+                $("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    url: Liveurl,
+                    type: "GET",
+                    data: { Div: Div },
+                    success: function (result) {
+                        $('form').find("#txtSearchReg").html('<option value="">select</option>');
+                        //$('form').find("#txtSearchDist").html('<option value="">select</option>');
+                        $.each(result, function (key, value) {
+                            $('form').find("#txtSearchReg").append($("<option></option>").val(value.Name).html(value.Name));
+                        });
+                        //$("#modalWindow,#ui-loader").hide();
+                    }
+                });
+
+                var Reg = "";
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureDistictList";
+                //$("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    url: Liveurl,
+                    type: "GET",
+                    data: { Reg: Reg, Div: Div },
+                    success: function (result) {
+                        $('form').find("#txtSearchDist").html('<option value="">select</option>');
+
+                        $.each(result, function (key, value) {
+                            $('form').find("#txtSearchDist").append($("<option></option>").val(value.Name).html(value.Name));
+                        });
+                        //$("#modalWindow,#ui-loader").hide();
+                    }
+                });
+                $("#modalWindow,#ui-loader").hide();
+
+            });
+
+
+            $('form').find('#txtSearchReg').live('change', function (e) {
+                e.preventDefault();
+                var me = $(this);
+                var Reg = me.val();
+                var Div = $('form').find('#txtSearchDiv').val();
+
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "EmployeeDirectory/getFutureDistictList";
+                $("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    url: Liveurl,
+                    type: "GET",
+                    data: { Reg: Reg, Div: Div },
+                    success: function (result) {
+                        $('form').find("#txtSearchDist").html('<option value="">select</option>');
+
+                        $.each(result, function (key, value) {
+                            $('form').find("#txtSearchDist").append($("<option></option>").val(value.Name).html(value.Name));
+                        });
+                        $("#modalWindow,#ui-loader").hide();
+                    }
+                });
+
+            });
+
+
+        
+
+            $('#btnExportToExcel').click(function () {
+
+                var facilityCode = $('#txtSearchFacilityCode').val();
+                facilityCode = facilityCode = null ? "" : facilityCode;
+
+                var facilityName = $('#txtSearchFacilityName').val();
+                facilityName = facilityName = null ? "" : facilityName;
+
+                var managementCode = $('#txtSearchManagementCode').val();
+                managementCode = managementCode = null ? "" : managementCode;
+
+                var managementName = $('#txtSearchManagementName').val();
+                managementName = managementName = null ? "" : managementName;
+
+                var territoryCode = $('#txtSearchTerritoryCode').val();
+                territoryCode = territoryCode = null ? "" : territoryCode;
+
+                var collectorCode = $('#txtSearchCollectorCode').val();
+                collectorCode = collectorCode = null ? "" : collectorCode;
+
+                var payrollCode = $('#txtSearchPayrollCode').val();
+                payrollCode = payrollCode = null ? "" : payrollCode;
+
+                var departmentCode = $('#txtSearchDepartmentCode').val();
+                departmentCode = departmentCode = null ? "" : departmentCode;
+
+                var city = $('#txtSearchCity').val();
+                city = city = null ? "" : city;
+
+
+                var state = '';
+                $('#txtSearchState').next('div').find('ul li').each(function () {
+
+                    if ($(this).hasClass('active')) {
+                        state += $(this).find('label').text().trim() + ',';
+                    }
+
+                });
+
+                state = state = null ? "" : state;
+                //var state = $('#txtSearchState').val();
+                //state = state = null ? "" : state;
+
+                var address = $('#txtSearchAddress').val();
+                address = address = null ? "" : address;
+
+                var zipCode = $('#txtSearchZipCode').val();
+                zipCode = zipCode = null ? "" : zipCode;
+
+                var startDate = $('#txtSearchStartDate').val();
+                startDate = startDate = null ? "" : startDate;
+
+                var endDate = $('#txtSearchEndDate').val();
+                endDate = endDate = null ? "" : endDate;
+
+                var termStartDate = $('#txtSearchTermStartDate').val();
+                termStartDate = termStartDate = null ? "" : termStartDate;
+
+                var termEndDate = $('#txtSearchTermEndDate').val();
+                termEndDate = termEndDate = null ? "" : termEndDate;
+
+                var div = $('#txtSearchDiv').val();
+                div = div = null ? "" : div;
+
+                var reg = $('#txtSearchReg').val();
+                reg = reg = null ? "" : reg;
+
+                var dist = $('#txtSearchDist').val();
+                dist = dist = null ? "" : dist;
+
+                var status = $('#ddlStatus').val();
+                status = status = null ? "" : status;
+
+                Pageindex = $("#lblPageindex").text();
+                var pagesize = 50;
+                var arcustViewSearchEntity = { FacilityCode: facilityCode, FacilityName: facilityName, ManagementCode: managementCode, ManagementName: managementName, TerritoryCode: territoryCode, CollectorCode: collectorCode, PayrollCode: payrollCode, DepartmentCode: departmentCode, City: city, State: state, Address: address, ZipCode: zipCode, StartDate: startDate, EndDate: endDate, TermStartDate: termStartDate, TermEndDate: termEndDate, Div: div, Reg: reg, Dist: dist, Status: status, Pageindex: 0, PageSize: pagesize, Sort: "", SortDirection: "" };
+
+                //var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                //Liveurl = "/" + Liveurl + "ArcustView/ExporttoExcelArcustViewList?arcustViewSearchEntity=" + arcustViewSearchEntity;
+                var Liveurl = "/" + '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]' + "ArcustView/ExporttoExcelArcustViewList?facilityCode=" + facilityCode + "&facilityName=" + facilityName + "&managementCode=" + managementCode + "&managementName=" + managementName + "&territoryCode=" + territoryCode + "&collectorCode=" + collectorCode + "&payrollCode=" + payrollCode + "&departmentCode=" + departmentCode + "&city=" + city + "&state=" + state + "&address=" + address + "&zipCode=" + zipCode + "&startDate=" + startDate + "&endDate=" + endDate + "&termStartDate=" + termStartDate + "&termEndDate=" + termEndDate + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&status=" + status;
+                window.open(Liveurl, '_blank');
+                //window.location.href = "/ContactBenefit/ExporttoExcelContactBenefitList?employeeId=" + employeeId + "&assignTouserId=" + assignTouserId + "&fromdate=" + fromdate + "&todate=" + todate;
+
+                //$.ajax({
+                //    type: "POST",
+                //    contentType: "application/x-www-form-urlencoded",
+                //    traditional: true,
+                //    url: Liveurl,
+                //    dataType: "FileResult",
+                //    data: arcustViewSearchEntity,
+                //    success: function (data) {
+                //        alert('done');
+                //    }
+                //});
+
+            });
+
+            $('#btnSearchFacility').click(function () {
+
+                BindArcustView();
+            });
+
+            function BindArcustView() {
+                var facilityCode = $('#txtSearchFacilityCode').val();
+                facilityCode = facilityCode = null ? "" : facilityCode;
+
+                var facilityName = $('#txtSearchFacilityName').val();
+                facilityName = facilityName = null ? "" : facilityName;
+
+                var managementCode = $('#txtSearchManagementCode').val();
+                managementCode = managementCode = null ? "" : managementCode;
+
+                var managementName = $('#txtSearchManagementName').val();
+                managementName = managementName = null ? "" : managementName;
+
+                var territoryCode = $('#txtSearchTerritoryCode').val();
+                territoryCode = territoryCode = null ? "" : territoryCode;
+
+                var collectorCode = $('#txtSearchCollectorCode').val();
+                collectorCode = collectorCode = null ? "" : collectorCode;
+
+                var payrollCode = $('#txtSearchPayrollCode').val();
+                payrollCode = payrollCode = null ? "" : payrollCode;
+
+                var departmentCode = $('#txtSearchDepartmentCode').val();
+                departmentCode = departmentCode = null ? "" : departmentCode;
+
+                var city = $('#txtSearchCity').val();
+                city = city = null ? "" : city;
+
+
+                var state = '';
+                $('#txtSearchState').next('div').find('ul li').each(function () {
+
+                    if ($(this).hasClass('active')) {
+                        state += $(this).find('label').text().trim() + ',';
+                    }
+
+                });
+
+                state = state = null ? "" : state;
+                //var state = $('#txtSearchState').val();
+                //state = state = null ? "" : state;
+
+                var address = $('#txtSearchAddress').val();
+                address = address = null ? "" : address;
+
+                var zipCode = $('#txtSearchZipCode').val();
+                zipCode = zipCode = null ? "" : zipCode;
+
+                var startDate = $('#txtSearchStartDate').val();
+                startDate = startDate = null ? "" : startDate;
+
+                var endDate = $('#txtSearchEndDate').val();
+                endDate = endDate = null ? "" : endDate;
+
+                var termStartDate = $('#txtSearchTermStartDate').val();
+                termStartDate = termStartDate = null ? "" : termStartDate;
+
+                var termEndDate = $('#txtSearchTermEndDate').val();
+                termEndDate = termEndDate = null ? "" : termEndDate;
+
+
+                var div = $('#txtSearchDiv').val();
+                div = div = null ? "" : div;
+
+                var reg = $('#txtSearchReg').val();
+                reg = reg = null ? "" : reg;
+
+                var dist = $('#txtSearchDist').val();
+                dist = dist = null ? "" : dist;
+
+                var status = $('#ddlStatus').val();
+                status = status = null ? "" : status;
+
+                Pageindex = $("#lblPageindex").text();
+                var pagesize = 50;
+                var arcustViewSearchEntity = { FacilityCode: facilityCode, FacilityName: facilityName, ManagementCode: managementCode, ManagementName: managementName, TerritoryCode: territoryCode, CollectorCode: collectorCode, PayrollCode: payrollCode, DepartmentCode: departmentCode, City: city, State: state, Address: address, ZipCode: zipCode, StartDate: startDate, EndDate: endDate, TermStartDate: termStartDate, TermEndDate: termEndDate, Div: div, Reg: reg, Dist: dist, Status: status, Pageindex: 0, PageSize: pagesize, Sort: "", SortDirection: "" };
+
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "ArcustView/ArcustViewListPagingSortingList";
+                $("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/x-www-form-urlencoded",
+                    traditional: true,
+                    url: Liveurl,
+                    dataType: "html",
+                    data: arcustViewSearchEntity,
+                    success: function (data) {
+                        $("#divArcustViewList").html('');
+                        $("#divArcustViewList").html(data + "&nbsp;");
+                        $("#modalWindow,#ui-loader").hide();
+                    }
+                });
+            }
+        </script>

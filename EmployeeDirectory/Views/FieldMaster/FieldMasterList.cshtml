@@ -1,0 +1,113 @@
+﻿@model EmployeeDirectory.Entity.FieldMasterEntity
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">  Field Permission</h3>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <form role="form" id="FormFieldPermission" class="form-horizontal">
+                            <div class="col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputFile" class="col-sm-4 control-label">Group Name</label>
+                                    <div class="col-sm-8 control-label">
+                                        @Html.DropDownListFor(model => model.ID, ViewBag.GroupMasterList as IEnumerable<SelectListItem>, new { id = "ddlGroupMasterList", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" id="PartialFieldMaster">
+
+                                </div>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $('#ddlGroupMasterList').on('change', function () {
+                    var Id = $(this).val();
+
+                    if (Id == 0) {
+                        $("#PartialFieldMaster").html('');
+                        return false;
+                    }
+
+                    var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                    Liveurl = "/" + Liveurl + "FieldMaster/GetFieldDetailByGroupId?ID=" + Id;
+                    $("#modalWindow,#ui-loader").show();
+                    $.ajax({
+                        url: Liveurl,
+                        type: "GET",
+                        data: {},
+                        success: function (result) {
+
+                            $("#PartialFieldMaster").html(result);
+                            $("#modalWindow,#ui-loader").hide();
+
+                        }
+                    });
+
+
+                });
+
+
+            });
+
+            function AssignFieldPermission() {
+        
+                var GroupId = $("#FormFieldPermission").find('#ddlGroupMasterList').val();
+                var FieldPermissionGridXML = '<root>';
+                $('#PartialFieldMaster').find('table tbody tr').each(function () {
+
+                    var ID = $(this).attr("itemid");
+                    var IsDisplay = false;
+                    if ($(this).find("#IsDisplay").is(":checked")) { IsDisplay = true; }
+
+                    FieldPermissionGridXML += '<FieldPermissionGrid><ID>' + ID + '</ID><IsDisplay>' + IsDisplay + '</IsDisplay></FieldPermissionGrid>'
+                });
+
+                FieldPermissionGridXML += '</root>'
+        
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "FieldMaster/AssignFieldPremission?FieldPermissionGridXML=" + FieldPermissionGridXML + "&GroupId=" + GroupId;
+                $("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    url: Liveurl,
+                    type: "POST",
+                    data: {},
+                    success: function (result) {
+                        if (result > 0) {
+                            alert("Inserted Successfully");
+                        }
+                        else {
+                            alert("Error in insert. Try again");
+                        }
+                        $("#modalWindow,#ui-loader").hide();
+                        window.location = "../FieldMaster/FieldMasterList";
+                    }
+                });
+
+
+
+            }
+
+        </script>
+

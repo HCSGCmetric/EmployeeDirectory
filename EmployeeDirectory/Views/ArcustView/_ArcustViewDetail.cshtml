@@ -1,0 +1,474 @@
+﻿@model EmployeeDirectory.Entity.ArcustViewEntity
+
+
+<div class="modal-dialog" style="width: 1200px;">
+    <div class="modal-content">
+        <div class="modal-header" style="background: #4C4743; color: #ffffff">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #ffffff; opacity: 1;">&times;</button>
+            <h4 class="modal-title text-center">Details</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div role="main" class="ui-content" style="background-color: white; padding: 10px">
+                    <input type="hidden" id="hdnid" value="" />
+                    <table style="width: 100%;">
+                        <tr>
+                            @*<td style="padding: 5px;">CO1:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtCO1" class="form-control" name="CO1" />
+                                </td>*@
+                            <td style="padding: 5px;">
+                                CO2:
+                            </td>
+                            <td style="padding: 5px;">
+                                @*<input type="text" id="txtCO2" class="form-control" name="CO2" readonly="readonly" />*@
+                                @Html.TextBoxFor(m => m.CO2, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                CO3:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.CO3, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Facility Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.customer_code, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Department:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.Department, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+
+                        </tr>
+                        <tr style="padding: 5px;">
+                            <td style="padding: 5px;">
+                                Div:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.DIV, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Reg:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.REG, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Dist:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.DIST, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                FacilityEmail:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.FacilityEmail, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            @*  <td style="padding: 5px;">SubReg:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtSubReg" class="form-control" name="SubReg" />
+                                </td>
+                                <td style="padding: 5px;">SubReg-2:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtSubReg2" class="form-control" name="SubReg2" />
+                                </td>*@
+                        </tr>
+                        <tr style="padding: 5px;">
+
+
+                            <td style="padding: 5px;">
+                                Start Date:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.START_DT, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Term Date:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.TERM_DT, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Customer Name:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.customer_name, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Attention Name:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.attention_name, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr style="padding: 5px;">
+
+
+                            <td style="padding: 5px;">
+                                Mgmt Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.AFFILIATED_CUST_CODE, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Mgmt Name:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.Management_Name, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Contact Name:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.contact_name, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Attention Phone:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.attention_name, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="padding: 5px;">
+                            <td style="padding: 5px;">
+                                Address:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.addr1, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Contact Phone:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.attention_phone, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Tax Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.tax_code, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Territory Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.territory_code, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                        </tr>
+
+                        <tr style="padding: 5px;">
+
+                            @*<td style="padding: 5px;">Phone1:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtPhone1" class="form-control" name="Phone1" />
+                                </td>
+                                <td style="padding: 5px;">Phone2:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtPhone2" class="form-control" name="Phone2" />
+                                </td>
+                                <td style="padding: 5px;">Ship To Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtShipToCode" class="form-control" name="ShipToCode" />
+                                </td>*@
+                        </tr>
+
+                        <tr style="padding: 5px;">
+
+                            @*<td style="padding: 5px;">Terms Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtTermsCode" class="form-control" name="TermsCode" />
+                                </td>
+                                <td style="padding: 5px;">Fob Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtFobCode" class="form-control" name="FobCode" />
+                                </td>*@
+
+                        </tr>
+
+                        <tr style="padding: 5px;">
+
+                            @*<td style="padding: 5px;">Sales Person:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtSalesPerson" class="form-control" name="SalesPerson" />
+                                </td>
+                                <td style="padding: 5px;">Message Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtMessageCode" class="form-control" name="MessageCode" />
+                                </td>
+                                <td style="padding: 5px;">Dunn Message Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtDunnMessageCode" class="form-control" name="DunnMessageCode" />
+                                </td>*@
+                        </tr>
+
+
+                        <tr style="padding: 5px;">
+                            <td style="padding: 5px;">
+                                Country:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.country, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                State:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.state, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                City:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.city, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Postal Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.postal_code, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                        </tr>
+
+                        @*<tr style="padding: 5px;">
+                                <td style="padding: 5px;">Note:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtNote" class="form-control" name="Note" />
+                                </td>
+                                <td style="padding: 5px;">Remit Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtRemitCode" class="form-control" name="RemitCode" />
+                                </td>
+                                <td style="padding: 5px;">Forwarder Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtForwarderCode" class="form-control" name="ForwarderCode" />
+                                </td>
+                                <td style="padding: 5px;">Freight To Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtFreightToCode" class="form-control" name="FreightToCode" />
+                                </td>
+                            </tr>
+
+                            <tr style="padding: 5px;">
+                                <td style="padding: 5px;">Route Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtRouteCode" class="form-control" name="RouteCode" />
+                                </td>
+                                <td style="padding: 5px;">Route No:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtRouteNo" class="form-control" name="RouteNo" />
+                                </td>
+                                <td style="padding: 5px;">Ship Via Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtShipViaCode" class="form-control" name="ShipViaCode" />
+                                </td>
+                                <td style="padding: 5px;">Dest Zone Code:
+                                </td>
+                                <td style="padding: 5px;">
+                                    <input type="text" id="txtDestZoneCode" class="form-control" name="DestZoneCode" />
+                                </td>
+                            </tr>*@
+
+                        <tr>
+                            <td style="padding: 5px;">
+                                Hospital:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.Hospital, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Collector:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.COLLECTOR, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Payment Code:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.payment_code, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td style="padding: 5px;">
+                                Union Building:
+                            </td>
+                            <td style="padding: 5px;">
+                                @Html.TextBoxFor(m => m.UnionBuilding, new { @readonly = "readonly", @class = "form-control" })
+                            </td>
+                            <td>&nbsp;</td>
+
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="group" style="background-color:#DDDDDD; padding:7px;">
+                        <a class="fa fa-2x plusicon fa-plus-circle ArcustDirectoryBuilding" style="margin-right: 11px; cursor:pointer;"></a>
+                        <label>Management Detail &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    </div>
+                    <table class="table table-bordered table-striped dataTable no-footer" style="display:none;">
+                        <tbody>
+                            <tr style="display: table-row;"><th>Divisional Manager Name</th><th>Region Manager Name</th><th>District Manager Name</th><th>Account Manager Name</th></tr>
+                            @foreach (var item in Model.lstArcustViewSearchEntity)
+                            {
+                                <tr>
+                                    <td>@item.DivisionalManagerName</td>
+                                    <td>@item.RegionManagerName</td>
+                                    <td>@item.DistinctManagerName</td>
+                                    <td>@item.AccountManagerName</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="group" style="background-color: #DDDDDD; height: 100%; border-top: 1px solid black; padding: 7px;">
+                        <a class="fa fa-2x plusicon fa-plus-circle ArcustBuildingEmployee" style="margin-right: 11px; cursor:pointer;"></a>
+                        <label>Employee Detail &nbsp;&nbsp;&nbsp;&nbsp;  </label>
+                        
+                        <table>
+                            <tr>
+                                <td width="10%">
+                                    <input type="text" id="txtSearchFirstName" name="txtSearchFirstName" class="form-control" placeholder="First Name" />
+                                </td>
+                                <td width="10%">
+                                    <input type="text" id="txtSearchLastName" name="txtSearchLastName" class="form-control" placeholder="Last Name" />
+                                </td>
+                                <td width="10%">
+                                    <input type="text" id="txtSearchJobTitleName" name="txtSearchJobTitleName" class="form-control" placeholder="Job Title" />
+                                </td>
+                                <td width="10%">
+                                    <input type="text" id="txtSearchEEID" name="txtSearchEEID" class="form-control" placeholder="EEID" />
+                                </td>
+                                <td width="10%">
+                                    <select id="ddlSearchStatus" class="form-control">
+                                        <option value="">select</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Termed">Termed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <button type="button" id="btnSearchEmployeeDirectory" onclick="btnSearchEmployeeDirectory('@ViewBag.Department')" class="btneffect">Search</button>
+                                    &nbsp;
+                                    <button type="button" id="btnGoToEmployeeDirectory" onclick="btnGoToEmployeeDirectory('@ViewBag.Department')" class="btneffect" >Go To Employee Directory</button>
+                                    &nbsp;
+                                    <button type="button" id="btnExportEmp_Arcust" onclick="btnExportEmp_Arcust('@ViewBag.Department')" class="btneffect" >Export</button>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    @*<div class="group" style="background-color: #DDDDDD; height: 44px; border-top: 1px solid black; padding: 7px;">
+                        
+                    </div>*@
+                    <div style="display:none;" id="divArcustEmployeeList">
+
+                        @Html.Partial("_ArcustEmployeeDetail", Model.lstEmployeeEntity)
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <div class="pull-right">
+                <button type="button" class="btneffect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function btnExportEmp_Arcust(DepId) {
+        var SearchFirstName = $("#txtSearchFirstName").val();
+        var SearchLastName = $("#txtSearchLastName").val();
+        var SearchJobTitleName = $("#txtSearchJobTitleName").val();
+        var SearchEEID = $("#txtSearchEEID").val();
+        var SearchStatus = $("#ddlSearchStatus").val();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "ArcustView/ExportToExcelArcustEmployeeList?lastname=" + SearchLastName + "&firstname=" + SearchFirstName + "&jobtitle=" + SearchJobTitleName + "&eeid=" + SearchEEID + "&status=" + SearchStatus + "&DepId=" + DepId;
+        // window.location.href = Liveurl;
+
+        window.open(Liveurl, '_blank');
+
+        //$.ajax({
+
+        //    url: Liveurl,
+        //    complete: function (res) {
+
+        //        $("#modalWindow").hide();
+        //        $("#ui-loader").hide();
+
+        //    }
+
+
+        //})
+    }
+
+    function btnGoToEmployeeDirectory(DepId) {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/EmployeeDirectoryListByDeptId?DepId=" + DepId;
+        window.location.href = Liveurl;
+    }
+
+    function btnSearchEmployeeDirectory(Department)
+    {
+        debugger;
+        var SearchFirstName = $("#txtSearchFirstName").val();
+        var SearchLastName = $("#txtSearchLastName").val();
+        var SearchJobTitleName = $("#txtSearchJobTitleName").val();
+        var SearchEEID = $("#txtSearchEEID").val();
+        var SearchStatus = $("#ddlSearchStatus").val();
+        var pagesize = 50;
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        //Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail?Dept=" + Department + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+        Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail?lastname=" + SearchLastName + "&firstname=" + SearchFirstName + "&jobtitle=" + SearchJobTitleName + "&eeid=" + SearchEEID + "&status=" + SearchStatus + "&Dept=" + Department + "&pagesize=" + pagesize + "&Pageindex=0&columnName=''&sortOrder=''";
+        $("#modalWindow,#ui-loader").show();
+        $.ajax({
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            url: Liveurl,
+            dataType: "html",
+            success: function (data) {
+
+                $("#divArcustEmployeeList").html('');
+                $("#divArcustEmployeeList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+    }
+
+</script>

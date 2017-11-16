@@ -1,0 +1,57 @@
+﻿@model List<EmployeeDirectory.Entity.FormPermissionEntity>
+
+@{
+    var gridFormPermissions = new WebGrid(Model, canPage: true, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow");
+}
+
+<div class="table-responsive" id="divFormPermissionsList">
+
+    @MvcHtmlString.Create(gridFormPermissions.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                mode: WebGridPagerModes.Numeric,
+                htmlAttributes: new { Id = "tblFormPermissionList" },
+                          columns: gridFormPermissions.Columns(
+                          gridFormPermissions.Column(header: "Application Name", format: @<text><span data-id='@item.ID'>@item.FormApplicationName</span></text>),
+                                                     gridFormPermissions.Column(header: "Form Name", format: @<text><span>@item.FormName</span></text>),
+                                                     gridFormPermissions.Column("{CheckBoxHeading} Add", format: @<text> <input id="IsAdd" name="IsAdd" type="checkbox" @(item.IsAdd ? "checked='checked'" : "") value="@item.IsAdd" /> </text>),
+                                                     gridFormPermissions.Column(" {CheckBoxHeading} Edit", format: @<text> <input id="IsEdit" name="IsEdit" type="checkbox" @(item.IsEdit ? "checked='checked'" : "") value="@item.IsEdit" /> </text>),
+                                                     gridFormPermissions.Column(" {CheckBoxHeading} View", format: @<text> <input id="IsView" name="IsView" type="checkbox" @(item.IsView ? "checked='checked'" : "") value="@item.IsView" /> </text>),
+                                                     gridFormPermissions.Column(" {CheckBoxHeading} Delete", format: @<text> <input id="IsDelete" name="IsDelete" type="checkbox" @(item.IsDelete ? "checked='checked'" : "") value="@item.IsDelete" /> </text>)
+                                              )).ToString().Replace("{CheckBoxHeading}", "<input type='checkbox' id='allFormBox'/>"))
+
+
+
+</div>
+@if (Model.Count() > 0)
+{
+    <div class="box-footer">
+        <div class="pull-right">
+
+            <button class="btneffect" type="submit" id="SaveFormPermissionList">Save</button>
+            <a href="~/FormPermission/CreateFormPermission" class="btneffect" type="button" title="">Cancel</a>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#tblFormPermissionList thead th").find("#allFormBox").on('change', function () {
+            var index = $(this).closest("th").index();
+            if ($(this).is(":checked") == true) {
+
+                $("#tblFormPermissionList").find("tbody tr").find("td:eq(" + index + ")").find("input[type=checkbox]").prop("checked", true);
+            }
+            else {
+                $("#tblFormPermissionList").find("tbody tr").find("td:eq(" + index + ")").find("input[type=checkbox]").prop("checked", false);
+            }
+
+
+        });
+
+
+    })
+
+
+</script>

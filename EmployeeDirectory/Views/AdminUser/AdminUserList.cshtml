@@ -1,0 +1,185 @@
+﻿@model List<EmployeeDirectory.Entity.AdminUserEntity>
+
+@{
+    ViewBag.Title = "AdminUserList";
+}
+
+
+
+@*<script src="~/js/bootstrap-multiselect.js"></script>
+<link href="~/css/bootstrap-multiselect.css" rel="stylesheet" />*@
+
+<style>
+    .multiselect.dropdown-toggle.btn.btn-default {
+        /*margin-right: 5px;*/
+        max-width: 130px;
+        overflow: hidden;
+    }
+
+    .dropdown-menu {
+        max-height: 158px;
+        overflow: auto;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">  AdminUser List</h3>
+                    </div>
+                    @*@if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser))
+                        {*@
+                    @if (ViewBag.IsAdd != null)
+            {
+                if (ViewBag.IsAdd)
+                {
+                    <div class="col-sm-7 col-xs-12">
+                        <a class="pull-right btneffect" style="margin-right: 10px; margin-top: 16px !important;" href="~/AdminUser/CreateAdminUser">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Create User
+                        </a>
+                    </div>
+                }
+            }
+                </div>
+
+                <form role="form" id="AdminUserList" class="form-horizontal">
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchFirstName" class="col-sm-5 control-label">First Name</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchFirstName" name="txtSearchFirstName" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchLastName" class="col-sm-5 control-label">Last Name</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchLastName" name="txtSearchLastName" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <label for="txtSearchUserName" class="col-sm-5 control-label">User Name</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="txtSearchUserName" name="txtSearchUserName" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="display:none">
+                                <div class="form-group">
+                                    <label for="inputEmail" class="control-label col-sm-5">User Type</label>
+                                    <div class="col-sm-7">
+                                        @Html.DropDownList("UserTypeIds", ViewBag.UserTypeList as List<SelectListItem>,"Select", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="clear: both"></div>
+
+                            <div class="row">
+                                <div class="">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="txtSearchFirstName" class="col-sm-5 control-label">&nbsp;</label>
+                                            <div class="col-sm-7">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right col-md-3">
+                                        <button type="button" id="btnSearchAdminUser" name="Search" class="ladda-button btneffect">Search</button>&nbsp;
+                                        <button type="button" id="btnClearAdminUser" name="Clear" class="ladda-button btneffect">Clear</button>&nbsp;
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12" id="adminUser_div">
+                        <div class="table-responsive" id="divAdminUserList">
+                            @Html.Partial("_AdminUserWebGrid", Model)
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    $('#btnSearchAdminUser').click(function () {
+
+        BindAdminUserList();
+    });
+
+    var jq = $.noConflict();
+
+    jq(document).ready(function () {
+        //jq('#UserTypeIds').multiselect({
+        //    numberdisplayed: 1,
+        //    //buttonwidth: '100%',
+        //    maxheight: 150,
+        //    includeselectalloption: true,
+        //    enableClickableOptGroups: true
+
+        //});
+    });
+
+    $('#btnClearAdminUser').click(function () {
+        $("#txtSearchFirstName").val('');
+        $("#txtSearchLastName").val('');
+        $("#txtSearchUserName").val('');
+        $("#UserTypeIds").val('');
+        BindAdminUserList();
+    });
+
+    function BindAdminUserList() {
+
+        var firstName = $("#txtSearchFirstName").val().trim();
+        var lastName = $("#txtSearchLastName").val().trim();
+        var username = $("#txtSearchUserName").val().trim();
+        var UserType = $("#UserTypeIds").val();
+        //var pagesize = $("#ddlpagesize").val().trim();
+        //var pagesize = $("#ddlpagesize").val().trim();
+        var pagesize = 50;
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+        }
+
+        $("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AdminUser/AdminUserListPagingSortingList";
+
+        $.ajax({
+            type: "POST",
+            url: Liveurl,
+            data: { firstName: firstName, lastName: lastName, username: username, UserType: UserType, pagesize: pagesize, pageindex: "", columnName: "", sortorder: "" },
+            dataType: "html",
+            success: function (data) {
+                $("#divAdminUserList").html('');
+                $("#divAdminUserList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+    }
+   
+</script>

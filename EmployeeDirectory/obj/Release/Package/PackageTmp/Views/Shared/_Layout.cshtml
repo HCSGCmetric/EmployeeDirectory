@@ -1,0 +1,474 @@
+﻿@using EmployeeDirectory.Helper;
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script src="~/Scripts/_references.js"></script>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.js" charset="utf-8"></script>*@
+    <script src="~/js/bootstrap-datepicker.js"></script>
+    @*<script src="~/js/bootstrap-multiselect.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+    <script src="~/Scripts/Common.js"></script>
+
+
+    @*<script src="~/ckeditor/ckeditor.js" type="text/javascript"></script>*@
+    @*<link href="~/Content/Site.css" rel="stylesheet">*@
+
+    <link href="~/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/sb-admin.css" rel="stylesheet">
+    <link href="~/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/datepicker.css">
+    <link href="~/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <style type="text/css">
+
+        .fa-2x:hover {
+            cursor: pointer;
+            font-size: 21px;
+            color: rgb(237,108,68);
+        }
+
+        .fa-2x {
+            float: left;
+            width: 30px;
+            text-align: center;
+        }
+
+        #timer {
+            font-family: Arial;
+            font-size: 16px;
+            float: right;
+            display: block;
+            color: #FF0000;
+            padding: 10px 10px;
+            font-weight: bold;
+            background: #eaeaea;
+            border-radius: 5px;
+            border: 1px solid #DDD;
+            margin-right: 5px;
+        }
+
+            #timer span {
+                font-size: 12px;
+                margin-left: 2px;
+                font-weight: normal;
+                color: #000000;
+            }
+
+        #timerpopup {
+            font-family: Arial;
+            font-size: 16px;
+            float: right;
+            display: block;
+            color: #FF0000;
+            padding: 10px 10px;
+            font-weight: bold;
+            background: #eaeaea;
+            border-radius: 5px;
+            border: 1px solid #DDD;
+            margin-right: 5px;
+        }
+
+            #timerpopup span {
+                font-size: 12px;
+                margin-left: 2px;
+                font-weight: normal;
+                color: #000000;
+            }
+
+        #slide-bottom-popup.modal.fade {
+            /*top: 100%;*/
+            -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+            transition: opacity 0.3s linear, top 0.3s ease-out;
+        }
+
+        /*#slide-bottom-popup.modal.fade.in {
+                top: 74.6%;
+            }*/
+
+        #slide-bottom-popup.modal {
+            background-color: #e5e5e5;
+            position: absolute;
+            left: 50%;
+            right: 50%;
+            top: 50%;
+            bottom: 50%;
+            z-index: 1000;
+            margin-top: -75px;
+            margin-left: -163px;
+            width: 276px;
+            height: 150px;
+            -webkit-border-bottom-right-radius: 0px;
+            -moz-border-bottom-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            -webkit-border-bottom-left-radius: 0px;
+            -moz-border-bottom-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            padding-right: 0px !important;
+        }
+
+        #slide-bottom-popup .modal-body {
+            background-size: 240px;
+            position: relative;
+            height: 130px;
+            padding: 15px;
+        }
+
+        .close {
+            margin-top: -10px;
+            z-index: 1050;
+            margin-left: 210px;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 1px 0 #ffffff;
+            opacity: 0.2;
+            filter: alpha(opacity=20);
+        }
+
+
+        #slide-bottom-popup .popup-button {
+            margin-left: 105px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+
+
+
+    <script>
+
+
+
+
+
+        //$(document).ready(function () {
+        //    $("#modalWindow").hide();
+        //    $("#ui-loader").hide();
+        //});
+
+
+        function ucwords(str, force) {
+            str = force ? str.toLowerCase() : str;
+            return str.replace(/(^([a-zA-Z\p{M}]))|([ -][a-zA-Z\p{M}])/g,
+            function (firstLetter) {
+                return firstLetter.toUpperCase();
+            });
+        }
+        $(document).ready(function () {
+
+            /* $("#UserList").click(function (e) {
+                 $('#page-wrapper').load("/User/UserList");
+                 return false;
+             });
+
+             $("#AdminUserList").click(function (e) {
+                 $('#page-wrapper').load("/AdminUser/AdminUserList");
+                 return false;
+             });
+
+             $("#HsgUserList").click(function (e) {
+                 $('#page-wrapper').load("/HsgUser/HsgUserList");
+                 return false;
+             });
+
+             $("#ArcustViewList").click(function (e) {
+                 $('#page-wrapper').load("/ArcustView/ArcustViewList");
+                 return false;
+             }); */
+
+            //$(".li a").click(function (event) {
+            //
+            //    $(this).parent().addClass('active');
+            //});
+
+
+            //$(".li ul").click(function (event) {
+            //
+            //    $(".li ul").parent().addClass('active');
+            //});
+
+
+            //if ($('ul.side-nav li ul li').hasClass("active")) {
+            //
+            //    $("ul.side-nav li ul").parent('li').addClass('active');
+            //    $('ul.side-nav li.active a').removeClass('collapsed');
+            //    $('ul.side-nav li.active ul').addClass('in');
+            //}
+
+        });
+
+
+
+
+        @*   $(document).ready(function () {
+
+        $(".liMenu a").click(function (event) {
+            $(this).parent().addClass('active');
+        });
+
+
+        $(".liMenu ul a").click(function (event) {
+            $(".liMenu ul a").parent().addClass('active');
+        });
+
+        if ("@ViewBag.CurrentScreenID" == "") {
+            $(".liMenu").first().addClass('active');
+        }
+        else {
+            $(".@ViewBag.CurrentScreenID").addClass('active');
+            var parentid = $('.@ViewBag.CurrentScreenID').attr('lang');
+            $("." + parentid).addClass('active');
+
+            $('ul.widget-menu li.active a').removeClass('collapsed');
+            $('ul.widget-menu li.active ul').addClass('in');
+        }
+
+        if ($('ul.widget-menu li ul li').hasClass("active")) {
+            $("ul.widget-menu li ul").parent('li').addClass('active');
+            $('ul.widget-menu li.active a').removeClass('collapsed');
+            $('ul.widget-menu li.active ul').addClass('in');
+        }
+
+    });*@
+
+    </script>
+</head>
+<body>
+
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="~/Home/DashBoard" class="navbar-brand"><img class="img-responsive" src="~/img/HCSGLogo.png"></a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav"></ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a aria-expanded="false" aria-haspopup="true" role="button" href="~/Home/DashBoard">Home</a>
+                        </li>
+                        @*<li>
+                                <a aria-expanded="false" aria-haspopup="true" role="button" href="~/FormPermission/CreateFormPermission">Form Permission</a>
+                            </li>*@
+
+                        @Html.CreateDynamicMenuItem((string)Convert.ToString(ViewBag.CurrentApplicationName))
+
+                        <li>
+                            <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle Userdropdown" href="#">
+                                <img class="img-responsive userimg" src="~/img/User.png"> <span class="user">@Session[EmployeeDirectory.Entity.AppConstant.NAME] <span class="caret"></span></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="~/Login/AdminSignOut" class="btn btn-default btn-flat">Log out</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+
+            @*<ul class="nav navbar-right top-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>@Session[EmployeeDirectory.Entity.AppConstant.NAME] <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Login/AdminSignOut"><i class="fa fa-fw fa-power-off"></i>Log Out</a> </li>
+                        </ul>
+                    </li>
+                </ul>*@
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+
+        </nav>
+        <div id="page-wrapper">
+            <div class="modal fade" id="parentModal" tabindex="-1" role="dialog" aria-labelledby="parentModalLabel" aria-hidden="true"></div>
+            <div class="modal fade" id="ChildModal" tabindex="-1" role="dialog" aria-labelledby="childModalLabel" aria-hidden="true"></div>
+            <div class="modal fade" id="SubChildModal" tabindex="-1" role="dialog" aria-labelledby="subchildModalLabel" aria-hidden="true"></div>
+            <div id="timer" style="display:none;"></div>
+            @RenderBody()
+        </div>
+        <div id="modalWindow"></div>
+        <div id="ui-loader">
+            @*<div class="circletext">Please wait!!</div>*@
+            @*<div class="circle"></div>
+                <div class="circle1"></div>*@
+            <div class="loader">Loading...</div>
+        </div>
+        <!--------------------------------------------- Start Pop-up ------------------->
+
+        <div id='slide-bottom-popup' class="modal fade visible-desktop" data-keyboard="false" data-backdrop="false">
+            <div class="modal-body">
+                <a class="close" data-dismiss="modal">x</a><br>
+                <div id="timerpopup">
+                </div>
+                <a data-dismiss="modal" class="btn-primary btn-plain btn popup-button">OK</a>
+            </div>
+        </div>
+
+    </div>
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    @*   @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)*@
+    <script>
+
+        function ViewCommonItemHistoryPopUp(e,me,IsChild) {
+            e.preventDefault();
+            var TagNo = $(me).attr("itemid");
+
+            if (TagNo == "") {
+                alert('Please fill tag number.');
+                return false;
+            }
+
+            
+
+            //var ItemId = $("#FormAssetAssignOrder").find("#ddlItemList").val().trim();
+            //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+            //var form = $(this).serialize();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/GetItemHistoryByTagNo";
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                cache: false,
+                data: { TagNo: TagNo },
+                success: function (result) {
+                    
+                    if (IsChild == 1) {
+                        
+                        //$("#ChildModal").html(result).modal('show');
+                        $('#ChildModal').html(result).modal('toggle');
+                    }
+                    else {
+
+                        $("#parentModal").html(result).modal('show');
+                    }
+
+                }
+            });
+
+
+
+        }
+
+        $(document).ajaxStart(function () {
+            startLoading();
+        });
+
+        $(document).ajaxSuccess(function () {
+            stopLoading();
+        });
+
+        function startLoading() {
+            $("#modalWindow").show();
+            $("#ui-loader").show();
+        }
+
+        function stopLoading() {
+            $("#modalWindow").hide();
+            $("#ui-loader").hide();
+        }
+        
+        $(window).load(function () {
+
+            $("#modalWindow").hide();
+            $("#ui-loader").hide();
+        });
+
+        $(document).ready(function () {
+            $("#modalWindow").hide();
+            $("#ui-loader").hide();
+        });
+
+        //$(".side-nav li").click(function () {
+        //    debugger;
+        //    $(".side-nav li").removeClass("active");
+        //    $(this).addClass('active');
+        //});
+        //$(".side-nav li li").click(function () {
+        //    debugger;
+        //    $(".side-nav li").removeClass("active");
+        //    $(".side-nav li li").removeClass("active");
+        //    $(".side-nav li ul#demo").addClass("in");
+        //    $(this).addClass('active');
+        //    $(this).parent('li').addClass('active');
+        //});
+
+        var url = window.location;
+        // Will only work if string in href matches with location
+        $('ul.nav a[href="' + url + '"]').parent().addClass('active');
+
+        // Will also work for relative and absolute hrefs
+        $('ul.nav a').filter(function () {
+            return this.href == url;
+        }).closest('ul').addClass('in');
+
+        $('ul.nav a').filter(function () {
+            return this.href == url;
+        }).parent().addClass('active');
+
+        var count = 43200;
+        var counter = setInterval(timer, 1000);
+
+        function timer() {
+            count = count - 1;
+            if (count == -1) {
+                clearInterval(counter);
+                return;
+            }
+
+            var seconds = count % 60;
+            var minutes = Math.floor(count / 60);
+            var hours = Math.floor(minutes / 60);
+            minutes %= 60;
+            hours %= 60;
+
+            if (count == 300) {
+                setTimeout(function () {
+                    $('#slide-bottom-popup').modal('show');
+                    document.getElementById("timerpopup").innerHTML = minutes + " : " + seconds + "<span> time left For Session Timeout!</span>"; // watch for spelling
+                }, 0.1); // millisec onds
+            }
+
+            if (count == 60) {
+                setTimeout(function () {
+                    $('#slide-bottom-popup').modal('show');
+                    document.getElementById("timerpopup").innerHTML = minutes + " : " + seconds + "<span> time left For Session Timeout!</span>"; // watch for spelling
+                }, 0.1); // milliseconds
+            }
+            document.getElementById("timerpopup").innerHTML = minutes + " : " + seconds + "<span> time left For Session Timeout!</span>"; // watch for spelling
+            //document.getElementById("timer").innerHTML = minutes + " : " + seconds + "<span> time left For Session Timeout!</span>"; // watch for spelling
+            if (count == 0) {
+                Liveurl = "../Login/AdminSignOut";
+                window.location.href = Liveurl;
+            }
+        }
+
+
+    </script>
+</body>
+</html>

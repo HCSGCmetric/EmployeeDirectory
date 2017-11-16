@@ -1,0 +1,100 @@
+﻿@model EmployeeDirectory.Models.AdminUserModel
+
+@{
+    ViewBag.Title = "EditAdminUser";
+}
+
+<div class="container-fluid">
+    <br />
+    @if (ViewBag.ErrorMessage != "" && ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @using (Html.BeginForm("EditEmpAdminUser", "EmployeeAdminUser", FormMethod.Post, new { @id = "EmployeeAdminUserForm", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header" style="margin-bottom:20px;">
+                        <h3 class="box-title">Edit User</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="inputEmail" class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">User Name <span style="color:red;">*</span></label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-4">
+                                    @Html.HiddenFor(m => m.ID)
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User Name", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">First Name <span style="color:red;">*</span></label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-4">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">Last Name <span style="color:red;">*</span></label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-4">
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">Email <span style="color:red;">*</span></label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-4">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email ID" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">User Type <span style="color:red;">*</span></label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-3">
+                                    @Html.DropDownListFor(m => m.UserType, ViewBag.UserTypeList as List<SelectListItem>, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">Group Name</label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-4">
+                                    @Html.DropDownListFor(m => m.GroupId, ViewBag.GroupMasterList as List<SelectListItem>, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">&nbsp;</label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            @Html.CheckBoxFor(m => m.IsLocked, new { @class = "checkbox" })Is Locked?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="footer-header">
+                        <div class="col-xs-12">
+
+                            @Html.HiddenFor(m => m.ID)
+                            <div class="col-xs-4 pull-right">
+                                
+                                
+                                    <button type="submit" class="col-xs-6 btneffect pull-right">Update</button>
+                                
+                                <a class="col-xs-6 btneffect pull-right" href="~/EmployeeAdminUser/EmployeeDirectoryAdminUserList">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

@@ -1,0 +1,174 @@
+﻿@model List<EmployeeDirectory.Entity.LinkEntity>
+
+@{
+    ViewBag.Title = "Link Details";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-xs-6">
+                        <h3 class="box-title">Link List</h3>
+                    </div>
+                    <div class="col-xs-6">
+                        <a class=" pull-right Announcement-button tablebutton Anchor-Button DocumentAddbutton" href="../Link/AddLink">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Add
+                        </a>
+
+                        <button class="btneffect pull-right" style="margin-right: 10px; margin-top: 20px !important;" id="" onclick="DeleteSelectedLink()">Delete Selected</button>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("SearchLinkDetail", "Link", FormMethod.Post, new { @class = "row-fluid wdth100", @id = "FormSearchLinkDetail" }))
+                {
+                    @*@Html.ValidationSummary(false)*@
+                    <div class="col-md-12 box-body" style="border-bottom: 2px solid rgb(204, 204, 204); padding: 20px 0px; background: rgb(229, 229, 229) none repeat scroll 0% 0%; margin-bottom: 11px;">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Link Name</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="Name" type="text">
+                                </div>
+                            </div>
+                         
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-md-6 pull-right">
+
+                                    <div class="pull-right">
+                                        <div class="col-sm-6">
+                                            <button type="button" id="SearchLinkbyParam" class="btneffect pull-right">Search</button>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="../Link/LinkList" class="btneffect pull-right text-center">Clear</a>
+                                        </div>
+                                        @*<div class="col-md-6">&nbsp;</div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+                <div class="col-xs-12 divLinkList">
+                    <!-- /.box-header -->
+                   
+                    @Html.Partial("_LinkList",Model)
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#ddlDepartmentList').multiselect({
+            numberDisplayed: 1,
+            buttonWidth: '100%',
+            maxHeight: 250,
+            includeSelectAllOption: true,
+        });
+
+
+        $('#LinkList').find('#ChckAllLink').on('click', function () {
+
+            if ($(this).is(':checked') == true) {
+
+                $('#LinkList tbody tr').find('#ChckLink').attr('checked', true);
+                //$('#btnApproveSelectedFacility').attr('disabled', false);
+            }
+            else {
+
+                $('#LinkList tbody tr').find('#ChckLink').attr('checked', false);
+
+            }
+
+        });
+
+     
+
+
+        //var table = $('#LinkList').DataTable();
+        //if (IsDisplay.toLowerCase() == 'false') {
+        //    table.columns([0, 1, 12]).visible(false, false);
+        //}
+        //else {
+        //    table.columns([0, 1, 12]).visible(true, true);
+        //}
+
+    });
+
+    function DeleteSelectedLink() {
+
+        var IDS = '';
+        $('#tblLinkList tbody tr').each(function () {
+            if ($(this).find('#ChckLink').length > 0) {
+                if ($(this).find('#ChckLink').is(':checked') == true) {
+                    ID = $(this).find('#ChckLink').attr('itemid');
+                    IDS += ID + ',';
+                }
+            }
+        });
+
+        if (IDS == '') {
+            alert('Please select record for Delete.');
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "Link/DeleteMultipleLink?IDS=" + IDS;
+        if (confirm("Are you sure you want to Delete selected record?")) {
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    if (result > 0) {
+
+                        alert('Delete Successfully.');
+                    }
+                    else {
+                        alert('An error is occured.');
+                    }
+                    location.href = "../Link/LinkList";
+                }
+            });
+        }
+        return false;
+
+
+    }
+
+    $('#SearchLinkbyParam').on('click', function () {
+        var LinkName = $('#FormSearchLinkDetail').find('#Name').val().trim();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "Link/LinkListPagingSortingList?LinkName=" + LinkName;
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: {},
+            success: function (result) {
+                $('.divLinkList').html(result);
+            }
+        });
+
+
+
+    })
+</script>

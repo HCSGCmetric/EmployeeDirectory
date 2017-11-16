@@ -1,0 +1,361 @@
+﻿@model List<EmployeeDirectory.Entity.AssetAssignEntity>
+
+
+@{
+    var AssetReturnList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+<div>
+    @AssetReturnList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                                htmlAttributes: new { Id = "tblAssetReturnList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                                columns: AssetReturnList.Columns(
+                                        AssetReturnList.Column("AssetTagNumber", "Tag Number"),
+                                        AssetReturnList.Column("ItemName", "Item Name"),
+                                        AssetReturnList.Column("PONumber", "PO Number"),
+                                        AssetReturnList.Column(null, "Assign Person/Facility", format: @<text> @if (item.IsEmployee == true)
+                                        {<label>E - </label> @item.EmployeeName }
+                                        else
+                                        {<label>F - </label> @item.FacilityName } </text>),
+                                        AssetReturnList.Column("AssignDate", header: "Assign Date", format: @<text>@item.AssignDate</text>),
+                                        AssetReturnList.Column("ReturnDate", header: "Return Date", format: @<text>@item.ReturnDate</text>),
+                                        //AssetReturnList.Column("ReturnReason", "Return Reason"),
+                                        AssetReturnList.Column("ItemStatus", "Status"),
+                                        AssetReturnList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRows" />, style: "headerhide"),
+                                        AssetReturnList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide"),
+                                        AssetReturnList.Column("Action", format: @<text>
+
+        @*@if (ViewBag.IsEdit != null)
+                {
+                    if (ViewBag.IsEdit)
+                    {
+            <a href="~/AssetManagement/EditPurchageOrder/@item.Id"><i class="fa fa-edit fa-2x"></i></a> &nbsp;
+            }
+                }
+                &nbsp;
+                @if (ViewBag.IsDelete != null)
+                {
+                    if (ViewBag.IsDelete)
+                    {*@
+    <a href="#" onclick="return ViewCommonItemHistoryPopUp(event, this, 1)" itemid="@item.AssetTagNumber"><i class="fa fa-history fa-2x"></i></a>
+
+        @*}
+            }*@
+                                        </text>, style: "webgrid-action-column")
+                                                                                                            ))
+
+</div>
+
+<script>
+
+    function ViewItemDetailById(me) {
+
+        var Itemid = $(me).attr('itemid');
+
+        $("#parentModal").html("");
+
+        //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+        //var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/ViewAssetItemDetailByItemId";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { ItemId: Itemid },
+            success: function (result) {
+                $("#parentModal").html(result).modal('show');
+
+            }
+        });
+
+
+
+    }
+
+
+    function DeleteItemRecord(me) {
+        var result = confirm("Are you sure to delete this Item?");
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/DeleteAssetItem";
+        var Id = $(me).attr('itemid');
+
+        if (result) {
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "GET",
+                url: Liveurl,
+                data: { Id: Id },
+                success: function (data) {
+                    if (data > 0) {
+                        alert('Record Delete successfully');
+                        window.location = "../AssetManagement/AssetReturnList";
+                    }
+                    else {
+                        alert('something wrong');
+
+                    }
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        } else { return false; }
+    }
+
+    $(document).ready(function () {
+        GeneratePagingFooter();
+
+        var allheader = $('#tblAssetReturnList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            //if (USERTYPE != su) {
+            //    if (headertext == 'Action') {
+            //        header.setAttribute('class', 'headerhide');
+            //        //"webgrid-action-column
+            //    }
+
+            //}
+
+        }
+        //if (USERTYPE != su) {
+        //    $('#tblAssetReturnList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        //}
+
+        $('div #divpagging a').click(function () {
+
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+
+            var TagNo = $('#FormSearchAssetDetail').find('#ddlAssetTagList').val().trim();
+            var ItemId = $('#FormSearchAssetDetail').find('#ddlItemList').val().trim();
+            var PONumber = $('#FormSearchAssetDetail').find('#ddlPOList').val().trim();
+            var EEID = $('#FormSearchAssetDetail').find('#EmployeeId').val().trim();
+            var FacilityCode = $('#FormSearchAssetDetail').find('#FacilityCode').val().trim();
+            var AssetFromDate = $('#FormSearchAssetDetail').find('#ReturnFromDate').val().trim();
+            var AssetToDate = $('#FormSearchAssetDetail').find('#ReturnToDate').val().trim();
+
+            if (TagNo == null) {
+                TagNo = "";
+            }
+            if (ItemId == null) {
+                ItemId = "";
+            }
+            if (PONumber == null) {
+                PONumber = "";
+            }
+            if (EEID == null) {
+                EEID = "";
+            }
+            if (FacilityCode == null) {
+                FacilityCode = "";
+            }
+            if (AssetFromDate == null) {
+                AssetFromDate = "";
+            }
+            if (AssetToDate == null) {
+                AssetToDate = "";
+            }
+
+            Pageindex = $("#lblPageindex").text();
+            $("#modalWindow,#ui-loader").show();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AssetReturnPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&AssetFromDate=" + AssetFromDate + "&AssetToDate=" + AssetToDate;
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    $(".DivAssetReturnList").html('');
+                    $(".DivAssetReturnList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        });
+    });
+
+
+
+    function Sorting(ColumnName) {
+
+
+        var Pageindex = $("#lblPageindex").text();
+        var Sortorder = $("#hdnSortOrder").text();
+        if (ColumnName == 'First Name') {
+            ColumnName = 'FirstName';
+        }
+
+        $("#hdnSortColumn").text(ColumnName);
+        var SortColumn = $("#hdnSortColumn").text();
+
+        if (Sortorder == '') {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        else if (Sortorder == 'ASC') {
+            Sortorder = 'DESC'
+            $("#hdnSortOrder").text('DESC');
+        }
+        else {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        var TagNo = $('#FormSearchAssetDetail').find('#ddlAssetTagList').val().trim();
+        var ItemId = $('#FormSearchAssetDetail').find('#ddlItemList').val().trim();
+        var PONumber = $('#FormSearchAssetDetail').find('#ddlPOList').val().trim();
+        var EEID = $('#FormSearchAssetDetail').find('#EmployeeId').val().trim();
+        var FacilityCode = $('#FormSearchAssetDetail').find('#FacilityCode').val().trim();
+        var AssetFromDate = $('#FormSearchAssetDetail').find('#ReturnFromDate').val().trim();
+        var AssetToDate = $('#FormSearchAssetDetail').find('#ReturnToDate').val().trim();
+
+        if (TagNo == null) {
+            TagNo = "";
+        }
+        if (ItemId == null) {
+            ItemId = "";
+        }
+        if (PONumber == null) {
+            PONumber = "";
+        }
+        if (EEID == null) {
+            EEID = "";
+        }
+        if (FacilityCode == null) {
+            FacilityCode = "";
+        }
+        if (AssetFromDate == null) {
+            AssetFromDate = "";
+        }
+        if (AssetToDate == null) {
+            AssetToDate = "";
+        }
+
+
+        var pagesize = $("#ddlpagesize").val();
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+        }
+        $("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/AssetStockReturnPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&AssetFromDate=" + AssetFromDate + "&AssetToDate=" + AssetToDate;
+        $.ajax({
+            type: "GET",
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            async: false,
+            url: Liveurl,
+            //url: "../FormList/SubmittedFormSummaryPagingSortingList?formtype=" + summaryform + "&fromDate=" + fromDate + "&toDate=" + toDate + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder,
+            dataType: "html",
+            success: function (data) {
+                $(".DivAssetReturnList").html('');
+                $(".DivAssetReturnList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+    }
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        var TotalRecord = $("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblAssetReturnList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+        if ($("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblAssetReturnList tbody').append(text);
+
+            $("#lblPageindex").text(PageIndex);
+            $("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $("#lblMaxpage").text(MaxPage);
+        }
+    }
+
+</script>
+
+
+

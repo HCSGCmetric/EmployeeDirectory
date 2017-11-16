@@ -1,0 +1,378 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+<div class="col-md-12 box-body" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            @Html.DropDownListFor(m => m.ItemId, ViewBag.ItemDetailList as List<SelectListItem>, new { @id = "ddlItemList", @class = "form-control", @style = "z-index: 0;" })
+                            <span id="btnViewItemPopUp" style="cursor:pointer" class="input-group-addon DocumentAddbutton" onclick="ViewItemPopUp(this)">Add Item</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">PO #<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Vendor SKU<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.VendorSKU, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">HelpDesk No<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.HelpDeskNo, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Status<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @*@Html.TextBoxFor(m => m.ItemStatus, new { @class = "form-control", @readonly = "readonly" })*@
+                        @Html.DropDownListFor(m => m.ItemStatus, ViewBag.ItemStatusList as List<SelectListItem>, new { @id = "ddlItemStatusList", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Date<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.ReturnDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Reason<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(m => m.ReturnReason, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">&nbsp;</label>
+                <div class="col-sm-8">
+                    <label class="radio-inline">
+                        @Html.RadioButton("ChckDiv", "true", true, new { @itemid = "IsEmployee" })Is Employee<span class="field-validation-error"></span>
+                    </label>
+                    <label class="radio-inline">
+                        @Html.RadioButton("ChckDiv", "false", false, new { @itemid = "IsFacility" })Is Facility<span class="field-validation-error"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="divEmployee">
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Id<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                            <span id="btnGetEmpDetail" onclick="GetEmpDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Name<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.EmpAddress, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.EmpState, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Phone No<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.EmpPhoneNo, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row divFacility" style="display:none;">
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Code<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                            <span id="btnGetFacilityDetail" onclick="GetFacilityDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Name<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.FacilityName, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.FacAddress, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(m => m.FacState, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => m.IsCurrentSystem)
+        @Html.HiddenFor(m => m.PODate)
+        @Html.HiddenFor(m => m.InvoiceNumber)
+
+    </div>
+</div>
+<div class="footer-header">
+    <div class="col-xs-12">
+
+        <div class="col-xs-3 pull-right">
+            @Html.HiddenFor(m => m.IsEmployee)
+            @Html.HiddenFor(m => m.IsFacility)
+            @Html.HiddenFor(m => m.POId)
+            <button type="submit" id="btnSaveAssetReturnDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Save</button>
+            <a href="~/AssetManagement/AssetReturnList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Back</a>
+        </div>
+    </div>
+</div>
+
+    @*<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+    <link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />*@
+@Scripts.Render("~/bundles/jqueryPart")
+@Styles.Render("~/Content/cssPart")
+
+    <script type="text/javascript">
+        var jQuery = $.noConflict(true);
+        var dd = $("#FormAssetReturnOrder").find("#AssignDate").val();
+        //var date = new Date(dd);
+        //var year = date.getFullYear(); //get year
+        //var month = date.getMonth(); //get month
+        //var day = date.getDate();
+        //var minDate = new Date(year, month, day);
+
+        jQuery('#ReturnDate').datepicker({
+            minDate: new Date(dd)
+        });
+
+
+        $('input:radio[name="ChckDiv"]').on('change', function () {
+            if ($(this).is(':checked') && $(this).attr('itemid') == 'IsEmployee') {
+                $('.divEmployee').show();
+                $('.divFacility').hide();
+
+                $("#FormAssetAssignOrder").find("#FacilityCode,#FacilityName,#FacAddress,#FacState").val("");
+
+                $("#FormAssetAssignOrder").find("#IsFacility").val('False');
+                $("#FormAssetAssignOrder").find("#IsEmployee").val('True');
+
+            }
+            else {
+                $('.divFacility').show();
+                $('.divEmployee').hide();
+
+                $("#FormAssetAssignOrder").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+                $("#FormAssetAssignOrder").find("#IsEmployee").val('False');
+                $("#FormAssetAssignOrder").find("#IsFacility").val('True');
+            }
+        });
+
+
+        function ViewItemPopUp(me) {
+            $("#parentModal").html("");
+
+            //var FacilityName = $(me).closest('tr').find('td:eq(2)').text();
+            //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AddItemDetail";
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                cache: false,
+                data: {},
+                success: function (result) {
+                    $("#parentModal").html(result).modal('show');
+
+                }
+            });
+
+
+        }
+
+
+        function GetEmpDetailPopUp(me) {
+            var EEID = $(me).closest('.input-group').find("#EmployeeId").val();
+
+
+            var ItemId = $('#FormAssetReturnOrder').find('.form-control[name="ItemId"]').val();
+            if (ItemId == "" || ItemId == 0) {
+                alert("Please select item for this employee");
+                return false;
+            }
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "EmployeeDirectory/getEmployeeDirectoryDetailByEEIDForAsset";
+
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                cache: false,
+                data: { EEID: EEID, ItemId: ItemId },
+                success: function (result) {
+                    $("#FormAssetReturnOrder").find("#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+                    if (result.EEID == "-1") {
+                        $("#FormAssetReturnOrder").find("#EmployeeId").val("");
+                        alert("This employee is already have selected Item.")
+                        return false;
+                    }
+                    if (result.EEID == "-2") {
+                        $("#FormAssetReturnOrder").find("#EmployeeId").val("");
+                        alert("Employee Not Available.")
+                        return false;
+                    }
+
+                    $("#FormAssetReturnOrder").find("#EmployeeName").val(result.EMPLOYEENAME);
+                    $("#FormAssetReturnOrder").find("#EmpAddress").val(result.ADDRESSONE);
+                    $("#FormAssetReturnOrder").find("#EmpState").val(result.ST);
+                    $("#FormAssetReturnOrder").find("#EmpPhoneNo").val(result.PrimaryPhone);
+
+                }
+            });
+
+
+        }
+
+        function GetFacilityDetailPopUp(me) {
+            var facilityCode = $(me).closest('.input-group').find("#FacilityCode").val();
+            var ItemId = $('#FormAssetReturnOrder').find('.form-control[name="ItemId"]').val();
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "ArcustView/GetDetailsByfacilityCodeForAsset";
+
+            if (ItemId == "" || ItemId == 0) {
+                alert("Please select item for this employee");
+                return false;
+            }
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                cache: false,
+                data: { facilityCode: facilityCode, ItemId: ItemId },
+                success: function (result) {
+                    $("#FormAssetReturnOrder").find("#FacilityName,#FacAddress,#FacState").val("");
+
+                    if (result == "") {
+                        $("#FormAssetReturnOrder").find("#FacilityCode").val("");
+                        alert("This Facility Not Exist.");
+                        return false;
+                    }
+                    else if (result.customer_code == "-1") {
+                        $("#FormAssetReturnOrder").find("#FacilityCode").val("");
+                        alert("This Facility is already have selected Item.");
+                        return false;
+                    }
+                    $("#FormAssetReturnOrder").find("#FacAddress").val(result.addr1);
+                    $("#FormAssetReturnOrder").find("#FacState").val(result.state);
+                    $("#FormAssetReturnOrder").find("#FacilityName").val(result.customer_name);
+
+                }
+            });
+
+        }
+
+        $('input:radio[name="ChckDiv"]').on('change', function () {
+            if ($(this).is(':checked') && $(this).attr('itemid') == 'IsEmployee') {
+                $('.divEmployee').show();
+                $('.divFacility').hide();
+
+                $("#FormAssetReturnOrder").find("#FacilityCode,#FacilityName,#FacAddress,#FacState").val("");
+
+                $("#FormAssetReturnOrder").find("#IsFacility").val('False');
+                $("#FormAssetReturnOrder").find("#IsEmployee").val('True');
+
+            }
+            else {
+                $('.divFacility').show();
+                $('.divEmployee').hide();
+
+                $("#FormAssetReturnOrder").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+                $("#FormAssetReturnOrder").find("#IsEmployee").val('False');
+                $("#FormAssetReturnOrder").find("#IsFacility").val('True');
+            }
+        });
+
+
+        function SaveItemDetail(me) {
+
+            var ItemName = $('.modal').find('#ItemViewDialog').find('#ItemName').val();
+            var ItemCategoryID = $('.modal').find('#ItemViewDialog').find('#ddlItemCategoryList').val();
+            var ItemDescription = $('.modal').find('#ItemViewDialog').find('#ItemDescription').val();
+            if (ItemName.trim() == "") {
+                $('.modal').find('#ItemViewDialog').find('#ItemName').css('border', 'red 1px solid');
+                return false;
+            }
+            if (ItemCategoryID.trim() == "" || ItemCategoryID == 0) {
+                $('.modal').find('#ItemViewDialog').find('#ddlItemCategoryList').css('border', 'red 1px solid');
+                return false;
+            }
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetItem";
+
+            $.ajax({
+                url: Liveurl,
+                type: "POST",
+                cache: false,
+                data: { ItemName: ItemName, ItemCategoryID: ItemCategoryID, ItemDescription: ItemDescription },
+                success: function (result) {
+                    if (result > 0) {
+                        $("#ddlItemList").append('<option selected=selected value=' + result + '>' + ItemName + '</option>')
+                        $("#parentModal").modal('toggle');
+                        alert("Inserted Successfully.")
+
+                    }
+
+                }
+            });
+
+
+        }
+
+    </script>

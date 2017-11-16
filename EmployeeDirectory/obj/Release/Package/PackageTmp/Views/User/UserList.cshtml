@@ -1,0 +1,653 @@
+﻿@model EmployeeDirectory.Entity.EmployeeDetails
+
+@{
+    ViewBag.Title = "UserList";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">User List</h3>
+                    </div>
+                </div>
+
+                <form>
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">First Name</label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-2">
+                                    <input type="text" id="txtSearchFirstName" name="txtSearchFirstName" class="form-control" />
+                                </div>
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">Last Name</label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-2">
+                                    <input type="text" id="txtSearchLastName" name="txtSearchLastName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 col-md-2 col-lg-2">Row size</label>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-2">
+                                    <select id="ddlpagesize" class="form-control">
+                                        <option value="0">SELECT</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <button type="button" id="btnSearch" name="Search" class="col-xs-6 btneffect pull-right">Search</button>
+                                    @*<button type="button" id="btnExportToExcel" name="ExportToExcel" class="btn btn-default btn-primary ExportToExcel">Export To Excel</button>*@
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <!-- /.box-header -->
+                    <div class="col-md-12" id="subSection_div">
+                        <div class="table-responsive" id="divUserList">
+                            @Html.Partial("_UserList", Model.UserList)
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <input type='hidden' name='SortOrder' id='hdnSortOrder' value='ASC' />
+        <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog" style="width: 500px;">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #00264B; color: #ffffff">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #ffffff; opacity: 1;">&times;</button>
+                        <h4 class="modal-title text-center">User Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div role="main" class="ui-content" style="background-color: white; padding: 10px">
+                            <input type="hidden" runat="server" id="hdnid" />
+                            <table style="width: 100%; margin: 5px;">
+                                <tr>
+                                    <td style="width: 145px">
+                                        First Name:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtFirstName" style="width: 100%;" class="form-control" name="FirstName" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Last Name:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtLastName" style="width: 100%;" class="form-control" name="LastName" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        User Name:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtUserName" style="width: 100%;" class="form-control" name="UserName" onblur="UpdateEmailId(this);" />
+                                    </td>
+                                </tr>
+                                @*<tr>
+                                        <td>Title:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtTitle" style="width: 100%;" class="form-control" name="Title" />
+                                        </td>
+                                    </tr>*@
+                                @*<tr>
+                                        <td>Division:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtDivision" style="width: 100%;" class="form-control" name="Division" onblur="CommaValidation(this,'txtDivision')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Region:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtRegion" style="width: 100%;" class="form-control" name="Region" onblur="CommaValidation(this,'txtRegion')" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dist:
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtDist" style="width: 100%;" class="form-control" name="Dist" onblur="CommaValidation(this,'txtDist')" />
+                                        </td>
+                                    </tr>*@
+                                <tr>
+                                    <td>
+                                        EEID:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtEEID" style="width: 100%;" class="form-control" name="EEID" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Email:
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtEmail" style="width: 100%;" class="form-control" name="Email" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <h5 class="page-header" style="font-weight: bold">Details </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    Title:
+                                                </td>
+                                                <td>
+                                                    @*<input type="text" id="txtDivision" style="width: 100%;" class="form-control" name="Division" onblur="ValidateEmptyControl(this,'txtDivision')" />*@
+                                                    <input type="text" id="txtTitle" style="width: 100%;" class="form-control" name="Title" onblur="ValidateEmptyControl(this,'txtTitle')" />
+                                                </td>
+                                                <td>
+                                                    Div:
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="txtDivision" style="width: 100%;" class="form-control" name="Division" onblur="ValidateEmptyControl(this,'txtDivision')" />
+                                                </td>
+                                                <td>
+                                                    Reg:
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="txtRegion" style="width: 100%;" class="form-control" name="Region" onblur="ValidateEmptyControl(this,'txtRegion')" />
+                                                </td>
+                                                <td>
+                                                    Dist:
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="txtDist" style="width: 100%;" class="form-control" name="Dist" />
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" id="hdnbtntype" value="" />
+                                                    <input type="hidden" id="hdnrownumber" value="" />
+                                                    <button type="button" class="btn btn-default btn-primary DivRegDistAdd">Add</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12" id="DivRegDistList_div">
+                                                <div class="table-responsive" id="divDivRegDistList">
+                                                    @Html.Partial("_DivRegDistList", ViewBag.DivRegDistList as List<EmployeeDirectory.Entity.DivRegDistEntity>)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <a href="#" data-dismiss="modal" class="btn btn-default" data-rel="back">Cancel</a>
+                                        @*@if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser)) *@
+                                        @if (ViewBag.IsAdd != null)
+                                        {
+                                            if (ViewBag.IsAdd)
+                                            {
+                                                <a href="#" onclick="return SaveRecord();" class="btn btn-default" data-rel="back" data-transition="flow">Save</a>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    function UpdateEmailId(ctl) {
+        $('#txtEmail').val(ctl.value + "@@hcsgcorp.com");
+    }
+
+    function ValidateEmptyControl(ctl, field) {
+        if (ctl.value == "") {
+            $('#' + field).attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#' + field).attr("class", "form-control");
+            return true;
+        }
+    }
+
+    function ValidateDivRegDetails() {
+        if ($('#txtTitle').val() == "") {
+            $('#txtTitle').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            //if ($('#txtTitle').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+            //    $('#txtTitle').attr("class", "form-control");
+            //}
+            //else {
+            //    $('#txtTitle').attr("class", "form-control input-validation-error");
+            //    return false;
+            //}
+            $('#txtTitle').attr("class", "form-control");
+            //return true;
+        }
+
+        if ($('#txtDivision').val() == "") {
+            $('#txtDivision').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            if ($('#txtDivision').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+                $('#txtDivision').attr("class", "form-control");
+            }
+            else {
+                $('#txtDivision').attr("class", "form-control input-validation-error");
+                return false;
+            }
+            $('#txtDivision').attr("class", "form-control");
+            //return true;
+        }
+
+        //var reg = $("#txtRegion").val();
+        if ($('#txtRegion').val() == "") {
+            $('#txtRegion').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            if ($('#txtRegion').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+                $('#txtRegion').attr("class", "form-control");
+            }
+            else {
+                $('#txtRegion').attr("class", "form-control input-validation-error");
+                return false;
+            }
+            $('#txtRegion').attr("class", "form-control");
+            //return true;
+        }
+
+        return true;
+    }
+
+    function CommaValidation(ctl, field) {
+
+        if (ctl.value.toString().match(/^[a-zA-Z0-9+,]+$/)) {
+            return true;
+        }
+        else {
+            $('#' + field).attr("class", "form-control input-validation-error");
+            return false;
+        }
+
+    }
+
+    $('.Search').click(function () {
+        $("#modalWindow,#ui-loader").show();
+        var firstName = $("#txtSearchFirstName").val();
+        var lastName = $("#txtSearchLastName").val();
+        var pagesize = $("#ddlpagesize").val();
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = 50;
+        }
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "User/UserListPagingSortingList";
+
+        $.ajax({
+            type: "POST",
+            url: Liveurl,
+            data: { firstName: firstName, lastName: lastName, pagesize: pagesize, pageindex: "", columnName: "", sortorder: "" },
+            dataType: "html",
+            success: function (data) {
+                $("#divUserList").html('');
+                $("#divUserList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+    });
+
+    function SaveRecord() {
+        $("#modalWindow,#ui-loader").show();
+        if (ValidateUserDetails()) {
+
+            var firstName = $("#txtFirstName").val();
+            firstName = ucwords(firstName, 1);
+            var lastName = $("#txtLastName").val();
+            lastName = ucwords(lastName, 1);
+            var username = $("#txtUserName").val();
+            var title = $("#txtTitle").val();
+            title = ucwords(title, 1);
+            var div = $("#txtDivision").val();
+            var reg = $("#txtRegion").val();
+            var dist = $("#txtDist").val();
+            var eeid = $("#txtEEID").val();
+            var emailId = $("#txtEmail").val();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "User/SaveRecord";
+
+            $.ajax({
+                type: "POST",
+                url: Liveurl,
+                data: { firstName: firstName, lastName: lastName, username: username, title: title, div: div, reg: reg, dist: dist, eeid: eeid, emailId: emailId },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data == "false") {
+                        alert('something wrong');
+                    }
+                    else {
+                        alert('record save successfully');
+                        window.location.href = '../User/UserList';
+
+
+                    }
+
+                    $("#modalWindow,#ui-loader").hide();
+
+                },
+                error: function (data) {
+                    // TODO: Show error
+                    alert(data);
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+            return;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function ValidateUserDetails() {
+        //var firstName = $("#txtFirstName").val();
+        if ($('#txtFirstName').val() == "") {
+            $('#txtFirstName').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#txtFirstName').attr("class", "form-control");
+            //return true;
+        }
+        //var lastName = $("#txtLastName").val();
+        if ($('#txtLastName').val() == "") {
+            $('#txtLastName').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#txtLastName').attr("class", "form-control");
+            //return true;
+        }
+
+
+        //var username = $("#txtUserName").val();
+        if ($('#txtUserName').val() == "") {
+            $('#txtUserName').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#txtUserName').attr("class", "form-control");
+            //return true;
+        }
+
+        //var title = $("#txtTitle").val();
+        //if ($('#txtTitle').val() == "") {
+        //    $('#txtTitle').attr("class", "form-control input-validation-error");
+        //    return false;
+        //}
+        //else {
+        //    $('#txtTitle').attr("class", "form-control");
+        //    //return true;
+        //}
+
+        //var div = $("#txtDivision").val();
+        //if ($('#txtDivision').val() == "") {
+        //    $('#txtDivision').attr("class", "form-control input-validation-error");
+        //    return false;
+        //}
+        //else {
+        //    if ($('#txtDivision').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+        //        $('#txtDivision').attr("class", "form-control");
+        //    }
+        //    else {
+        //        $('#txtDivision').attr("class", "form-control input-validation-error");
+        //        return false;
+        //    }
+        //    $('#txtDivision').attr("class", "form-control");
+        //    //return true;
+        //}
+
+        ////var reg = $("#txtRegion").val();
+        //if ($('#txtRegion').val() == "") {
+        //    $('#txtRegion').attr("class", "form-control input-validation-error");
+        //    return false;
+        //}
+        //else {
+        //    if ($('#txtRegion').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+        //        $('#txtRegion').attr("class", "form-control");
+        //    }
+        //    else {
+        //        $('#txtRegion').attr("class", "form-control input-validation-error");
+        //        return false;
+        //    }
+        //    $('#txtRegion').attr("class", "form-control");
+        //    //return true;
+        //}
+
+        ////var dist = $("#txtDist").val();
+        //if ($('#txtDist').val() == "") {
+        //    $('#txtDist').attr("class", "form-control input-validation-error");
+        //    return false;
+        //}
+        //else {
+        //    if ($('#txtDist').val().toString().match(/^[a-zA-Z0-9+,]+$/)) {
+        //        $('#txtDist').attr("class", "form-control");
+        //    }
+        //    else {
+        //        $('#txtDist').attr("class", "form-control input-validation-error");
+        //        return false;
+        //    }
+        //    $('#txtDist').attr("class", "form-control");
+        //    //return true;
+        //}
+
+        //var eeid = $("#txtEEID").val();
+        if ($('#txtEEID').val() == "") {
+            $('#txtEEID').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#txtEEID').attr("class", "form-control");
+            //return true;
+        }
+
+        //var emailId = $("#txtEmail").val();
+        if ($('#txtEmail').val() == "") {
+            $('#txtEmail').attr("class", "form-control input-validation-error");
+            return false;
+        }
+        else {
+            $('#txtEmail').attr("class", "form-control");
+            //return true;
+        }
+        return true;
+    }
+
+
+    function EditDivRegDistDetails(RowNumber) {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "User/EditDivRegDistDetails";
+
+        $.ajax({
+            contentType: "application/x-www-form-urlencoded",
+            type: "POST",
+            dataType: "json",
+            url: Liveurl,
+            data: { "RowNumber": RowNumber },
+            success: function (data) {
+                $('#txtTitle').val(data.Title);
+                $('#txtDivision').val(data.Div);
+                $('#txtRegion').val(data.Reg);
+                $('#txtDist').val(data.Dist);
+                $(".DivRegDistAdd").text("Update");
+                $("#hdnbtntype").val('update');
+                $("#hdnrownumber").val(RowNumber);
+                $("#modalWindow,#ui-loader").hide();
+            },
+            error: function (e) {
+                $("#modalWindow,#ui-loader").hide();
+                if (e.responseText != undefined) {
+                    alert(e.responseText);
+                }
+            }
+        });
+
+    }
+
+    function DeleteDivRegDistDetails(rowNumber) {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "User/DeleteDivRegDistDetails";
+
+        $.ajax({
+            contentType: "application/x-www-form-urlencoded",
+            type: "POST",
+            dataType: "html",
+            url: Liveurl,
+            //data: { "objSectionDetailsList": objSectionDetailsList },
+            data: { "rowNumber": rowNumber },
+            success: function (data) {
+                $("#divDivRegDistList").html('');
+                $("#divDivRegDistList").html(data + "&nbsp;");
+                ClearDivRegDistDetail();
+                $('#Loader').hide();
+            },
+            error: function (e) {
+                $('#Loader').hide();
+                if (e.responseText != undefined) {
+                    alert(e.responseText);
+                }
+            }
+        });
+    }
+
+    $('.DivRegDistAdd').click(function () {
+
+        $("#modalWindow,#ui-loader").show();
+
+        if (ValidateDivRegDetails()) {
+            if (this.textContent.toLowerCase() == "update") {
+                var rowNumber = $("#hdnrownumber").val();
+                var title = $("#txtTitle").val();
+                var div = $("#txtDivision").val();
+                var reg = $("#txtRegion").val();
+                var dist = $("#txtDist").val();
+                var parameter = { title: title, div: div, reg: reg, dist: dist, rowNumber: rowNumber };
+                //Benefit_SectionDetailModel.RowNumber = parseInt(RowNumber) + 1;
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "User/UpdateDivRegDistDetails";
+
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    type: "POST",
+                    dataType: "html",
+                    url: Liveurl,
+                    data: parameter,
+                    success: function (data) {
+                        $("#divDivRegDistList").html('');
+                        $("#divDivRegDistList").html(data + "&nbsp;");
+                        ClearDivRegDistDetail();
+                        $("#modalWindow,#ui-loader").hide();
+                    },
+                    error: function (e) {
+                        $("#modalWindow,#ui-loader").hide();
+                        if (e.responseText != undefined) {
+                            alert(e.responseText);
+                        }
+                    }
+                });
+
+            } else {
+                var title = $("#txtTitle").val();
+                var div = $("#txtDivision").val();
+                var reg = $("#txtRegion").val();
+                var dist = $("#txtDist").val();
+                var parameter = { title: title, div: div, reg: reg, dist: dist };
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                Liveurl = "/" + Liveurl + "User/AddDivRegDistDetails";
+
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    type: "POST",
+                    dataType: "html",
+                    url: Liveurl,
+                    //data: { "objSectionDetailsList": objSectionDetailsList },
+                    data: parameter,
+                    success: function (data) {
+                        $("#divDivRegDistList").html('');
+                        $("#divDivRegDistList").html(data + "&nbsp;");
+                        ClearDivRegDistDetail();
+                        $("#modalWindow,#ui-loader").hide();
+                    },
+                    error: function (e) {
+                        $("#modalWindow,#ui-loader").hide();
+                        if (e.responseText != undefined) {
+                            alert(e.responseText);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    function ClearDivRegDistDetail() {
+        $("#txtTitle").val('');
+        $("#txtDivision").val('');
+        $("#txtRegion").val('');
+        $("#txtDist").val('');
+        $("#hdnrownumber").val('');
+        $(".DivRegDistAdd").text("Add");
+        $("#hdnbtntype").val('add');
+    }
+
+
+
+</script>

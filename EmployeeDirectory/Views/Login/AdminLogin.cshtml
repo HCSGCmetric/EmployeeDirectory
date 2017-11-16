@@ -1,0 +1,94 @@
+﻿@model EmployeeDirectory.Models.AdminLoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AdminLogin</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/_references.js"></script>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/Site.css" rel="stylesheet" type="text/css">
+    <link href="~/css/menu.css" rel="stylesheet" type="text/css">
+    <style class="firebugResetStyles" type="text/css">
+        /*body {
+            background: url('~/img/bg.jpg') repeat-x;
+        }*/
+    </style>
+</head>
+<body>
+  <div>
+        <div id="wrap">
+            <div id="head">
+                <div class="hd-lf">
+                    <a href="http://www.hcsgcorp.com/">
+                        <img src="~/img/logo.gif" alt="Healthcare Services Group, Inc."></a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="nav" class="menu" style="background: url('/img/menubg1.gif') repeat-x top left !important;">
+                <ul>
+                    <li>&nbsp; </li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+
+            <div id="home" class="login">
+                <section class="login">
+                    @using (Html.BeginForm("AdminLogin", "Login", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            <p style="color: darkorange; font-weight: bold;">@ViewBag.LockedErrorMessage</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">User Name</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name" })
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword">Password</label>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <div class="form-group">
+                            <p style="color: gold; font-weight: bold;">@TempData["LoginError"]</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    }
+                </section>
+            </div>
+            <div class="clear">
+            </div>
+            <div id="foot">
+                <p>Healthcare Services Group, Inc.  |  3220 Tillman Drive, Suite 300 Bensalem, PA 19020  |  Phone # | 215-639-4274 | Fax: 215-639-2152</p>
+            </div>
+            <!-- #end footer-->
+        </div>
+    </div>
+</body>
+</html>
+
+@*<script>
+    
+    var test = '1,2,3';
+    if (test.toString().match(/^[a-zA-Z0-9+,]+$/)) {
+        alert('true');
+    }
+    else {
+        alert('false');
+    }
+</script>*@

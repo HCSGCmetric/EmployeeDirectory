@@ -1,0 +1,296 @@
+﻿@model List<EmployeeDirectory.Entity.AdminUserEntity>
+
+@{
+    Layout = null;
+}
+@{
+    var gdAdminUserList = new WebGrid(Model, canPage: true, canSort: false, rowsPerPage: EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+@if (Model.Count() > 0)
+{
+    <div>
+        @gdAdminUserList.GetHtml(tableStyle: "webgrid",
+           headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                mode: WebGridPagerModes.Numeric,
+                htmlAttributes: new { Id = "tblAdminUserList" },
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                columns: gdAdminUserList.Columns(
+                gdAdminUserList.Column("UserName", "UserName"),
+                gdAdminUserList.Column("FirstName", "First Name"),
+                gdAdminUserList.Column("LastName", "Last Name"),
+                gdAdminUserList.Column("IsLocked", "IsLocked"),
+                gdAdminUserList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRecord" />, style: "headerhide"),
+                gdAdminUserList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide"),
+                gdAdminUserList.Column(null, "Action", format: @<text>
+                    @*@if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser))*@
+                    @if (ViewBag.IsEdit != null)
+                    {
+                        if (ViewBag.IsEdit)
+                        {
+                            <a href="~/AdminUser/EditAdminUser/@item.ID"><i class="fa fa-edit"></i></a>
+                        }
+                    }
+                    @if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERID]) != Convert.ToString(item.ID))
+                        {
+                           @* if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser))
+                            {*@
+                    if (ViewBag.IsDelete != null)
+                    {
+                        if (ViewBag.IsDelete)
+                        {
+                            <a href="~/AdminUser/DeleteAdminUser/@item.ID"><i class="fa fa-trash"></i></a>
+                        }
+                    }
+                    }
+
+                </text>, style: "webgrid-action-column")
+                              ))
+    </div>
+}
+<script>
+   
+
+
+    $(document).ready(function () {
+        GeneratePagingFooter();
+
+        var allheader = $('#tblAdminUserList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            //if (USERTYPE != su) {
+            //    if (headertext == 'Action') {
+            //        header.setAttribute('class', 'headerhide');
+            //        //"webgrid-action-column
+            //    }
+
+            //}
+
+        }
+        //if (USERTYPE != su) {
+        //    $('#tblAdminUserList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        //}
+
+        $('div #divpagging a').click(function () {
+
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+            var firstName = $('#txtSearchFirstName').val();
+            if (firstName == null) {
+                firstName = "";
+            }
+
+            var lastName = $('#txtSearchLastName').val();
+            if (lastName == null) {
+                lastName = "";
+            }
+
+            var username = $('#txtSearchUserName').val();
+            if (username == null) {
+                username = "";
+            }
+
+            var UserType = $('#UserTypeIds').val();
+            if (UserType == null) {
+                UserType = "";
+            }
+
+           
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+
+            Pageindex = $("#lblPageindex").text();
+            $("#modalWindow,#ui-loader").show();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AdminUser/AdminUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&UserType=" + UserType + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    $("#divAdminUserList").html('');
+                    $("#divAdminUserList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        });
+    });
+
+
+
+    function Sorting(ColumnName) {
+
+
+        var Pageindex = $("#lblPageindex").text();
+        var Sortorder = $("#hdnSortOrder").text();
+        if (ColumnName == 'First Name') {
+            ColumnName = 'FirstName';
+        }
+        else if (ColumnName == 'Last Name') {
+            ColumnName = 'LastName';
+        }
+        else if (ColumnName == 'User Name') {
+            ColumnName = 'UserName';
+        }
+        else if (ColumnName == 'IsLocked') {
+            ColumnName = 'IsLocked';
+        }
+
+
+        $("#hdnSortColumn").text(ColumnName);
+        var SortColumn = $("#hdnSortColumn").text();
+
+        if (Sortorder == '') {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        else if (Sortorder == 'ASC') {
+            Sortorder = 'DESC'
+            $("#hdnSortOrder").text('DESC');
+        }
+        else {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        var firstName = $('#txtSearchFirstName').val();
+        if (firstName == null) {
+            firstName = "";
+        }
+
+        var lastName = $('#txtSearchLastName').val();
+        if (lastName == null) {
+            lastName = "";
+        }
+
+        var username = $('#txtSearchUserName').val();
+        if (username == null) {
+            username = "";
+        }
+
+      
+        var UserType = $('#UserTypeIds').val();
+        if (UserType == null) {
+            UserType = "";
+        }
+
+        var pagesize = $("#ddlpagesize").val();
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = 50;
+        }
+        $("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AdminUser/AdminUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&UserType=" + UserType + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+        $.ajax({
+            type: "GET",
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            async: false,
+            url: Liveurl,
+            //url: "../FormList/SubmittedFormSummaryPagingSortingList?formtype=" + summaryform + "&fromDate=" + fromDate + "&toDate=" + toDate + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder,
+            dataType: "html",
+            success: function (data) {
+                $("#divAdminUserList").html('');
+                $("#divAdminUserList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+    }
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        var TotalRecord = $("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblAdminUserList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+        if ($("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblAdminUserList tbody').append(text);
+
+            $("#lblPageindex").text(PageIndex);
+            $("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $("#lblMaxpage").text(MaxPage);
+        }
+    }
+
+</script>

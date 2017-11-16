@@ -1,0 +1,222 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+@{
+    ViewBag.Title = "Add Asset Retire";
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Add Asset Retire</h3>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("SaveAssetReturnOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetRetireOrder" }))
+                {
+                    @*@Html.ValidationSummary(true)*@
+                    <div class="col-md-12 box-body" style="margin-top: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @*@Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control" })*@
+                                            @*@Html.DropDownListFor(m => m.AssetTagNumber, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control" })
+                                                <span id="btnGetItemDetail" onclick="GetItemDetailForRetire(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                                <a href="~/AssetManagement/AddAssetRetire" style="cursor:pointer" class="input-group-addon DocumentAddbutton">Clear</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Purchase Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.PODate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                                @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Additional Warranty<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.AdditionalWarrantyMonth, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Retire Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.RetireDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Retire Reason<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextAreaFor(m => m.RetireReason, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    @*<div class="col-md-12">
+                            <button type="button" id="btnViewItemPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-left text-center" onclick="ViewItemPopUp(this)" style="padding: 7px 15px 7px 7px">Add Item</button>
+                            <button type="button" id="btnViewVendorPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-right text-center" onclick="ViewVendorPopUp(this)" style="padding: 7px 15px 7px 7px">Add Vendor</button>
+                        </div>*@
+                            <!-- /.box-header -->
+
+                    <div class="footer-header">
+                        <div class="col-xs-12">
+                            @*@Html.HiddenFor(m => m.PurchaseOrderXML)
+                                @Html.HiddenFor(m => m.Id)*@
+                            <div class="col-xs-3 pull-right">
+                                @Html.HiddenFor(m => m.ItemId)
+                                @Html.HiddenFor(m => m.IsReturned)
+                                @Html.HiddenFor(m => m.PONumber)
+                                @Html.HiddenFor(m => m.POId)
+                                @Html.HiddenFor(m => m.AssignMasterId)
+                                
+                                @*@Html.HiddenFor(m => m.isView)
+                                    @Html.HiddenFor(m => m.isAdd)
+                                    @Html.HiddenFor(m => m.isApprove)
+                                    @Html.HiddenFor(m => m.isEdit)
+                                    @Html.HiddenFor(m => m.isDelete)
+                                    @Html.HiddenFor(m => m.FormPermission)*@
+                                <button type="submit" id="btnSaveAssetRetireDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Save</button>
+                                <a href="~/AssetManagement/AssetRetireList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+            <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#FormAssetRetireOrder").find("#ItemName,#ItemId,#AdditionalWarrantyMonth,#PODate,#AdditionalWarrantyMonth").val("");
+
+    })
+    
+    $('#RetireDate').datepicker();
+
+    $("#FormAssetRetireOrder").find("#AssetTagNumber").on('focusout', function () {
+        if ($(this).val().trim() == "") {
+            $("#FormAssetRetireOrder").find("#ItemName,#AdditionalWarrantyMonth,#PODate").val("");
+        }
+    })
+
+    function GetItemDetailForRetire(me) {
+        var TagNo = $(me).closest('.input-group').find("#AssetTagNumber").val();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/getItemDetailByTagNoForRetire";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { TagNo: TagNo },
+            success: function (result) {
+
+                if (result == "") {
+                    alert('This item is not available for retire.');
+                    $("#FormAssetRetireOrder").find("#ItemName,#AdditionalWarrantyMonth,#PODate").val("");
+                    return false;
+                }
+                //alert(result.PODate)
+                //var date = new Date(parseInt(result.PODate.substr(6)));
+                //var fStart = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+
+                $(me).closest('.input-group').find("#AssetTagNumber").attr('readonly', true);
+                $("#FormAssetRetireOrder").find("#ItemName").val(result.ItemName);
+                $("#FormAssetRetireOrder").find("#ItemId").val(result.ItemId);
+                $("#FormAssetRetireOrder").find("#AdditionalWarrantyMonth").val(result.AdditionalWarrantyMonth);
+                $("#FormAssetRetireOrder").find("#PODate").val(result.PODate);
+                $("#FormAssetRetireOrder").find("#IsReturned").val(result.IsReturned);
+                $("#FormAssetRetireOrder").find("#PONumber").val(result.PONumber);
+                $("#FormAssetRetireOrder").find("#POId").val(result.POId);
+                $("#FormAssetRetireOrder").find("#AssignMasterId").val(result.AssignMasterId);
+                
+                
+                
+                
+               
+
+            }
+        });
+
+
+    }
+
+
+    $("#FormAssetRetireOrder").live('submit', function (e) {
+        e.preventDefault();
+        //$(this).find("#ddlItemDetail,#Quantity").css('border', '');
+        //var PONumber = $(".tblAssetPurchaseOrder").find("#PONumber").val();
+        //var PODate = $(".tblAssetPurchaseOrder").find("#PODate").val();
+        //var VendorId = $(".tblAssetPurchaseOrder").find("#ddlVendorDetail").val();
+
+        var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetRetireOrder";
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: form,
+            success: function (result) {
+                if (result == -1) {
+                    alert('This item is not available for retire.');
+
+                }
+                else if (result > 0) {
+                    //AlertMessage([success,fail,warning],msg,Description)
+                    alert('Retired Successfully.');
+                    window.location = "../AssetManagement/AssetRetireList";
+
+                }
+                else {
+                    alert("Failed.");
+                }
+
+            }
+        });
+
+    });
+
+
+
+
+</script>

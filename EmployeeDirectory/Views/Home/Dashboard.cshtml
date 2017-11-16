@@ -1,0 +1,421 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+@using EmployeeDirectory.Entity;
+<div class="container-fluid">
+    <div class="row Dashboardlist">
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <a class="Dshboard_sections" href='~/ArcustView/ArcustViewList'>
+                <div class="info-box">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/Reference_List.png">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <h3 class="Dashboard-title">
+                                Reference List
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+        @if (ViewBag.EmployeeDirectoryApp != null)
+        {
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a class="Dshboard_sections" href='~/@ViewBag.EmployeeDirectoryApp'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/EmployeeDirectory.png">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    Employee Directory
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+        }
+        else
+        {
+            if (Session[AppConstant.FIELDUSER] != null)
+            {
+                if (Convert.ToBoolean(Session[AppConstant.FIELDUSER]) == true)
+                {
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a class="Dshboard_sections" href='~/EmployeeDirectory/EmployeeDirectoryList'>
+                            <div class="info-box">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/EmployeeDirectory.png">
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-xs-12">
+                                        <h3 class="Dashboard-title">
+                                            Employee Directory
+                                        </h3>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        }
+
+        @if (ViewBag.CitrixUserApp != null)
+        {
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a class="Dshboard_sections" href='~/@ViewBag.CitrixUserApp'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/User.jpg">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    Citrix User
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*@if (ViewBag.CorporateContact != null)
+            {*@
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <a class="Dshboard_sections" href='~/@ViewBag.CorporateContact'>
+                <div class="info-box">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/Corporate_Contact.png">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <h3 class="Dashboard-title">
+                                Corporate Contact
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+        @*  //}
+            //else
+            //{
+            //    if (Session[AppConstant.FIELDUSER] != null)
+            //    {
+            //        if (Convert.ToBoolean(Session[AppConstant.FIELDUSER]) == true)
+            //        {
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                              <a class="Dshboard_sections" href='~/EmpDirectory/CorporateContacts.aspx'>
+                                  <div class="info-box">
+                                      <div class="row">
+                                          <div class="col-xs-12">
+                                              <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/Corporate_Contact.png">
+                                          </div>
+                                      </div>
+                                      <div class="row">
+
+                                          <div class="col-xs-12">
+                                              <h3 class="Dashboard-title">
+                                                  Corporate Contact
+                                              </h3>
+                                          </div>
+
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-xs-12 text-center">
+
+                                          </div>
+                                      </div>
+
+                                  </div>
+                              </a>
+                </div>
+                    }
+                }
+            }*@
+
+        @if (ViewBag.FacilityRealignment != null)
+        {
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a class="Dshboard_sections" href='~/@ViewBag.FacilityRealignment'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/FacilityRealignment.png">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    Facility Realignment
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        }
+
+        @if (ViewBag.MobileuserApp != null)
+        {
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a class="Dshboard_sections" href='~/@ViewBag.MobileuserApp'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/MobileUser.png">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    Mobile User
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+        }
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <a class="Dshboard_sections" href='~/Link/ViewLinkList'>
+                <div class="info-box">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/Links.png">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <h3 class="Dashboard-title">
+                                Links
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+        @if (ViewBag.AssetManagementAppURL != null)
+        {
+            //
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                @*<a class="Dshboard_sections" href='~/AssetManagement/AssetPurchageOrderList'>*@
+                <a class="Dshboard_sections" href='~/@ViewBag.AssetManagementAppURL'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Assets" class="Dashboardicon img-responsive" src="~/img/Asset.jpg">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    Asset Management
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        }
+        
+        @*<div class="col-md-3 col-sm-6 col-xs-12">
+            <a class="Dshboard_sections" href='~/Calendar/CreateEvent'>
+                <div class="info-box">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/Links.png">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <h3 class="Dashboard-title">
+                                Calendar
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>*@
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <a class="Dshboard_sections" href='~/@ViewBag.CoupaAdmin'>
+                <div class="info-box">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/nursesnew.jpg">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <h3 class="Dashboard-title">
+                                Coupa Admin
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+
+
+        @if (ViewBag.DSSIAdmin != null)
+        {
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <a class="Dshboard_sections" href='~/@ViewBag.DSSIAdmin'>
+                    <div class="info-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img alt="Documents" class="Dashboardicon img-responsive" src="~/img/prosnew.jpg">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="Dashboard-title">
+                                    DSSI Admin
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@*<script>
+
+        function closeMe() {
+
+            var win = window.open("", "_self"); /* url = "" or "about:blank"; target="_self" */
+            win.open();
+            $(setTimeout(function () {
+                win.close();
+            }, 3000));
+        }
+
+    </script>*@
+
+@*<input type="button" name="CloseMe" value="Close Me" onclick="closeMe()" />*@

@@ -1,0 +1,575 @@
+﻿@model List<EmployeeDirectory.Entity.ArcustViewEntity>
+
+@{
+    var gdArcustViewList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    
+}
+
+<div>
+    @gdArcustViewList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                htmlAttributes: new { Id = "tbldArcustViewList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                columns: gdArcustViewList.Columns(
+                gdArcustViewList.Column("View Details", format: @<text>  <a title="Edit" onclick="ArcustViewDetail('@item.customer_code')">@item.customer_code</a></text>),
+                gdArcustViewList.Column("customer_name", "Facility Name"),
+                gdArcustViewList.Column("DIV", "Div"),
+                gdArcustViewList.Column("REG", "Reg"),
+                gdArcustViewList.Column("DIST", "Dist"),
+                gdArcustViewList.Column("Department", "Department"),
+                gdArcustViewList.Column("START_DT", "Start Date"),
+                gdArcustViewList.Column("TERM_DT", "Term Date"),
+                gdArcustViewList.Column("addr1", "Address"),
+                gdArcustViewList.Column("city", "City"),
+                gdArcustViewList.Column("state", "State"),
+                gdArcustViewList.Column("postal_code", "Zip"),
+                //gdArcustViewList.Column("territory_code", "Territory Code"),
+                //gdArcustViewList.Column("COLLECTOR", "Collector"),
+                //gdArcustViewList.Column("AFFILIATED_CUST_CODE", "Management Code"),
+                //gdArcustViewList.Column("Management_Name", "Management Name"),
+                gdArcustViewList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRecord"/>, style: "headerhide"),
+                gdArcustViewList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex"/>, style: "headerhide")
+                
+                @*gdArcustViewList.Column("Action", format: @<text>
+    <a href="#myModal" title="Edit" onclick="setpopupvalue(@item.customer_code)" data-toggle="modal"><i class="fa fa-edit"></i></a>
+    &nbsp;
+    <a title="Delete" onclick="DeleteRecord(@item.customer_code)" ><i class="fa fa-trash"></i></a>
+    </text>, style: "webgrid-action-column")*@
+))
+
+</div>
+
+<div id="ArcustViewDetailModal" class="modal fade"></div>
+
+    <script>
+
+
+        function clearpopdata() {
+            $("#txtCO1").val('');
+            $("#txtCO2").val('');
+            $("#txtCO3").val('');
+            $("#txtDiv").val('');
+            $("#txtReg").val('');
+            $("#txtDist").val('');
+            $("#txtSubReg").val('');
+            $("#txtSubReg2").val('');
+            $("#txtCustomerCode").val('');
+            $("#txtDepartment").val('');
+            $("#txtFacilityEmail").val('');
+            $("#txtStartDate").val('');
+            $("#txtTermDate").val('');
+            $("#txtCustomerName").val('');
+            $("#txtAffiliatedCustCode").val('');
+            $("#txtManagementName").val('');
+            $("#txtAddress").val('');
+            $("#txtAttentionName").val('');
+            $("#txtAttentionPhone").val('');
+            $("#txtContactName").val('');
+            $("#txtContactPhone").val('');
+            $("#txtPhone1").val('');
+            $("#txtPhone2").val('');
+            $("#txtShipToCode").val('');
+            $("#txtTaxCode").val('');
+            $("#txtTermsCode").val('');
+            $("#txtFobCode").val('');
+            $("#txtTerritoryCode").val('');
+            $("#txtCollector").val('');
+            $("#txtSalesPerson").val('');
+            $("#txtMessageCode").val('');
+            $("#txtDunnMessageCode").val('');
+            $("#txtCountry").val('');
+            $("#txtState").val('');
+            $("#txtCity").val('');
+            $("#txtPostalCode").val('');
+            $("#txtNote").val('');
+            $("#txtRemitCode").val('');
+            $("#txtForwarderCode").val('');
+            $("#txtFreightToCode").val('');
+            $("#txtRouteCode").val('');
+            $("#txtRouteNo").val('');
+            $("#txtShipViaCode").val('');
+            $("#txtDestZoneCode").val('');
+            $("#txtHospital").val('');
+        }
+
+        function setpopupvalue(val) {
+
+            $("#modalWindow,#ui-loader").show();
+            clearpopdata();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "ArcustView/GetDetailsByfacilityCode?facilityCode=" + val;
+            $.ajax({
+                type: "GET",
+                traditional: true,
+                async: false,
+                url: Liveurl,
+                success: function (data) {
+
+                    //$('#Loader').hide();
+                    $("#txtCO1").val(data.CO1);
+                    $("#txtCO2").val(data.CO2);
+                    $("#txtCO3").val(data.CO3);
+                    $("#txtDiv").val(data.DIV);
+                    $("#txtReg").val(data.REG);
+                    $("#txtDist").val(data.DIST);
+                    $("#txtSubReg").val(data.SUBREG);
+                    $("#txtSubReg2").val(data.SUBREG2);
+                    $("#txtCustomerCode").val(data.customer_code);
+                    $("#txtDepartment").val(data.Department);
+                    $("#txtFacilityEmail").val(data.FacilityEmail);
+                    $("#txtStartDate").val(data.START_DT);
+                    $("#txtTermDate").val(data.TERM_DT);
+                    $("#txtCustomerName").val(data.customer_name);
+                    $("#txtAffiliatedCustCode").val(data.AFFILIATED_CUST_CODE);
+                    $("#txtManagementName").val(data.Management_Name);
+                    $("#txtAddress").val(data.addr1);
+                    $("#txtAttentionName").val(data.attention_name);
+                    $("#txtAttentionPhone").val(data.attention_phone);
+                    $("#txtContactName").val(data.contact_name);
+                    $("#txtContactPhone").val(data.contact_phone);
+                    $("#txtPhone1").val(data.phone_1);
+                    $("#txtPhone2").val(data.phone_2);
+                    $("#txtShipToCode").val(data.ship_to_code);
+                    $("#txtTaxCode").val(data.tax_code);
+                    $("#txtTermsCode").val(data.terms_code);
+                    $("#txtFobCode").val(data.fob_code);
+                    $("#txtTerritoryCode").val(data.territory_code);
+                    $("#txtCollector").val(data.COLLECTOR);
+                    $("#txtSalesPerson").val(data.SALESPERSON);
+                    $("#txtMessageCode").val(data.MESSAGE_CODE);
+                    $("#txtDunnMessageCode").val(data.dunn_message_code);
+                    $("#txtCountry").val(data.country);
+                    $("#txtState").val(data.state);
+                    $("#txtCity").val(data.city);
+                    $("#txtPostalCode").val(data.postal_code);
+                    $("#txtNote").val(data.note);
+                    $("#txtRemitCode").val(data.remit_code);
+                    $("#txtForwarderCode").val(data.forwarder_code);
+                    $("#txtFreightToCode").val(data.freight_to_code);
+                    $("#txtRouteCode").val(data.route_code);
+                    $("#txtRouteNo").val(data.route_no);
+                    $("#txtShipViaCode").val(data.ship_via_code);
+                    $("#txtDestZoneCode").val(data.dest_zone_code);
+                    $("#txtHospital").val(data.Hospital);
+                    $("#modalWindow,#ui-loader").hide();
+                },
+                error: function (e) {
+                    //$('#Loader').hide();
+
+                }
+            });
+
+        }
+
+        function ArcustViewDetail(val) {
+
+            val = val.replace(" ", "");
+            $('#parentModal').html('');
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "ArcustView/GetArcustViewDetailsByfacilityCode?facilityCode=" + val;
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "GET",
+                traditional: true,
+                async: false,
+                url: Liveurl,
+                success: function (data) {
+
+                    $('#parentModal').html(data).modal('show');
+
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        }
+
+
+        $(document).ready(function () {
+
+            GeneratePagingFooter();
+
+            $('div #divpagging a').click(function () {
+
+                var Command = $(this).attr('id');
+                var PageNo = $("#txtGO").val();
+                var Pageindex = $("#lblPageindex").text();
+                var MaxPage = $("#lblMaxpage").text();
+                var totalRecord = $("#lblTotalRecord").text();
+                var Sortorder = $("#hdnSortOrder").text();
+                var SortColumn = $("#hdnSortColumn").text();
+
+                if (Command == 'first') {
+                    $("#lblPageindex").text("1");
+                }
+                else if (Command == 'Previous') {
+
+                    $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                }
+                else if (Command == 'Next') {
+                    $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                    if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+                else if (Command == 'Last') {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+                else if (Command == "go") {
+                    if (PageNo != "") {
+                        $("#lblPageindex").text((parseInt(PageNo)).toString());
+                        if (parseInt($("#lblPageindex").text()) <= 0) {
+                            $("#lblPageindex").text("1");
+                        }
+                        else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                            $("#lblPageindex").text($("#lblMaxpage").text());
+                        }
+                    }
+                }
+                var facilityCode = $('#txtSearchFacilityCode').val();
+                facilityCode = facilityCode = null ? "" : facilityCode;
+
+                var facilityName = $('#txtSearchFacilityName').val();
+                facilityName = facilityName = null ? "" : facilityName;
+
+                var managementCode = $('#txtSearchManagementCode').val();
+                managementCode = managementCode = null ? "" : managementCode;
+
+                var managementName = $('#txtSearchManagementName').val();
+                managementName = managementName = null ? "" : managementName;
+
+                var territoryCode = $('#txtSearchTerritoryCode').val();
+                territoryCode = territoryCode = null ? "" : territoryCode;
+
+                var collectorCode = $('#txtSearchCollectorCode').val();
+                collectorCode = collectorCode = null ? "" : collectorCode;
+
+                var payrollCode = $('#txtSearchPayrollCode').val();
+                payrollCode = payrollCode = null ? "" : payrollCode;
+
+                var departmentCode = $('#txtSearchDepartmentCode').val();
+                departmentCode = departmentCode = null ? "" : departmentCode;
+
+                var city = $('#txtSearchCity').val();
+                city = city = null ? "" : city;
+
+                var state = '';
+                $('#txtSearchState').next('div').find('ul li').each(function () {
+
+                    if ($(this).hasClass('active')) {
+                        state += $(this).find('label').text().trim() + ',';
+                    }
+
+                });
+
+                //state = state = null ? "" : state;
+                //var state = $('#txtSearchState').val();
+                //state = state = null ? "" : state;
+
+                var address = $('#txtSearchAddress').val();
+                address = address = null ? "" : address;
+
+                var zipCode = $('#txtSearchZipCode').val();
+                zipCode = zipCode = null ? "" : zipCode;
+
+                var startDate = $('#txtSearchStartDate').val();
+                startDate = startDate = null ? "" : startDate;
+
+                var endDate = $('#txtSearchEndDate').val();
+                endDate = endDate = null ? "" : endDate;
+
+                var termStartDate = $('#txtSearchTermStartDate').val();
+                termStartDate = termStartDate = null ? "" : termStartDate;
+
+                var termEndDate = $('#txtSearchTermEndDate').val();
+                termEndDate = termEndDate = null ? "" : termEndDate;
+
+                var div = $('#txtSearchDiv').val();
+                div = div = null ? "" : div;
+
+                var reg = $('#txtSearchReg').val();
+                reg = reg = null ? "" : reg;
+
+                var dist = $('#txtSearchDist').val();
+                dist = dist = null ? "" : dist;
+
+                var Status = $('#ddlStatus').val();
+                Status = Status = null ? "" : Status;
+
+                Pageindex = $("#lblPageindex").text();
+                var pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+                @*var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }*@
+
+                //var cnt = { name: 'Hello', phone: 'Hello' };
+                var arcustViewSearchEntity = { FacilityCode: facilityCode, FacilityName: facilityName, ManagementCode: managementCode, ManagementName: managementName, TerritoryCode: territoryCode, CollectorCode: collectorCode, PayrollCode: payrollCode, DepartmentCode: departmentCode, City: city, State: state, Address: address, ZipCode: zipCode, StartDate: startDate, EndDate: endDate, TermStartDate: termStartDate, TermEndDate: termEndDate, Div: div, Reg: reg, Dist: dist, Pageindex: Pageindex, PageSize: pagesize, Sort: SortColumn, SortDirection: Sortorder, Status: Status };
+                //arcustViewSearchEntity = JSON.stringify({ 'arcustViewSearchEntity': arcustViewSearchEntity });
+
+                var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                //Liveurl = "/" + Liveurl + "HsgUser/HsgUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&title=" + title + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&eeid=" + eeid + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+                Liveurl = "/" + Liveurl + "ArcustView/ArcustViewListPagingSortingList";
+                $("#modalWindow,#ui-loader").show();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/x-www-form-urlencoded",
+                    traditional: true,
+                    url: Liveurl,
+                    dataType: "html",
+                    data: arcustViewSearchEntity,
+                    success: function (data) {
+                        
+                        $("#divArcustViewList").html(data + "&nbsp;");
+                        $("#modalWindow,#ui-loader").hide();
+                    }
+                });
+
+            });
+        });
+
+
+
+        function Sortingmodal(ColumnName) {
+
+
+            var Pageindex = $("#lblPageindex").text();
+            var Sortorder = $("#hdnSortOrder").text();
+
+            $("#hdnSortColumn").text(ColumnName);
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Sortorder == '') {
+                Sortorder = 'ASC'
+                $("#hdnSortOrder").text('ASC');
+            }
+            else if (Sortorder == 'ASC') {
+                Sortorder = 'DESC'
+                $("#hdnSortOrder").text('DESC');
+            }
+            else {
+                Sortorder = 'ASC'
+                $("#hdnSortOrder").text('ASC');
+            }
+
+            var Dept = $(".modal").find("#Department").val();
+
+
+            var pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+
+     @*   var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "HsgUser/HsgUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&title=" + title + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&eeid=" + eeid + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;*@
+
+
+            var arcustViewSearchEntity = { Dept: Dept, Pageindex: Pageindex, PageSize: pagesize, columnName: ColumnName, sortorder: Sortorder };
+            //arcustViewSearchEntity = JSON.stringify({ 'arcustViewSearchEntity': arcustViewSearchEntity });
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            //Liveurl = "/" + Liveurl + "HsgUser/HsgUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&title=" + title + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&eeid=" + eeid + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail";
+            $("#modalWindow,#ui-loader").show();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                data: arcustViewSearchEntity,
+                success: function (data) {
+                    $("#divArcustEmployeeList").html('');
+                    $("#divArcustEmployeeList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        }
+
+        function Sorting(ColumnName) {
+
+
+            var Pageindex = $("#lblPageindex").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            if (ColumnName == 'View Details') {
+                ColumnName = 'customer_code';
+            }
+            else if (ColumnName == 'Facility Name') {
+                ColumnName = 'FacilityName';
+            }
+            else if (ColumnName == 'Start Date') {
+                ColumnName = 'StartDate';
+            }
+            else if (ColumnName == 'Term Date') {
+                ColumnName = 'TermDate';
+            }
+            
+            
+
+            $("#hdnSortColumn").text(ColumnName);
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Sortorder == '') {
+                Sortorder = 'ASC'
+                $("#hdnSortOrder").text('ASC');
+            }
+            else if (Sortorder == 'ASC') {
+                Sortorder = 'DESC'
+                $("#hdnSortOrder").text('DESC');
+            }
+            else {
+                Sortorder = 'ASC'
+                $("#hdnSortOrder").text('ASC');
+            }
+            var facilityCode = $('#txtSearchFacilityCode').val();
+            facilityCode = facilityCode = null ? "" : facilityCode;
+
+            var facilityName = $('#txtSearchFacilityName').val();
+            facilityName = facilityName = null ? "" : facilityName;
+
+            var managementCode = $('#txtSearchManagementCode').val();
+            managementCode = managementCode = null ? "" : managementCode;
+
+            var managementName = $('#txtSearchManagementName').val();
+            managementName = managementName = null ? "" : managementName;
+
+            var territoryCode = $('#txtSearchTerritoryCode').val();
+            territoryCode = territoryCode = null ? "" : territoryCode;
+
+            var collectorCode = $('#txtSearchCollectorCode').val();
+            collectorCode = collectorCode = null ? "" : collectorCode;
+
+            var payrollCode = $('#txtSearchPayrollCode').val();
+            payrollCode = payrollCode = null ? "" : payrollCode;
+
+            var departmentCode = $('#txtSearchDepartmentCode').val();
+            departmentCode = departmentCode = null ? "" : departmentCode;
+
+            var city = $('#txtSearchCity').val();
+            city = city = null ? "" : city;
+
+            //var state = $('#txtSearchState').val();
+            //state = state = null ? "" : state;
+            var state = '';
+            $('#txtSearchState').next('div').find('ul li').each(function () {
+
+                if ($(this).hasClass('active')) {
+                    state += $(this).find('label').text().trim() + ',';
+                }
+
+            });
+
+            state = state = null ? "" : state;
+
+            var address = $('#txtSearchAddress').val();
+            address = address = null ? "" : address;
+
+            var zipCode = $('#txtSearchZipCode').val();
+            zipCode = zipCode = null ? "" : zipCode;
+
+            var startDate = $('#txtSearchStartDate').val();
+            startDate = startDate = null ? "" : startDate;
+
+            var endDate = $('#txtSearchEndDate').val();
+            endDate = endDate = null ? "" : endDate;
+
+            var termStartDate = $('#txtSearchTermStartDate').val();
+            termStartDate = termStartDate = null ? "" : termStartDate;
+
+            var termEndDate = $('#txtSearchTermEndDate').val();
+            termEndDate = termEndDate = null ? "" : termEndDate;
+
+            var div = $('#txtSearchDiv').val();
+            div = div = null ? "" : div;
+
+            var reg = $('#txtSearchReg').val();
+            reg = reg = null ? "" : reg;
+
+            var dist = $('#txtSearchDist').val();
+            dist = dist = null ? "" : dist;
+
+
+            var pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+
+            @*   var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "HsgUser/HsgUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&title=" + title + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&eeid=" + eeid + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;*@
+
+
+            var arcustViewSearchEntity = { FacilityCode: facilityCode, FacilityName: facilityName, ManagementCode: managementCode, ManagementName: managementName, TerritoryCode: territoryCode, CollectorCode: collectorCode, PayrollCode: payrollCode, DepartmentCode: departmentCode, City: city, State: state, Address: address, ZipCode: zipCode, StartDate: startDate, EndDate: endDate, TermStartDate: termStartDate, TermEndDate: termEndDate, Div: div, Reg: reg, Dist: dist, Pageindex: Pageindex, PageSize: pagesize, Sort: SortColumn, SortDirection: Sortorder };
+            //arcustViewSearchEntity = JSON.stringify({ 'arcustViewSearchEntity': arcustViewSearchEntity });
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            //Liveurl = "/" + Liveurl + "HsgUser/HsgUserListPagingSortingList?firstName=" + firstName + "&lastName=" + lastName + "&username=" + username + "&title=" + title + "&div=" + div + "&reg=" + reg + "&dist=" + dist + "&eeid=" + eeid + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            Liveurl = "/" + Liveurl + "ArcustView/ArcustViewListPagingSortingList";
+            $("#modalWindow,#ui-loader").show();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                data: arcustViewSearchEntity,
+                success: function (data) {
+                    $("#divArcustViewList").html('');
+                    $("#divArcustViewList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        }
+        function GeneratePagingFooter() {
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            var TotalRecord = $("#hdnTotalRecord").val();
+            var PageIndex = $("#hdnPageIndex").val();
+            var allheader = $('#tbldArcustViewList th')
+            for (var a = 0; a < allheader.length; a++) {
+                var header = allheader[a];
+                var headertext = allheader[a].innerHTML.trim();
+                if (headertext != 'Action') {
+                    allheader[a].innerHTML = '';
+                    var createA = document.createElement('a');
+                    var createAText = document.createTextNode(headertext);
+                    createA.setAttribute('href', "#");
+                    createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                    createA.appendChild(createAText);
+                    header.appendChild(createA);
+                }
+                if (headertext == 'TotalRecord') {
+                    header.setAttribute('class', 'headerhide');
+                }
+                if (headertext == 'Pageindex') {
+                    header.setAttribute('class', 'headerhide');
+                }
+            }
+
+            var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+            if ($("#hdnTotalRecord").val()) {
+                var text = "<tr class='webgrid-footer'><td colspan='20'>";
+                text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+                text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+                text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+                text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+                text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+                text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+                text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+                text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+                text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+                text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+                text = text + "</td></tr>";
+                $('#tbldArcustViewList tbody').append(text);
+
+                $("#lblPageindex").text(PageIndex);
+                $("#lblTotalRecord").text(TotalRecord);
+                var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+                $("#lblMaxpage").text(MaxPage);
+            }
+        }
+
+    </script>
+
+
+

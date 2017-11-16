@@ -1,0 +1,63 @@
+﻿@model List<EmployeeDirectory.Entity.UserTypeEntity>
+
+@{
+    var gdUserTypeList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 10, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+<div>
+    @gdUserTypeList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                htmlAttributes: new { Id = "tblUserList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                                columns: gdUserTypeList.Columns(
+                                gdUserTypeList.Column("Name", "Group Name"),
+                                gdUserTypeList.Column("Description", "Description"),
+                                gdUserTypeList.Column("Action", format: @<text>
+                            @if (ViewBag.IsEdit != null)
+                                {
+                                    if (ViewBag.IsEdit)
+                                    {
+
+                                        <a href="#" onclick="EditUserTypeList(@item.ID)"><i class="fa fa-edit"></i></a>
+                                    }
+                                }
+                            @if (ViewBag.IsDelete != null)
+                            {
+                                if (ViewBag.IsDelete)
+                                {
+
+                                    <a href="~/UserType/DeleteUserType/@item.ID" onclick="return confirm('Are you sure you wish to delete this User Type?');"><i class="fa fa-trash"></i></a>
+                                }
+                            }
+                        </text>, style: "webgrid-action-column")
+                                                                                ))
+
+</div>
+
+<script>
+
+    function EditUserTypeList(me) {
+        $("#modalWindow,#ui-loader").show();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "UserType/EditUserType";
+
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            data: { Id: me },
+            success: function (result) {
+                $("#parentModal").html(result).modal('show');
+                $("#modalWindow,#ui-loader").hide();
+            }
+        });
+
+
+    }
+
+</script>
+

@@ -1,0 +1,152 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+@{
+    ViewBag.Title = "Add Asset Return";
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Add Asset Return</h3>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("SaveAssetReturnOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetReturnOrder" }))
+                {
+                    @*@Html.ValidationSummary(true)*@
+
+                    <div class="col-md-6 col-sm-6 form-group" style="margin-top: 20px;">
+                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                        <div class="col-sm-6">
+                            @*@Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control" })*@
+                            @*@Html.DropDownListFor(m => m.AssetTagNumber, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control" })
+                                <span id="btnGetItemDetail" onclick="GetItemDetail(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                <a href="~/AssetManagement/AddAssetReturn" style="cursor:pointer" class="input-group-addon DocumentAddbutton">Clear</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divAssetReturnView">
+
+
+                     
+
+
+                    </div>
+
+                    
+
+                }
+            </div>
+
+            <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+            <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    
+    function GetItemDetail(me) {
+
+        var TagNo = $(me).closest('.input-group').find("#AssetTagNumber").val();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/getAssetReturnDetailByTagNo";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { TagNo: TagNo },
+            success: function (result) {
+
+                if (result == "") {
+                    alert("Item not available for this tagNumber.")
+                    $(".divAssetReturnView").html("");
+                    return false;
+                }
+                else {
+
+                    $(".divAssetReturnView").html(result);
+                    $(me).closest('.input-group').find("#AssetTagNumber").attr('readonly', true);
+                }
+
+                //var date = new Date(parseInt(result.AssignDate.substr(6)));
+                //var fStart = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+                //$("#FormAssetReturnOrder").find("#ItemName").val(result.ItemName);
+                //$("#FormAssetReturnOrder").find("#PONumber").val(result.PONumber);
+                //$("#FormAssetReturnOrder").find("#AssignDate").val(fStart);
+                //if (result.IsEmployee == 1) {
+                //    $(".divFacility").hide();
+                //    $(".divEmployee").show();
+                //    $("#FormAssetReturnOrder").find("#EmployeeId").val(result.EmployeeId);
+                //    $("#FormAssetReturnOrder").find("#EmployeeName").val(result.EmployeeName);
+                //}
+                //else {
+                //    $(".divEmployee").hide();
+                //    $(".divFacility").show();
+                //    $("#FormAssetReturnOrder").find("#FacilityCode").val(result.FacilityCode);
+                //    $("#FormAssetReturnOrder").find("#FacilityName").val(result.FacilityName);
+                //}
+
+            }
+        });
+
+
+    }
+
+    $("#FormAssetReturnOrder").find("#AssetTagNumber").live('keypress',function (e) {
+        if (e.which == 13) {
+            return false;   
+        }
+    });
+  
+
+    $("#FormAssetReturnOrder").live('submit', function (e) {
+        e.preventDefault();
+
+        //$(this).find("#ddlItemDetail,#Quantity").css('border', '');
+        //var PONumber = $(".tblAssetPurchaseOrder").find("#PONumber").val();
+        //var PODate = $(".tblAssetPurchaseOrder").find("#PODate").val();
+        //var VendorId = $(".tblAssetPurchaseOrder").find("#ddlVendorDetail").val();
+
+        var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetReturnOrder";
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: form,
+            success: function (result) {
+                if (result > 0) {
+                    //AlertMessage([success,fail,warning],msg,Description)
+                    alert('Inserted Successfully.');
+                    window.location = "../AssetManagement/AssetReturnList";
+
+                }
+                else {
+                    alert("Item not available for this tagNumber.")
+                }
+
+            }
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,304 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+@{
+    ViewBag.Title = "Edit Asset Return";
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Edit Asset Return</h3>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("SaveAssetReturnOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetReturnOrder" }))
+                {
+                    @*@Html.ValidationSummary(true)*@
+                    <div class="col-md-12 box-body" style="margin-top: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @*@Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control" })*@
+                                            @*@Html.DropDownListFor(m => m.AssetTagNumber, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">PO #<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.ReturnDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Reason<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextAreaFor(m => m.ReturnReason, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Assign Date<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @{ Html.EnableClientValidation(false); }
+                                            @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                            @{ Html.EnableClientValidation(true); }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">HelpDesk No<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.HelpDeskNo, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (Model.IsEmployee == true)
+                                {
+                                    <div class="row divEmployee">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <div class="row divFacility">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+
+                                                @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextBoxFor(m => m.FacilityName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Status<span class="field-validation-error"></span></label>
+                                        <div class="col-sm-6">
+                                            @*@Html.TextBoxFor(m => m.ItemStatus, new { @class = "form-control", @readonly = "readonly" })*@
+                                            @Html.DropDownListFor(m => m.ItemStatus, ViewBag.ItemStatusList as List<SelectListItem>, new { @id = "ddlItemStatusList", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.ItemStatus == "Received")
+                                {
+                                    <div class="row clsReceivedAdditionalNote">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Received Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ReceivedAdditionalNote, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clsResolvedAdditionalNote" style="display:none;">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Resolved Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ResolvedAdditionalNote, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (Model.ItemStatus == "Resolved")
+                                {
+                                    <div class="row clsReceivedAdditionalNote">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Received Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ReceivedAdditionalNote, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clsResolvedAdditionalNote">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Resolved Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ResolvedAdditionalNote, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row clsReceivedAdditionalNote" style="display:none;">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Received Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ReceivedAdditionalNote, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clsResolvedAdditionalNote" style="display:none;">
+                                        <div class="col-sm-12 form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Resolved Add. Note<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-6">
+                                                @Html.TextAreaFor(m => m.ResolvedAdditionalNote, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    @*<div class="col-md-12">
+                            <button type="button" id="btnViewItemPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-left text-center" onclick="ViewItemPopUp(this)" style="padding: 7px 15px 7px 7px">Add Item</button>
+                            <button type="button" id="btnViewVendorPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-right text-center" onclick="ViewVendorPopUp(this)" style="padding: 7px 15px 7px 7px">Add Vendor</button>
+                        </div>*@
+                            <!-- /.box-header -->
+
+                    <div class="footer-header">
+                        <div class="col-xs-12">
+                            @*@Html.HiddenFor(m => m.PurchaseOrderXML)
+                                @Html.HiddenFor(m => m.Id)*@
+                            <div class="col-xs-3 pull-right">
+                                @Html.HiddenFor(m => m.IsEmployee)
+                                @Html.HiddenFor(m => m.IsFacility)
+                                @Html.HiddenFor(m => m.POId)
+                                @Html.HiddenFor(m => m.ID)
+                                @*@Html.HiddenFor(m => m.isView)
+                                    @Html.HiddenFor(m => m.isAdd)
+                                    @Html.HiddenFor(m => m.isApprove)
+                                    @Html.HiddenFor(m => m.isEdit)
+                                    @Html.HiddenFor(m => m.isDelete)
+                                    @Html.HiddenFor(m => m.FormPermission)*@
+                                <button type="submit" id="btnSaveAssetReturnDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Update</button>
+                                <a href="~/AssetManagement/AssetReturnList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+            <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $('#ReturnDate').datepicker();
+
+
+    $("#ddlItemStatusList").live('change', function (e) {
+        var Status = $(this).val();
+        if (Status == "Request") {
+            $(".clsResolvedAdditionalNote,.clsReceivedAdditionalNote").hide();
+        }
+        else if (Status == "Received") {
+            $(".clsResolvedAdditionalNote").hide();
+            $(".clsReceivedAdditionalNote").show();
+        }
+        else if (Status == "Resolved") {
+            $(".clsReceivedAdditionalNote").hide();
+            $(".clsResolvedAdditionalNote").show();
+
+        }
+    });
+
+    $("#FormAssetReturnOrder").live('submit', function (e) {
+        e.preventDefault();
+        //$(this).find("#ddlItemDetail,#Quantity").css('border', '');
+        //var PONumber = $(".tblAssetPurchaseOrder").find("#PONumber").val();
+        var Status = $("#FormAssetReturnOrder").find("#ddlItemStatusList").val();
+        
+
+        if (Status == "Request") {
+            alert('Please change the status.');
+            return false;
+        }
+
+        var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetReturnOrder";
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: form,
+            success: function (result) {
+               if (result > 0) {
+                    //AlertMessage([success,fail,warning],msg,Description)
+                    alert('Updated Successfully.');
+                    window.location = "../../AssetManagement/AssetReturnList";
+
+                }
+                else {
+                    alert("Item not available for this tagNumber.")
+                }
+
+            }
+        });
+
+    });
+
+
+</script>

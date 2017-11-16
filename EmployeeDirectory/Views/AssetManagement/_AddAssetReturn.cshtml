@@ -1,0 +1,164 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+
+<style type="text/css">
+    .ui-datepicker {
+        z-index: 1000 !important;
+    }
+</style>
+<div class="col-md-12 box-body" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">PO #<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Date<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.ReturnDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Return Reason<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(m => m.ReturnReason, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Assign Date<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">HelpDesk No<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.HelpDeskNo, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 form-group">
+                    <label for="exampleInputEmail1" class="col-sm-6 control-label">Status<span class="field-validation-error"></span></label>
+                    <div class="col-sm-6">
+                        @*@Html.TextBoxFor(m => m.ItemStatus, new { @class = "form-control", @readonly = "readonly" })*@
+                        @Html.DropDownListFor(m => m.ItemStatus, ViewBag.ItemStatusList as List<SelectListItem>, new { @id = "ddlItemStatusList", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.IsEmployee == true)
+            {
+                <div class="row divEmployee">
+                    <div class="col-sm-12 form-group">
+                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Id<span class="field-validation-error"></span></label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Name<span class="field-validation-error"></span></label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+
+                </div>
+            }
+            else
+            {
+
+
+                <div class="row divFacility">
+                    <div class="col-sm-12 form-group">
+                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Code<span class="field-validation-error"></span></label>
+                        <div class="col-sm-6">
+
+                            @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control", @readonly = "readonly" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 form-group">
+                        <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Name<span class="field-validation-error"></span></label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.FacilityName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+        @Html.HiddenFor(m => m.IsCurrentSystem)
+
+
+    </div>
+
+</div>
+<div class="footer-header">
+    <div class="col-xs-12">
+
+        <div class="col-xs-3 pull-right">
+            @Html.HiddenFor(m => m.IsEmployee)
+            @Html.HiddenFor(m => m.IsFacility)
+            @Html.HiddenFor(m => m.POId)
+            <button type="submit" id="btnSaveAssetReturnDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Save</button>
+            <a href="~/AssetManagement/AssetReturnList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Back</a>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />*@
+@Scripts.Render("~/bundles/jqueryPart")
+@Styles.Render("~/Content/cssPart")
+
+<script type="text/javascript">
+    var jQuery = $.noConflict(true);
+    var dd = jQuery("#FormAssetReturnOrder").find("#AssignDate").val();
+    jQuery('#ReturnDate').datepicker({
+        minDate: new Date(dd)
+        });
+    //});
+
+    //$('#FormAssetReturnOrder').find('#ReturnDate').live('focusin', function () {
+    //    var dd = $("#FormAssetReturnOrder").find("#AssignDate").val();
+    //    var date = new Date(dd);
+    //    var year = date.getFullYear(); //get year
+    //    var month = date.getMonth(); //get month
+    //    var day = date.getDate();
+    //    var minDate = new Date(year, month, day);
+
+    //    $(this).datepicker({
+    //        startDate: minDate, //set it here
+    //        endDate: new Date()
+    //    });
+    //})
+
+</script>

@@ -1,0 +1,279 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+@{
+    ViewBag.Title = "Asset Assign List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Asset  List</h3>
+                    </div>
+
+                    <div class="col-sm-7 col-xs-12">
+                        
+                        <a class="btneffect pull-right" style="margin-right: 10px; margin-top: 16px !important;" href="../AssetManagement/AddAssetAssign">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Add
+                        </a>
+                        <button type="button" id="btnExcelAssetAssign" onclick="ExcelAssetAssignPopUp()" style="margin-right: 10px; margin-top: 16px !important;" class="btneffect pull-right mrgrht10">Import Excel</button>
+                    </div>
+                 
+
+
+                </div>
+                @using (Html.BeginForm("SearchAssetDetail", "AssetManagement", FormMethod.Post, new { @class = "form-horizontal", @id = "FormSearchAssetDetail", @style = "border-bottom: 2px solid rgb(204, 204, 204); padding: 20px 0px; background: rgb(229, 229, 229) none repeat scroll 0% 0%; margin-bottom: 11px;" }))
+                {
+                    @Html.ValidationSummary(true)
+
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFill" })
+                                    @*@Html.DropDownListFor(m => m.AssetTagId, ViewBag.AssetTagList as List<SelectListItem>, new { @id = "ddlAssetTagList", @class = "form-control" })*@
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(m => m.ItemId, ViewBag.ItemDetailList as List<SelectListItem>, new { @id = "ddlItemList", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">PO Number<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(m => m.PONumber, ViewBag.PODetailList as List<SelectListItem>, new { @id = "ddlPOList", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Assign From Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "AssignFromDate" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Assign To Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "AssignToDate" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">DIV<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.DIV, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">REG<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.REG, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">DIST<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.DIST, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="">
+
+                                        <div class="pull-right">
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4">
+                                                    <button type="button" id="SearchAssetListbyParam" data-style="slide-up" style="z-index: 10;" class="ladda-button btneffect pull-right">Search</button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <a href="~/AssetManagement/AssetAssignList" class="btneffect pull-right ladda-button">Clear</a>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+                <div class="DivAssetAssignList">
+                    <!-- /.box-header -->
+                    @Html.Partial("_AssetAssignList", Model.lstAssetAssignEntity)
+
+                </div>
+
+
+                <!-- /.box-body -->
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type='hidden' name='SortOrder' id='hdnSortOrder' value='ASC' />
+<input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+<div class="modal-dialog AssetAssignExcelDialog" id="" style="display:none;">
+    @using (Html.BeginForm("ImportExcelAssetAssignList", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid", @id = "FormImportExcelAssetAssign", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Import Excel</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-1">
+                            <input type="file" id="AssetAssignExcel" accept=".xls,.xlsx" name="AssetAssignExcel" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Import</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="hidden" id="trindex" />
+            </div>
+        </div>
+    }
+</div>
+
+<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $('#AssignFromDate,#AssignToDate').datepicker();
+    $(document).ready(function () {
+
+        $('#SearchAssetListbyParam').on('click', function () {
+
+            var TagNo = $('#FormSearchAssetDetail').find('#AssetTagNumber').val().trim();
+            var ItemId = $('#FormSearchAssetDetail').find('#ddlItemList').val().trim();
+            var PONumber = $('#FormSearchAssetDetail').find('#ddlPOList').val().trim();
+            var EEID = $('#FormSearchAssetDetail').find('#EmployeeId').val().trim();
+            var FacilityCode = $('#FormSearchAssetDetail').find('#FacilityCode').val().trim();
+            var AssetFromDate = $('#FormSearchAssetDetail').find('#AssignFromDate').val().trim();
+            var AssetToDate = $('#FormSearchAssetDetail').find('#AssignToDate').val().trim();
+            var DIV = $('#FormSearchAssetDetail').find('#DIV').val().trim();
+            var REG = $('#FormSearchAssetDetail').find('#REG').val().trim();
+            var DIST = $('#FormSearchAssetDetail').find('#DIST').val().trim();
+            var pagesize = 50;
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AssetAssignPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&AssetFromDate=" + AssetFromDate + "&AssetToDate=" + AssetToDate + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST + "&pagesize=" + pagesize, "&pageindex=", "";
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    $('.DivAssetAssignList').html(result);
+                }
+            });
+
+
+        });
+    });
+
+
+    var jquery = $.noConflict();
+    jquery('#FormSearchAssetDetail').find('.AssetTagAutoFill').live('focusin', function (e) {
+        e.preventDefault();
+        var me = $(this);
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagList))');
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+
+            result.push(name);
+        }
+
+        jquery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jquery(me).trigger('keydown');
+
+    });
+
+    $("#FormImportExcelAssetAssign").live('submit', function (e) {
+        e.preventDefault();
+
+        //var form = $(this).serialize();
+        var data = new FormData();
+        var allFilesControl = $('#FormImportExcelAssetAssign input:file');
+        var files = $("#AssetAssignExcel").get(0).files;
+        data.append("AssetAssignExcel", files[0]);
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        if (files.length > 0) {
+            if (files[0].name.split('.')[1] == 'xls' || files[0].name.split('.')[1] == 'xlsx') {
+                $.ajax({
+                    url: "/" + Liveurl + "AssetManagement/ImportExcelAssetAssignList",
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    traditional: true,
+                    async: false,
+                    data: data,
+                    success: function (result) {
+                        if (result > 0) {
+                            alert('Import Successfully.')
+                            //AlertMessage([success,fail,warning],msg,Description) 
+                            // AlertMessage('success', 'Success', 'Inserted Successfully.');
+                            window.location = "../AssetManagement/AssetAssignList";
+
+                        }
+                        else {
+                            alert('Invalid Excel File. Please select proper File.');
+                            //AlertMessage('fail', 'Error', 'An error is occured.');
+                        }
+
+                    }
+                });
+            }
+            else {
+                alert('Please select EXCEL file only.');
+                return false;
+            }
+        }
+        else {
+            alert('Please Select File');
+        }
+    });
+
+    function ExcelAssetAssignPopUp() {
+        $("#parentModal").html("");
+        $("#parentModal").html($(".AssetAssignExcelDialog").clone().show()).modal('show');
+
+    }
+</script>
+

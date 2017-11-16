@@ -1,0 +1,41 @@
+﻿@model List<EmployeeDirectory.Entity.FieldMasterEntity>
+
+<div class="table-responsive no-padding tblFaciltyRealignment">
+
+
+    <table class="table table-hover">
+        <thead style="background-color:#4C4743">
+            <tr>
+                <th style="color:white">Field Name</th>
+                <th style="color:white">Is Display</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr itemid="@item.ID">
+                    <td>@item.FieldName</td>
+                    @if (item.IsDisplay == true) {
+                        <td><input type="checkbox" checked="checked" value="@item.IsDisplay" id="IsDisplay" name="IsDisplay" /> </td>
+                    }
+                    else {
+                        <td><input type="checkbox" value="@item.IsDisplay" id="IsDisplay" name="IsDisplay" /> </td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+</div>
+
+@if (ViewBag.IsAdd != null)
+            {
+                if (ViewBag.IsAdd)
+                {
+                    <div style="padding:12px;">
+                        <button type="button" id="btnAssignFieldPermission" onclick="AssignFieldPermission()" name="Add" class="btneffect">Assign</button>
+                    </div>
+}
+}

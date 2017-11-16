@@ -1,0 +1,83 @@
+﻿@model List<EmployeeDirectory.Entity.AssetEntity>
+
+
+@{
+    var AssetStockList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+<style type="text/css">
+
+    .tdAssignQty:hover, .tdReturnQty:hover, .tdTermQty:hover, .tdRetireqty:hover, .TotalAvailableQty:hover {
+        box-shadow: 0px 3px 3px 3px #888888;
+    }
+
+</style>
+
+<div>
+    @AssetStockList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                        htmlAttributes: new { Id = "tblAssetStockList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                        columns: AssetStockList.Columns(
+                                AssetStockList.Column(null, "Item Name", style: "tdItemName", format: @<text><span id="@item.ItemId">@item.ItemName</span></text>),
+                                AssetStockList.Column("AssignQty", "Assign Qty", style: "tdAssignQty"),
+                                AssetStockList.Column("ReturnQty", "Return Qty", style: "tdReturnQty"),
+                                        AssetStockList.Column("TermQty", "Term Qty", style: "tdTermQty"),
+                        AssetStockList.Column("RetireQty", "Retire Qty", style: "tdRetireqty"),
+                        AssetStockList.Column("TotalAvailableQty", "Available Qty", style: "TotalAvailableQty"),
+                AssetStockList.Column("Quantity", "Total Qty")))
+
+</div>
+
+<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+
+      
+    });
+
+
+
+
+
+  
+
+      @*var jquery = $.noConflict();
+    jquery('.AssetTagAutoFill').live('focusin', function (e) {
+        e.preventDefault();
+        var me = $(this);
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagList))');
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+
+            result.push(name);
+        }
+
+        jquery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jquery(me).trigger('keydown');
+
+    });*@
+
+</script>
+
+
+

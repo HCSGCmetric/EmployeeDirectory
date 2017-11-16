@@ -1,0 +1,345 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+@using EmployeeDirectory.Helper
+
+@{
+    ViewBag.Title = "AssetItem Details";
+    Layout = null;
+}
+
+<style>
+    label {
+        margin-top: 7px;
+    }
+</style>
+
+
+<div class="modal-dialog" style="width:68%;">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Asset Re-Assign</h4>
+        </div>
+        @using (Html.BeginForm("SaveAssetReAssignAssignOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetReAssign" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 box-body">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-xs-4 control-label">Tag Number :</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" id="AssetTagNumber" name="AssetTagNumber" value="@Model.AssetTagNumber" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-xs-4 control-label">Item Name :</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" value="@Model.ItemName" id="ItemName" name="ItemName" class="form-control" readonly="readonly" />
+                                            @Html.HiddenFor(m => m.ItemId, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-xs-4 control-label">PO Number :</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" value="@Model.PONumber" id="PONumber" name="PONumber" class="form-control" readonly="readonly" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-xs-4 control-label">Assign Date :</label>
+                                        <div class="col-xs-8">
+                                            @*<input type="text" value="@Model.AssignDate" class="form-control" readonly="readonly" />*@
+                                            @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">&nbsp;</label>
+                                        <div class="col-sm-8">
+                                            <label class="radio-inline">
+                                                @Html.RadioButton("ChckDiv", "true", true, new { @itemid = "IsEmployee" })Is Employee<span class="field-validation-error"></span>
+                                            </label>
+                                            <label class="radio-inline">
+                                                @Html.RadioButton("ChckDiv", "false", false, new { @itemid = "IsFacility" })Is Facility<span class="field-validation-error"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="divEmployee">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                                                    <span id="btnGetEmpDetail" onclick="GetEmpDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Employee Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpAddress, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpState, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Phone No<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.EmpPhoneNo, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row divFacility" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                                                    <span id="btnGetFacilityDetail" onclick="GetFacilityDetailPopUp(this)" style="cursor:pointer" class="input-group-addon DocumentAddbutton">GO</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Facility Name<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacilityName, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Address<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacAddress, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">State<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacState, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="col-sm-4 control-label">Tracking No<span class="field-validation-error"></span></label>
+                                            <div class="col-sm-7">
+                                                @Html.TextBoxFor(m => m.FacTrackingNo, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        @Html.HiddenFor(m => m.IsEmployee)
+                                        @Html.HiddenFor(m => m.IsFacility)
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <div class="pull-right">
+                    <button type="submit" id="btnSaveAssetReAssignDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center" style="width: auto;">Save</button>
+                    <button type="button" id="closePop" class="DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />*@
+@Scripts.Render("~/bundles/jqueryPart")
+@Styles.Render("~/Content/cssPart")
+
+<script type="text/javascript">
+    var jQuery = $.noConflict(true);
+    jQuery('#AssignDate').datepicker();
+    jQuery.validator.unobtrusive.parse("form");
+
+    jQuery(document).ready(function (e) {
+
+        $("#FormAssetReAssign").find("#IsEmployee").val('True');
+
+        jQuery("#FormAssetReAssign").on('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#modalWindow,#ui-loader").show();
+            //$(this).find("#ddlItemDetail,#Quantity").css('border', '');
+            //var PONumber = $(".tblAssetPurchaseOrder").find("#PONumber").val();
+            //var PODate = $(".tblAssetPurchaseOrder").find("#PODate").val();
+            //var VendorId = $(".tblAssetPurchaseOrder").find("#ddlVendorDetail").val();
+            if (jQuery('#FormAssetReAssign').find('#AssetTagNumber').val().trim() == "") {
+                jQuery('#FormAssetReAssign').find('#AssetTagNumber').css('border', 'red 1px solid');
+                return false;
+            }
+            
+            if (jQuery('#FormAssetReAssign').find('#AssignDate').val().trim() == "") {
+                jQuery('#FormAssetReAssign').find('#AssignDate').css('border', 'red 1px solid');
+                return false;
+            }
+            if (jQuery('input:radio[itemid="IsEmployee"]').is(':checked') && ($("#FormAssetReAssign").find("#EmployeeId").val() == "" || $("#FormAssetReAssign").find("#EmployeeName").val() == "")) {
+                jQuery("#FormAssetReAssign").find("#EmployeeId,#EmployeeName").css('border', 'red 1px solid');
+                return false;
+            }
+            if (jQuery('input:radio[itemid="IsFacility"]').is(':checked') && ($("#FormAssetReAssign").find("#FacilityCode").val() == "" || $("#FormAssetReAssign").find("#FacilityName").val() == "")) {
+                jQuery("#FormAssetReAssign").find("#FacilityCode,#FacilityName").css('border', 'red 1px solid');
+                return false;
+            }
+            var form = jQuery(this).serialize();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetReAssignOrder";
+            jQuery.ajax({
+                url: Liveurl,
+                type: "POST",
+                cache: false,
+                data: form,
+                success: function (result) {
+                    if (result > 0) {
+                        //AlertMessage([success,fail,warning],msg,Description)
+                        jQuery("#parentModal").find("#closePop").click();
+                        
+                        jQuery("#FormSearchAssetDetail").find("#SearchAssetListbyParam").click();
+                        $("#modalWindow,#ui-loader").hide();
+                        alert('Inserted Successfully.');
+
+
+                    }
+                    else {
+                        alert('An error is occured.');
+                    }
+
+                }
+            });
+
+        });
+    });
+
+    $('input:radio[name="ChckDiv"]').on('change', function () {
+        if ($(this).is(':checked') && $(this).attr('itemid') == 'IsEmployee') {
+            $('.divEmployee').show();
+            $('.divFacility').hide();
+
+            $("#FormAssetReAssign").find("#FacilityCode,#FacilityName,#FacAddress,#FacState").val("");
+
+            $("#FormAssetReAssign").find("#IsFacility").val('False');
+            $("#FormAssetReAssign").find("#IsEmployee").val('True');
+
+        }
+        else {
+            $('.divFacility').show();
+            $('.divEmployee').hide();
+
+            $("#FormAssetReAssign").find("#EmployeeId,#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+            $("#FormAssetReAssign").find("#IsEmployee").val('False');
+            $("#FormAssetReAssign").find("#IsFacility").val('True');
+        }
+    });
+
+    function GetEmpDetailPopUp(me) {
+        var EEID = $(me).closest('.input-group').find("#EmployeeId").val();
+
+
+        var ItemId = $('#FormAssetReAssign').find('.form-control[name="ItemId"]').val();
+        if (ItemId == "" || ItemId == 0) {
+            alert("Please select item for this employee");
+            return false;
+        }
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "EmployeeDirectory/getEmployeeDirectoryDetailByEEIDForAsset";
+
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { EEID: EEID, ItemId: ItemId },
+            success: function (result) {
+                $("#FormAssetReAssign").find("#EmployeeName,#EmpAddress,#EmpState,#EmpPhoneNo").val("");
+
+                if (result.EEID == "-1") {
+                    $("#FormAssetReAssign").find("#EmployeeId").val("");
+                    alert("This employee is already have selected Item.")
+                    return false;
+                }
+                if (result.EEID == "-2") {
+                    $("#FormAssetReAssign").find("#EmployeeId").val("");
+                    alert("Employee Not Available.")
+                    return false;
+                }
+                $("#FormAssetReAssign").find("#EmployeeName").val(result.EMPLOYEENAME);
+                $("#FormAssetReAssign").find("#EmpAddress").val(result.ADDRESSONE);
+                $("#FormAssetReAssign").find("#EmpState").val(result.ST);
+                $("#FormAssetReAssign").find("#EmpPhoneNo").val(result.PrimaryPhone);
+
+            }
+        });
+
+
+    }
+
+
+    function GetFacilityDetailPopUp(me) {
+        var facilityCode = $(me).closest('.input-group').find("#FacilityCode").val();
+        var ItemId = $('#FormAssetReAssign').find('.form-control[name="ItemId"]').val();
+
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "ArcustView/GetDetailsByfacilityCodeForAsset";
+
+        if (ItemId == "" || ItemId == 0) {
+            alert("Please select item for this employee");
+            return false;
+        }
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { facilityCode: facilityCode, ItemId: ItemId },
+            success: function (result) {
+                $("#FormAssetReAssign").find("#FacilityName,#FacAddress,#FacState").val("");
+
+                if (result == "") {
+                    $("#FormAssetReAssign").find("#FacilityCode").val("");
+                    alert("This Facility Not Exist.");
+                    return false;
+                }
+                else if (result.customer_code == "-1") {
+                    $("#FormAssetReAssign").find("#FacilityCode").val("");
+                    alert("This Facility is already have selected Item.");
+                    return false;
+                }
+                $("#FormAssetReAssign").find("#FacAddress").val(result.addr1);
+                $("#FormAssetReAssign").find("#FacState").val(result.state);
+                $("#FormAssetReAssign").find("#FacilityName").val(result.customer_name);
+
+            }
+        });
+
+    }
+
+</script>

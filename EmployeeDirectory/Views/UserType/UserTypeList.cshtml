@@ -1,0 +1,118 @@
+﻿@model EmployeeDirectory.Entity.UserTypeEntity
+
+@{
+    ViewBag.Title = "UserTypeList";
+}
+
+
+
+<div class="container-fluid">
+    <br />
+    <div class="row">
+        <div class="box-header">
+            <div class="col-sm-5 col-xs-12">
+                <h3 class="box-title">  User Type List</h3>
+            </div>
+            @if (ViewBag.IsAdd != null)
+            {
+                if (ViewBag.IsAdd)
+                {
+
+                    <div class="col-sm-7 col-xs-12">
+                        <a class="pull-right btneffect AdminUserAdd" id="btnAddUserType" onclick="AddUserType()" name="Add">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Add
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <form role="form" id="AdminUserList" class="form-horizontal">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="form-group">
+                            <div class="table-responsive" id="divUserList">
+                                @Html.Partial("_UserTypeList", Model.UserTypeEntityList)
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal-dialog" id="AdditionalDialog" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add User Type</h4>
+        </div>
+        @using (Html.BeginForm("SaveUserType", "UserType", FormMethod.Post, new { @id = "FormUserType", @class = "validation-form-container row-fluid form-horizontal" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="exampleInputFile" class="col-sm-3 control-label">Name <span style="color:red;">*</span></label>
+                        <div class="col-sm-9 control-label">
+                            @Html.TextBoxFor(m => m.Name, new { @style = "float: left;" })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="exampleInputFile" class="col-sm-3 control-label">Description</label>
+                        <div class="col-sm-9 control-label">
+                            @Html.TextAreaFor(m => m.Description, new { @style = "float: left;" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="exampleInputFile" class="col-sm-3 control-label">Is Active?</label>
+                        <div class="col-sm-1 control-label">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @style = "float: left;" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btneffect pull-right ladda-button">Save</button>
+                <button type="button" class="btneffect pull-right ladda-button" data-dismiss="modal">Close</button>
+                <input type="hidden" id="trindex" />
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$.validator.unobtrusive.parse("FormGroup");
+        $('#FormUserType').find('#IsActive').attr('checked', true);
+    })
+
+
+    function AddUserType() {
+        $("#parentModal").html($("#AdditionalDialog").clone().show()).modal('show');
+    }
+
+
+    $('#FormUserType').live('submit', function () {
+
+        var Name = $(this).find('#Name').val().trim();
+
+        if (Name == '') {
+            $(this).find('#Name').css('border', 'red 1px solid');
+            return false;
+
+        }
+
+
+
+    });
+</script>

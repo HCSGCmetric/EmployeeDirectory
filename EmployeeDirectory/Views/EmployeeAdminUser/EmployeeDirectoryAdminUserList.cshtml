@@ -1,0 +1,48 @@
+﻿@model List<EmployeeDirectory.Entity.AdminUserEntity>
+
+@{
+    ViewBag.Title = "AdminUserList";
+}
+
+
+
+
+<div class="container-fluid">
+    <br />
+    <div class="row">
+        <div class="box-header">
+            <div class="col-sm-5 col-xs-12">
+                <h3 class="box-title">  AdminUser List</h3>
+            </div>
+            @*@if (Convert.ToString(Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]) == Convert.ToString(EmployeeDirectory.Entity.UserType.SuperUser))*@
+            @if (ViewBag.IsAdd != null)
+            {
+                if (ViewBag.IsAdd)
+                {
+                    <div class="col-sm-7 col-xs-12">
+                        <a class="pull-right btneffect AdminUserAdd" style="margin-right: 10px; margin-top: 16px !important;" href="~/EmployeeAdminUser/CreateEmpAdminUser">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Create User
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <form role="form" id="AdminUserList" class="form-horizontal">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="form-group">
+                            <div class="table-responsive" id="divAdminUserList">
+                                @Html.Partial("_EmpAdminUserWebGrid", Model)
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

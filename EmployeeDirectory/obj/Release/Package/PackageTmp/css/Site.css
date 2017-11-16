@@ -1,0 +1,828 @@
+﻿/*  
+  
+  Website:	Healthcare Services Group, Inc.
+  Type:			Stylesheet 
+  Version:	2.1
+  Media: 		Screen
+  
+  */
+
+
+/* GENERAL */
+html {
+    overflow-y: scroll;
+}
+
+html, body {
+    height: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /*width: 100%;*/
+    /*background: #00264b url('../img/bg.jpg') repeat left top;*/
+    background: url('../img/bg.jpg') repeat-x;
+    /*background-size: contain;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #808285;
+    line-height: 16px;*/
+}
+
+table {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: 0px;
+}
+
+td {
+    vertical-align: top;
+}
+
+form, div, input, textarea {
+    margin: 0;
+    padding: 0;
+}
+
+input, textarea, select, option {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #808285;
+    line-height: 16px;
+}
+
+input {
+    vertical-align: top;
+}
+
+ul, ol, li, dd, dt, dd {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6, pre {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+p, img, pre, blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0px;
+}
+
+a {
+    color: #2f84ea;
+    text-decoration: none;
+}
+
+#head a {
+    color: #fff;
+}
+
+#foot a {
+    color: #fff;
+}
+
+/* WRAPS */
+#wrap {
+    margin: 0 auto;
+    width: 1150px;
+}
+
+
+/* HEADER */
+#head {
+    height: 116px;
+}
+
+.hd-lf {
+    float: left;
+    width: 280px;
+}
+
+    .hd-lf img {
+        margin: 24px 0 0 62px;
+    }
+/*.hd-rt {float:right;width:auto;height:116px;background:url('/benefits/images/layout/slogan.gif') no-repeat 371px 68px; padding-top:30px; color:#fff;}*/
+.hd-rt {
+    float: right;
+    width: auto;
+    height: 116px;
+    padding-top: 30px;
+    color: #fff;
+}
+
+    .hd-rt p {
+        text-align: right;
+        padding: 10px 50px 0 0;
+    }
+
+        .hd-rt p a {
+            color: #ffffff;
+            font-size: 11px;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+
+            .hd-rt p a:hover {
+                color: #7AC142;
+            }
+
+
+#nav {
+    height: 42px;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 6px 20px 0px 20px;
+    margin-bottom: 25px;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffffff 0%, #c8c8c8 98%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(98%,#c8c8c8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 0%,#c8c8c8 98%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 0%,#c8c8c8 98%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 0%,#c8c8c8 98%); /* IE10+ */
+    background: linear-gradient(to bottom, #ffffff 0%,#c8c8c8 98%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c8c8c8',GradientType=0 ); /* IE6-9 */
+    border-radius: 20px;
+}
+
+    #nav li {
+        float: left;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+        #nav li a {
+            display: block;
+            color: #ffffff;
+            padding: 7px 12px 7px 12px;
+            border-radius: 20px;
+            background: #033C73;
+        }
+
+            #nav li a:hover, #nav li a.active {
+                display: block;
+                color: #ffffff;
+                padding: 7px 12px 7px 12px;
+                text-decoration: none;
+                border-radius: 20px;
+                background: #00366b; /* Old browsers */
+                background: -moz-linear-gradient(top, #00366b 0%, #00264b 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00366b), color-stop(100%,#00264b)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #00366b 0%,#00264b 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, #00366b 0%,#00264b 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, #00366b 0%,#00264b 100%); /* IE10+ */
+                background: linear-gradient(to bottom, #00366b 0%,#00264b 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00366b', endColorstr='#00264b',GradientType=0 ); /* IE6-9 */
+            }
+
+
+.middleconent {
+    min-height: 540px;
+}
+
+/* HOME PAGE */
+#home {
+    min-height: 440px;
+    width: 847px;
+    background: #ffffff;
+    position: relative;
+    padding: 8px 50px 8px 50px;
+    border: 1px solid #eef1f3;
+    overflow: auto;
+}
+
+.hom-border {
+    margin-bottom: 20px;
+    border: 1px solid black;
+    margin-left: 50px;
+    overflow: hidden;
+}
+
+.hom-lf {
+    float: left;
+    width: 446px;
+    border-right: 1px solid black;
+}
+
+.hom-rt {
+    float: right;
+    width: 348px;
+}
+
+.hom-content1 {
+    padding: 0px 0px 8px 0px;
+    line-height: 27px;
+    color: black; /*min-height:182px;*/
+}
+
+.hom-content2 {
+    padding: 0px 0px 8px 0px;
+    line-height: 27px;
+    color: #00264b; /*min-height:182px;*/
+}
+
+#announcements {
+    min-height: 150px;
+}
+
+#documents {
+    min-height: 220px;
+}
+
+#onlineforms {
+    min-height: 220px;
+}
+
+#erisadocs {
+    min-height: 80px;
+}
+
+#relatedlinks {
+    min-height: 182px;
+}
+
+#home .testimonial .quote {
+    padding-bottom: 14px;
+    height: 112px;
+}
+
+    #home .testimonial .quote .testimony {
+        float: right;
+        width: 221px;
+    }
+
+.hom-logos {
+    margin: 0 20px;
+    padding: 20px 0;
+    background: url('/benefits/images/logos/divider.gif') repeat-x top left;
+}
+
+    .hom-logos ul {
+        float: left;
+        margin-right: -20px;
+    }
+
+    .hom-logos li {
+        float: left;
+        padding-right: 6px;
+    }
+
+
+/* FOOTER */
+#foot {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+    #foot p {
+        text-align: center;
+        padding: 16px 0;
+    }
+
+/* CLEAR */
+.clear {
+    clear: both;
+}
+
+.hom-content1 h2, .hom-content2 h2 {
+    background: url('/img/menubg.gif') repeat-x left top;
+    width: 100%;
+    height: 35px;
+    position: relative;
+    z-index: 100;
+    margin-bottom: 14px;
+}
+
+    .hom-content1 h2 span, .hom-content2 h2 span {
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+.contentplug {
+    margin-left: 10px;
+    margin-right: 2px;
+}
+
+.onlineformlinks {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-right: 2px;
+}
+
+    .onlineformlinks a {
+        font-size: 16px;
+        font-weight: bold;
+    }
+/* login Page */
+.logincontainer {
+    text-align: center;
+    margin-top: 50px;
+}
+
+table.logintable {
+    margin: 50px auto;
+    border-collapse: separate;
+    height: 114px;
+    color: #333333;
+    font-family: Verdana;
+    font-size: 12px;
+    border: 1px solid black;
+}
+
+.logintable .loginheader {
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    background: url('/benefits/images/menu/menubg.gif') repeat-x left top;
+    height: 35px;
+}
+
+.tdspacer {
+    min-height: 10px;
+    height: 20px;
+}
+
+.logininnertable {
+    padding: 0 10px 0 10px;
+}
+
+    .logininnertable tr td {
+        text-align: right;
+    }
+
+        .logininnertable tr td label {
+            width: 150px;
+            margin-right: 20px;
+        }
+
+        .logininnertable tr td input[type="text"], textarea, select, option {
+            min-height: 20px;
+            min-width: 180px;
+            color: #000000;
+        }
+
+        .logininnertable tr td input[type="submit"] {
+            color: #000000;
+        }
+
+.btnlogin {
+    min-width: 80px;
+}
+
+.spacer {
+    width: 10px;
+    display: inline-block;
+}
+
+.note {
+    color: #23B0DE;
+    text-align: left;
+}
+
+/* Contact Form */
+.contactform { /*margin-top:50px;*/
+    margin: 20px auto 20px auto;
+    border: 1px solid black;
+}
+
+    .contactform h3 {
+        padding-left: 15px;
+        padding-top: 10px;
+    }
+
+    .contactform table {
+        width: 600px;
+        border-collapse: separate;
+        height: 114px;
+        color: #333333;
+        font-family: Verdana;
+        font-size: 12px;
+    }
+
+        .contactform table tr td {
+            vertical-align: top;
+        }
+
+        .contactform table tbody tr td label {
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .contactform table tr td input[type="text"], textarea, select, option {
+            min-height: 20px;
+            min-width: 180px;
+            color: #000000;
+        }
+
+        .contactform table tr td textarea {
+            width: 300px;
+            height: 300px;
+        }
+
+.buttoncolumn {
+    text-align: right;
+    padding-right: 100px;
+}
+
+.contactform table tr td input[type="submit"] {
+    color: #000000;
+}
+
+/* contact form */
+.contactform .required {
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #e32;
+    content: ' *';
+    display: inline-block;
+    width: 10px;
+}
+
+
+.benefits#home {
+    padding: 20px;
+    width: 100%;
+    border-radius: 16px;
+    border: none;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,c8c8c8+100 */
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffffff 0%, #c8c8c8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#c8c8c8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 0%,#c8c8c8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 0%,#c8c8c8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 0%,#c8c8c8 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #ffffff 0%,#c8c8c8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c8c8c8',GradientType=0 ); /* IE6-9 */
+}
+
+.benefits .hom-border {
+    margin: 0px;
+    border: none;
+}
+
+.benefits .left_part {
+    width: 50%;
+    border-right: #c5c5c5 solid 1px;
+    float: left;
+    padding: 0px 20px 0px 0px;
+}
+
+.benefits .right_part {
+    width: 50%;
+    float: right;
+    padding: 0px 0px 0px 20px;
+}
+
+.detaillist {
+    padding: 0px 10px 10px 10px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+    .detaillist .titlelist {
+        background: url(../img/border-style.png) repeat-x left bottom;
+        padding: 10px 10px 10px 0px;
+        color: #00264b;
+        font-size: 24px;
+    }
+
+        .detaillist .titlelist img {
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+
+.listdetails {
+    color: #000;
+    padding: 20px 0px;
+}
+
+    .listdetails h1 {
+        color: #00264b;
+        font-weight: bold;
+    }
+
+    .listdetails p {
+        padding: 10px 0px;
+        color: #000;
+    }
+
+
+
+
+.benefits .hom-lf {
+    float: left;
+    width: 49%;
+    border: none;
+}
+
+    .benefits .hom-lf .hom-content1 {
+        border: #d0cfcf solid 1px;
+        margin-bottom: 20px;
+    }
+
+.benefits .hom-rt {
+    float: right;
+    width: 48%;
+}
+
+    .benefits .hom-rt .hom-content2 {
+        margin-bottom: 20px;
+        border: #d0cfcf solid 1px;
+    }
+
+.benefits .hom-content1 h2, .benefits .hom-content2 h2 {
+    background: #21afdd none repeat scroll 0 0;
+    border: medium none #ff0000;
+    border-left: 5px solid #00264b;
+    color: #fff;
+    font-weight: normal;
+    height: auto;
+    letter-spacing: 2.5px;
+    margin-bottom: 14px;
+    padding: 5px 0;
+    position: relative;
+    width: 99%;
+    z-index: 100;
+}
+
+.benefits h1 {
+    /*margin-bottom:10px;*/
+    font-size: 24px;
+}
+
+.benefit_doc_box {
+    margin: 20px 0px;
+    padding: 20px;
+    border-radius: 12px;
+    border: #cccccc solid 1px;
+    width: 100%;
+    background: #cecece; /* Old browsers */
+    background: -moz-linear-gradient(top, #cecece 0%, #ffffff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cecece), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #cecece 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #cecece 0%,#ffffff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #cecece 0%,#ffffff 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #cecece 0%,#ffffff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+    .benefit_doc_box h1 {
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+.selectoptoin {
+    margin: 20px 0px;
+}
+
+    .selectoptoin select {
+        border: none;
+        appearance: none;
+        height: 29px;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        border-radius: 20px;
+        color: #fff;
+        padding: 5px 10px;
+        font-size: 14px;
+        background-image: url(../img/select-arrow.png), url(../img/select-pattern.png);
+        background-repeat: no-repeat, repeat-x;
+        background-position: 96%;
+    }
+
+        .selectoptoin select:focus {
+            outline: 0px;
+        }
+
+select::-ms-expand {
+    display: none;
+}
+
+.selectlistoutput ul {
+    padding-left: 30px;
+}
+
+    .selectlistoutput ul li {
+        list-style-image: url(../img/bullet2.png);
+        vertical-align: middle;
+        color: #0079b4;
+        padding-bottom: 5px;
+        min-height: 24px;
+        padding-left: 10px;
+    }
+
+        .selectlistoutput ul li a {
+            color: #0079b4;
+        }
+
+
+
+
+
+
+
+
+
+
+
+.benefits #onlineforms {
+    min-height: auto;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: #e0910e;
+}
+
+.tooltip > .tooltip-arrow {
+    border-bottom-color: #e0910e;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+
+#home.login {
+    min-height: 264px;
+    width: 560px;
+    background: rgba(0, 38, 75, 0.2);
+    position: relative;
+    padding: 28px 30px 28px 30px;
+    border: 1px solid #0B3C6C;
+    overflow: auto;
+    margin: 80px auto auto auto;
+    border-radius: 4px;
+}
+
+.form-group {
+    position:relative;
+}
+.form-group label {
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+.checkbox label {
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+
+.fa {
+    font-size: 20px;
+}
+
+#ContactBenefitForm .form-group label {
+    color: #000;
+    font-weight: normal;
+}
+
+#ContactBenefitForm .checkbox label {
+    color: #000;
+    font-weight: normal;
+}
+
+/*RESPONSIVE*/
+@media screen and (max-width:1100px) {
+    #wrap {
+        margin: 0 auto;
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width:767px) {
+    #home.login {
+        min-height: 264px;
+        width: auto;
+    }
+
+    .benefits .left_part {
+        width: 100%;
+        border-right: none;
+        float: none;
+    }
+
+    .benefits .right_part {
+        width: 100%;
+        border-right: none;
+        float: none;
+    }
+
+    .detaillist {
+        padding: 0px 10px 10px 10px;
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+@media screen and (max-width:560px) {
+    #home.login {
+        min-height: 264px;
+        width: auto;
+    }
+
+    .hd-rt {
+        float: none;
+        text-align: center;
+        clear: both;
+        width: auto;
+        height: auto;
+        padding-top: 30px;
+        color: #fff;
+        display: table;
+        margin: auto;
+    }
+
+        .hd-rt p {
+            text-align: right;
+            padding: 10px 0px 10px 0;
+        }
+
+    .hd-lf {
+        float: none;
+        width: auto;
+        text-align: center;
+    }
+
+        .hd-lf img {
+            margin: 24px 0 0 0px;
+        }
+
+    #head {
+        height: auto;
+    }
+}
+
+@media screen and (max-width:420px) {
+    #home.login {
+        min-height: 264px;
+        width: auto;
+    }
+
+    #nav li {
+        float: left;
+        margin-right: 10px;
+        text-align: center;
+    }
+
+    .benefits#home {
+        padding: 5px;
+    }
+
+    .benefits h1 {
+        font-size: 21px;
+    }
+
+    .detaillist .titlelist {
+        font-size: 19px;
+    }
+}
+/*END*/
+
+
+
+
+a.locate {
+    padding: 0px 5px;
+    position: absolute;
+    right: 20px;
+    top: -8px;
+}
+
+.login .hd-lf {
+    float: none;
+    width: auto;
+    text-align:center;
+}
+.login .hd-lf img {
+    margin: 104px 0 0 0px;
+    text-align: center;
+}

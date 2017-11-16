@@ -1,0 +1,108 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+@using EmployeeDirectory.Helper
+
+@{
+    ViewBag.Title = "AssetItem Details";
+    Layout = null;
+}
+
+<style>
+    label {
+        margin-top: 7px;
+    }
+</style>
+
+
+<div class="modal-dialog" style="width: 96%;">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Asset Item Detail</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="box-body" style="">
+                        <div class="row" style="margin-bottom: 12px;">
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Tag Number :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" id="AssetTagNumber" name="AssetTagNumber" value="@Model.AssetTagNumber" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Item Name :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.ItemName" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">PO Number :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.PONumber" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 12px;">
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Add Warranty Month :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.AdditionalWarrantyMonth" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Assign Date :</label>
+                                <div class="col-xs-6">
+                                    @*<input type="text" value="@Model.AssignDate" class="form-control" readonly="readonly" />*@
+                                    @Html.TextBoxFor(m => m.AssignDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">EEID :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.EmployeeId" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="row" style="margin-bottom: 12px;">
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Employee Name :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.EmployeeName" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Facility Code :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.FacilityCode" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-xs-12">
+                                <label for="exampleInputEmail1" class="col-xs-6 control-label">Facility Name :</label>
+                                <div class="col-xs-6">
+                                    <input type="text" value="@Model.FacilityName" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+
+            <div class="pull-right">
+              
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

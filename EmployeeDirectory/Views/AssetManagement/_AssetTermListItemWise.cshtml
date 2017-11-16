@@ -1,0 +1,389 @@
+﻿@model List<EmployeeDirectory.Entity.AssetAssignEntity>
+
+
+@{
+    var AssetTermList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+<div>
+    @AssetTermList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                                htmlAttributes: new { Id = "tblAssetTermList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                                columns: AssetTermList.Columns(
+                                        AssetTermList.Column("AssetTagNumber", "Tag Number", style: "tdAssetTagNumber"),
+                                                AssetTermList.Column("ItemName", "Item Name", style: "tdItemName"),
+                                                AssetTermList.Column("PONumber", "PO Number", style: "tdPONumber"),
+                                        AssetTermList.Column(null, "Assign Person/Facility", format: @<text> @if (item.IsEmployee == true)
+                                        {<label>E - </label> @item.EmployeeName }
+                                        else
+                                        {<label>F - </label> @item.FacilityName } </text>),
+                                        AssetTermList.Column("AssignDate", header: "Assign Date", format: @<text>@item.AssignDate</text>),
+                                        AssetTermList.Column("TermedDate", header: "Term Date", format: @<text>@item.TermedDate</text>),
+                                        AssetTermList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRows" />, style: "headerhide"),
+                                        AssetTermList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide"),
+                                        AssetTermList.Column("Action", format: @<text>
+
+        @*@if (ViewBag.IsEdit != null)
+                {
+                    if (ViewBag.IsEdit) 
+                    {
+            <a href="~/AssetManagement/EditPurchageOrder/@item.Id"><i class="fa fa-edit fa-2x"></i></a> &nbsp;
+            }
+                }
+                &nbsp;
+                @if (ViewBag.IsDelete != null)
+                {
+                    if (ViewBag.IsDelete)
+                    {*@
+    <input type="hidden" value="@item.POId" id="POID" />
+    <a href="#" onclick="return AssignNewAsset(this, event)" itemid="@item.AssetTagNumber"><i class="fa fa-plus fa-2x"></i></a> &nbsp;
+    <a href="#" onclick="return ViewCommonItemHistoryPopUp(event, this, 1)" itemid="@item.AssetTagNumber"><i class="fa fa-history fa-2x"></i></a>
+
+
+        @*}
+            }*@
+                                        </text>, style: "webgrid-action-column")
+                                                                                                                    ))
+
+</div>
+
+<script>
+    
+    function AssignNewAsset(me, e) {
+
+        var PONumber = $(me).closest('tr').find('.tdPONumber').text().trim();
+        var ItemId = $("#FormSearchAssetTermDetail").find("#ItemId").val();
+        var ItemName = $(me).closest('tr').find('.tdItemName').text().trim();
+        var POID = $(me).closest('tr').find('#POID').val().trim();
+        var TagNo = $(me).closest('tr').find('.tdAssetTagNumber').text().trim();
+        //$("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/ViewAssetAssign";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            //async: false,
+            cache: false,
+            data: { ItemId: ItemId, PONumber: PONumber, ItemName: ItemName,POID:POID, TagNo: TagNo },
+            success: function (result) {
+                
+                $("#ChildModal").html(result).modal('toggle');
+                //$("#modalWindow,#ui-loader").hide();
+                
+            }
+        });
+
+
+    }
+
+    function ViewItemDetailById(me) {
+
+        var Itemid = $(me).attr('itemid');
+
+        $("#parentModal").html("");
+
+        //$("#ItemViewDialog").find(".modal-title").text('Additional Note -' + FacilityName)
+        //var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/ViewAssetItemDetailByItemId";
+        $.ajax({
+            url: Liveurl,
+            type: "GET",
+            cache: false,
+            data: { ItemId: Itemid },
+            success: function (result) {
+                $("#parentModal").html(result).modal('show');
+
+            }
+        });
+
+
+
+    }
+
+
+    function DeleteItemRecord(me) {
+        var result = confirm("Are you sure to delete this Item?");
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/DeleteAssetItem";
+        var Id = $(me).attr('itemid');
+
+        if (result) {
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "GET",
+                url: Liveurl,
+                data: { Id: Id },
+                success: function (data) {
+                    if (data > 0) {
+                        alert('Record Delete successfully');
+                        window.location = "../AssetManagement/AssetTermList";
+                    }
+                    else {
+                        alert('something wrong');
+
+                    }
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        } else { return false; }
+    }
+
+    $(document).ready(function () {
+        GeneratePagingFooter();
+
+        var allheader = $('#tblAssetTermList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            //if (USERTYPE != su) {
+            //    if (headertext == 'Action') {
+            //        header.setAttribute('class', 'headerhide');
+            //        //"webgrid-action-column
+            //    }
+
+            //}
+
+        }
+        //if (USERTYPE != su) {
+        //    $('#tblAssetTermList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        //}
+
+        $('div #divpagging a').click(function () {
+
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+
+            var TagNo = $('#FormSearchAssetDetail').find('#ddlAssetTagList').val().trim();
+            var ItemId = $('#FormSearchAssetDetail').find('#ddlItemList').val().trim();
+            var PONumber = $('#FormSearchAssetDetail').find('#ddlPOList').val().trim();
+            var EEID = $('#FormSearchAssetDetail').find('#EmployeeId').val().trim();
+            var FacilityCode = $('#FormSearchAssetDetail').find('#FacilityCode').val().trim();
+            var TermFromDate = $('#FormSearchAssetDetail').find('#TermFromDate').val().trim();
+            var TermToDate = $('#FormSearchAssetDetail').find('#TermToDate').val().trim();
+
+            if (TagNo == null) {
+                TagNo = "";
+            }
+            if (ItemId == null) {
+                ItemId = "";
+            }
+            if (PONumber == null) {
+                PONumber = "";
+            }
+            if (EEID == null) {
+                EEID = "";
+            }
+            if (FacilityCode == null) {
+                FacilityCode = "";
+            }
+            if (TermFromDate == null) {
+                TermFromDate = "";
+            }
+            if (TermToDate == null) {
+                TermToDate = "";
+            }
+
+            Pageindex = $("#lblPageindex").text();
+            $("#modalWindow,#ui-loader").show();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AssetStockTermPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&TermFromDate=" + TermFromDate + "&TermToDate=" + TermToDate;
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    $(".DivAssetTermList").html('');
+                    $(".DivAssetTermList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        });
+    });
+
+
+
+    function Sorting(ColumnName) {
+
+
+        var Pageindex = $("#lblPageindex").text();
+        var Sortorder = $("#hdnSortOrder").text();
+        if (ColumnName == 'First Name') {
+            ColumnName = 'FirstName';
+        }
+
+        $("#hdnSortColumn").text(ColumnName);
+        var SortColumn = $("#hdnSortColumn").text();
+
+        if (Sortorder == '') {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        else if (Sortorder == 'ASC') {
+            Sortorder = 'DESC'
+            $("#hdnSortOrder").text('DESC');
+        }
+        else {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        var TagNo = $('#FormSearchAssetDetail').find('#ddlAssetTagList').val().trim();
+        var ItemId = $('#FormSearchAssetDetail').find('#ddlItemList').val().trim();
+        var PONumber = $('#FormSearchAssetDetail').find('#ddlPOList').val().trim();
+        var EEID = $('#FormSearchAssetDetail').find('#EmployeeId').val().trim();
+        var FacilityCode = $('#FormSearchAssetDetail').find('#FacilityCode').val().trim();
+        var TermFromDate = $('#FormSearchAssetDetail').find('#TermFromDate').val().trim();
+        var TermToDate = $('#FormSearchAssetDetail').find('#TermToDate').val().trim();
+
+        if (TagNo == null) {
+            TagNo = "";
+        }
+        if (ItemId == null) {
+            ItemId = "";
+        }
+        if (PONumber == null) {
+            PONumber = "";
+        }
+        if (EEID == null) {
+            EEID = "";
+        }
+        if (FacilityCode == null) {
+            FacilityCode = "";
+        }
+        if (TermFromDate == null) {
+            TermFromDate = "";
+        }
+        if (TermToDate == null) {
+            TermToDate = "";
+        }
+
+
+        var pagesize = $("#ddlpagesize").val();
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+        }
+        $("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/AssetStockReturnPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&TermFromDate=" + TermFromDate + "&TermToDate=" + TermToDate;
+        $.ajax({
+            type: "GET",
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            async: false,
+            url: Liveurl,
+            //url: "../FormList/SubmittedFormSummaryPagingSortingList?formtype=" + summaryform + "&fromDate=" + fromDate + "&toDate=" + toDate + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder,
+            dataType: "html",
+            success: function (data) {
+                $(".DivAssetTermList").html('');
+                $(".DivAssetTermList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+    }
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        var TotalRecord = $("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblAssetTermList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+        if ($("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='Term IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblAssetTermList tbody').append(text);
+
+            $("#lblPageindex").text(PageIndex);
+            $("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $("#lblMaxpage").text(MaxPage);
+        }
+    }
+
+</script>
+
+
+

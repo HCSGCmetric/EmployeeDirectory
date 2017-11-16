@@ -1,0 +1,51 @@
+﻿@model EmployeeDirectory.Entity.AssetEntity
+
+<div class="modal-dialog" id="ItemViewDialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Item</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Item Name</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Category Name</label>
+                            <div class="col-sm-7">
+                                @Html.DropDownListFor(model => model.ItemCategoryID, ViewBag.ItemCategoryList as IEnumerable<SelectListItem>, new { id = "ddlItemCategoryList", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Description</label>
+                            <div class="col-sm-7">
+                                @Html.TextAreaFor(m => m.ItemDescription, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" onclick="SaveItemDetail(this)" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="hidden" id="trindex" />
+            </div>
+
+
+        </div>
+
+    </div>

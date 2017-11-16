@@ -1,0 +1,209 @@
+﻿@model List<EmployeeDirectory.Entity.EmployeeDirectoryEntity>
+
+@{
+    var Arcust_EmployeeGrid = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 10, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+
+
+@Arcust_EmployeeGrid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                mode: WebGridPagerModes.Numeric,
+                         htmlAttributes: new { Id = "tblArcustBuildingEmployeeList" },
+                columns: Arcust_EmployeeGrid.Columns(
+                                  Arcust_EmployeeGrid.Column("EEID", "EEID"),
+                                  Arcust_EmployeeGrid.Column("Firstname", "Firstname"),
+                                  Arcust_EmployeeGrid.Column("Middlename", "Middlename"),
+                                  Arcust_EmployeeGrid.Column("LastName", "LastName"),
+                                  Arcust_EmployeeGrid.Column("JobTitle", "JobTitle"),
+                                  Arcust_EmployeeGrid.Column("Address", "Address"),
+                                  Arcust_EmployeeGrid.Column("city", "city"),
+                                  Arcust_EmployeeGrid.Column("state", "state"),
+                                  Arcust_EmployeeGrid.Column("Zip", "Zip"),
+                                  Arcust_EmployeeGrid.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRecord" />, style: "headerhide"),
+                                  Arcust_EmployeeGrid.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide")
+
+
+                                    ))
+
+<input type="hidden" value="@ViewBag.Department" id="hdnDepartmentId">
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        GeneratePagingFooter();
+        var Department = $('#hdnDepartmentId').val();
+
+        $('.ArcustDirectoryBuilding').on('click', function () {
+            $(this).toggleClass('fa-minus-circle')
+            $(this).closest('div').next('table').toggle();
+
+        });
+
+        $('.ArcustBuildingEmployee').on('click', function () {
+            $(this).toggleClass('fa-minus-circle')
+            $(this).closest('div').next('div').toggle();
+
+        });
+
+
+        var allheader = $('#tblArcustBuildingEmployeeList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            if (USERTYPE != su) {
+                if (headertext == 'Action') {
+                    header.setAttribute('class', 'headerhide');
+                    //"webgrid-action-column
+                }
+
+            }
+
+        }
+        if (USERTYPE != su) {
+            $('#tblArcustBuildingEmployeeList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        }
+
+        $(".modal").find('div #divpagging a').click(function () {
+            
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            
+
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '20';
+            }
+
+            var SearchFirstName = $("#txtSearchFirstName").val();
+            var SearchLastName = $("#txtSearchLastName").val();
+            var SearchJobTitleName = $("#txtSearchJobTitleName").val();
+            var SearchEEID = $("#txtSearchEEID").val();
+            var SearchStatus = $("#ddlSearchStatus").val();
+
+            Pageindex = $("#lblPageindex").text();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            //Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail?Dept=" + Department + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail?lastname=" + SearchLastName + "&firstname=" + SearchFirstName + "&jobtitle=" + SearchJobTitleName + "&eeid=" + SearchEEID + "&status=" + SearchStatus + "&Dept=" + Department + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    
+                    $("#divArcustEmployeeList").html('');
+                    $("#divArcustEmployeeList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        });
+
+
+      
+
+    });
+
+
+
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        //Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail";
+        var SortColumn = "";
+        var Sortorder = "";
+        var TotalRecord = $(".modal").find("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblArcustBuildingEmployeeList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sortingmodal('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '20'; 
+
+
+        if ($(".modal").find("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblArcustBuildingEmployeeList tbody').append(text);
+
+            $(".modal").find("#lblPageindex").text(PageIndex);
+            $(".modal").find("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $(".modal").find("#lblMaxpage").text(MaxPage);
+        }
+
+        //Liveurl = "/" + Liveurl + "ArcustView/GetArcustEmployeeDetail?pagesize=" + Pagesize + "&Pageindex=" + PageIndex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+    }
+
+
+
+</script>

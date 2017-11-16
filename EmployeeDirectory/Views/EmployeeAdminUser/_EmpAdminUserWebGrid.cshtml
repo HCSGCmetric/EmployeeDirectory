@@ -1,0 +1,64 @@
+﻿@model List<EmployeeDirectory.Entity.AdminUserEntity>
+
+@{
+    Layout = null;
+}
+@{
+    var gdAdminUserList = new WebGrid(Model, canPage: true, canSort: false, rowsPerPage: EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+@if (Model.Count() > 0)
+{
+    <div>
+        @gdAdminUserList.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                mode: WebGridPagerModes.Numeric,
+                htmlAttributes: new { Id = "tblAdminUserList" },
+                columns: gdAdminUserList.Columns(
+                gdAdminUserList.Column("UserName", "UserName"),
+                gdAdminUserList.Column("FirstName", "First Name"),
+                gdAdminUserList.Column("LastName", "Last Name"),
+                gdAdminUserList.Column("IsLocked", "IsLocked"),
+                gdAdminUserList.Column(null, "Action", format: @<text>
+                    @if (ViewBag.IsEdit != null)
+                    {
+                        if (ViewBag.IsEdit)
+                        {
+                            <a href="~/EmployeeAdminUser/EditEmpAdminUser/@item.ID"><i class="fa fa-edit"></i></a>
+                        }
+                    }
+                    @if (ViewBag.IsDelete != null)
+                    {
+                        if (ViewBag.IsDelete)
+                        {
+                            <a href="~/EmployeeAdminUser/DeleteEmpAdminUser/@item.ID"><i class="fa fa-trash"></i></a>
+                        }
+                    }
+                </text>, style: "webgrid-action-column")
+                                                                                             ))
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+        @*var allheader = $('#tblAdminUserList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            if (USERTYPE != su) {
+                if (headertext == 'Action') {
+                    header.setAttribute('class', 'headerhide');
+                    //"webgrid-action-column
+                }
+
+            }
+
+        }
+        if (USERTYPE != su) {
+            $('#tblAdminUserList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        }*@
+    });
+
+
+</script>

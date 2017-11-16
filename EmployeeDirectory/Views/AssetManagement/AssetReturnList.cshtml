@@ -1,0 +1,199 @@
+﻿@model EmployeeDirectory.Entity.AssetAssignEntity
+@{
+    ViewBag.Title = "Asset Return List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Asset  Return List</h3>
+                    </div>
+
+                    <div class="col-sm-7 col-xs-12">
+                        <a class="btneffect pull-right" style="margin-right: 10px; margin-top: 16px !important;" href="../AssetManagement/AddAssetReturn">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Add
+                        </a>
+                    </div>
+
+
+                </div>
+                @using (Html.BeginForm("SearchAssetReturnDetail", "AssetManagement", FormMethod.Post, new { @class = "form-horizontal", @id = "FormSearchAssetReturnDetail", @style = "border-bottom: 2px solid rgb(204, 204, 204); padding: 20px 0px; background: rgb(229, 229, 229) none repeat scroll 0% 0%; margin-bottom: 11px;" }))
+                {
+                    @Html.ValidationSummary(true)
+
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Tag Number<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.AssetTagNumber, new { @class = "form-control AssetTagAutoFill" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Item Name<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(m => m.ItemId, ViewBag.ItemDetailList as List<SelectListItem>, new { @id = "ddlItemList", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Return From Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.ReturnDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "ReturnFromDate" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Return To Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.ReturnDate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "ReturnToDate" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">PO Number<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(m => m.PONumber, ViewBag.PODetailList as List<SelectListItem>, new { @id = "ddlPOList", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Employee Id<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.EmployeeId, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Facility Code<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.FacilityCode, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">DIV<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.DIV, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">REG<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.REG, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">DIST<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.DIST, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="">
+
+                                        <div class="pull-right">
+                                            <div class="col-md-12">
+                                                <div class="col-sm-6">
+                                                    <button type="button" id="SearchAssetReturnListbyParam" data-style="slide-up" style="z-index: 10;" class="ladda-button btneffect pull-right">Search</button>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <a href="~/AssetManagement/AssetReturnList" class="btneffect pull-right ladda-button">Clear</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+                <div class="DivAssetReturnList">
+                    <!-- /.box-header -->
+                    @Html.Partial("_AssetReturnList", Model.lstAssetAssignEntity)
+
+                </div>
+
+
+                <!-- /.box-body -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<link href="~/css/jquery-1.10.4-ui.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $('#ReturnFromDate,#ReturnToDate').datepicker();
+
+  
+
+
+    $(document).ready(function () {
+
+        $('#SearchAssetReturnListbyParam').on('click', function () {
+
+            var TagNo = $('#FormSearchAssetReturnDetail').find('#AssetTagNumber').val().trim();
+            var ItemId = $('#FormSearchAssetReturnDetail').find('#ddlItemList').val().trim();
+            var ReturnFromDate = $('#FormSearchAssetReturnDetail').find('#ReturnFromDate').val().trim();
+            var ReturnToDate = $('#FormSearchAssetReturnDetail').find('#ReturnToDate').val().trim();
+
+
+            var PONumber = $('#FormSearchAssetReturnDetail').find('#ddlPOList').val().trim();
+            var EEID = $('#FormSearchAssetReturnDetail').find('#EmployeeId').val().trim();
+            var FacilityCode = $('#FormSearchAssetReturnDetail').find('#FacilityCode').val().trim();
+            var DIV = $('#FormSearchAssetReturnDetail').find('#DIV').val().trim();
+            var REG = $('#FormSearchAssetReturnDetail').find('#REG').val().trim();
+            var DIST = $('#FormSearchAssetReturnDetail').find('#DIST').val().trim();
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/AssetReturnPagingSortingList?TagNo=" + TagNo + "&ItemId=" + ItemId + "&ReturnFromDate=" + ReturnFromDate + "&ReturnToDate=" + ReturnToDate + "&PONumber=" + PONumber + "&EEID=" + EEID + "&FacilityCode=" + FacilityCode + "&DIV=" + DIV + "&REG=" + REG + "&DIST=" + DIST;
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    $('.DivAssetReturnList').html(result);
+                }
+            });
+
+
+        });
+    });
+
+
+
+    var jquery = $.noConflict();
+    jquery('#FormSearchAssetReturnDetail').find('.AssetTagAutoFill').live('focusin', function (e) {
+        e.preventDefault();
+        var me = $(this);
+
+        var items = JSON.parse('@Html.Raw(Json.Encode(ViewBag.AssetTagList))');
+        var result = [];
+
+        for (var item, i = 0; item = items[i++];) {
+            var name = item.Value;
+
+            result.push(name);
+        }
+
+        jquery(this).autocomplete({
+            minLength: 0,
+            scroll: true,
+            //autoFocus: true,
+
+            source: result,
+
+        });
+        jquery(me).trigger('keydown');
+
+    });
+
+
+</script>

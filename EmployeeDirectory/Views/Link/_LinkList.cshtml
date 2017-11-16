@@ -1,0 +1,324 @@
+﻿@model List<EmployeeDirectory.Entity.LinkEntity>
+
+
+@{
+    var gdHSGUserList = new WebGrid(Model, canPage: false, canSort: false, rowsPerPage: 10, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+}
+
+<div>
+    @gdHSGUserList.GetHtml(tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                htmlAttributes: new { Id = "tblLinkList" },
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.Numeric,
+                columns: gdHSGUserList.Columns(
+                gdHSGUserList.Column(null, "", format: @<input type="CheckBox" itemid="@item.ID" id="ChckLink" />),
+                gdHSGUserList.Column("Name", "Link Name"),
+                gdHSGUserList.Column(null, "TotalRecord", format: @<input type="hidden" name="TotalRecord" id="hdnTotalRecord" value="@item.TotalRows" />, style: "headerhide"),
+                gdHSGUserList.Column(null, "Pageindex", format: @<input type="hidden" name="PageIndex" id="hdnPageIndex" value="@item.Pageindex" />, style: "headerhide"),
+                gdHSGUserList.Column("Action", format: @<text>
+
+        @if (ViewBag.IsEdit != null)
+{
+    if (ViewBag.IsEdit)
+    {
+        <a href="../Link/EditLink/@item.ID"><i class="fa fa-edit fa-2x"></i></a>
+    }
+}
+        &nbsp;
+        @if (ViewBag.IsDelete != null)
+{
+    if (ViewBag.IsDelete)
+    {
+        <a href="../Link/DeleteLink/@item.ID" onclick="return 'confirm(Are you sure you wish to delete this Link?);'"><i class="fa fa-trash-o fa-2x"></i></a>
+    }
+}
+                </text>, style: "webgrid-action-column")
+                                                ))
+
+</div>
+
+<script>
+
+    function DeleteRecord(val) {
+        var result = confirm("Are you sure to delete this item?");
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "HsgUser/DeleteRecord";
+
+        if (result) {
+            $("#modalWindow,#ui-loader").show();
+            $.ajax({
+                type: "POST",
+                url: Liveurl,
+                data: { id: val },
+                dataType: "json",
+                success: function (data) {
+                    if (data == "false") {
+                        alert('something wrong');
+                    }
+                    else {
+                        alert('Record Delete successfully');
+                        BindHSGUserList();
+                    }
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+        } else { return false; }
+    }
+
+    function setpopupvalue(val) {
+        $('#hdnid').val(val);
+
+        if (val > 0) {
+            $("#modalWindow,#ui-loader").hide();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "HsgUser/GetHSGUserDetailsByID?ID=" + val;
+            $.ajax({
+                type: "GET",
+                traditional: true,
+                async: false,
+                url: Liveurl,
+                dataType: "JSON",
+                success: function (data) {
+
+                    //$('#Loader').hide();
+                    $("#txtFirstName").val(data.FirstName);
+                    $("#txtLastName").val(data.LastName);
+                    $("#txtUserName").val(data.UserName);
+                    $("#txtTitle").val('');
+                    $("#txtDivision").val('');
+                    $("#txtRegion").val('');
+                    $("#txtDist").val('');
+                    $("#txtEEID").val(data.EEID);
+                    $("#txtEmail").val(data.Email);
+                    $("#ddlStatus").val(data.Status);
+                    var parameter = { id: val };
+                    var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+                    Liveurl = "/" + Liveurl + "HsgUser/GetDivRegDistList";
+                    $.ajax({
+                        type: "POST",
+                        url: Liveurl,
+                        dataType: "html",
+                        data: parameter,
+                        success: function (data) {
+                            $("#divDivRegDistList").html('');
+                            $("#divDivRegDistList").html(data + "&nbsp;");
+                            $("#modalWindow,#ui-loader").hide();
+                        }
+                    });
+                    $("#modalWindow,#ui-loader").hide();
+                },
+                error: function (e) {
+                    //$('#Loader').hide();
+
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        GeneratePagingFooter();
+
+        var allheader = $('#tblLinkList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            var USERTYPE = String('@Session[EmployeeDirectory.Entity.AppConstant.USERTYPE]');
+            var su = String('@EmployeeDirectory.Entity.UserType.SuperUser');
+
+            //if (USERTYPE != su) {
+            //    if (headertext == 'Action') {
+            //        header.setAttribute('class', 'headerhide');
+            //        //"webgrid-action-column
+            //    }
+
+            //}
+
+        }
+        //if (USERTYPE != su) {
+        //    $('#tblLinkList tr').find('td.webgrid-action-column').attr('class', 'headerhide');
+        //}
+
+        $('div #divpagging a').click(function () {
+
+            var Command = $(this).attr('id');
+            var PageNo = $("#txtGO").val();
+            var Pageindex = $("#lblPageindex").text();
+            var MaxPage = $("#lblMaxpage").text();
+            var totalRecord = $("#lblTotalRecord").text();
+            var Sortorder = $("#hdnSortOrder").text();
+            var SortColumn = $("#hdnSortColumn").text();
+
+            if (Command == 'first') {
+                $("#lblPageindex").text("1");
+            }
+            else if (Command == 'Previous') {
+
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) - 1).toString());
+                if (parseInt($("#lblPageindex").text()) <= 0) {
+                    $("#lblPageindex").text("1");
+                }
+            }
+            else if (Command == 'Next') {
+                $("#lblPageindex").text((parseInt($("#lblPageindex").text()) + 1).toString());
+                if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                    $("#lblPageindex").text($("#lblMaxpage").text());
+                }
+            }
+            else if (Command == 'Last') {
+                $("#lblPageindex").text($("#lblMaxpage").text());
+            }
+            else if (Command == "go") {
+                if (PageNo != "") {
+                    $("#lblPageindex").text((parseInt(PageNo)).toString());
+                    if (parseInt($("#lblPageindex").text()) <= 0) {
+                        $("#lblPageindex").text("1");
+                    }
+                    else if (parseInt($("#lblPageindex").text()) >= parseInt($("#lblMaxpage").text())) {
+                        $("#lblPageindex").text($("#lblMaxpage").text());
+                    }
+                }
+            }
+        
+
+            var pagesize = $("#ddlpagesize").val();
+            if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+                pagesize = '@System.Configuration.ConfigurationManager.AppSettings["PageSize"]';
+            }
+            
+            var LinkName = $('#FormSearchLinkDetail').find('#Name').val().trim();
+            if (LinkName == null) {
+                LinkName = "";
+            }
+
+            Pageindex = $("#lblPageindex").text();
+            $("#modalWindow,#ui-loader").show();
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "Link/LinkListPagingSortingList?LinkName=" + LinkName + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+            $.ajax({
+                type: "GET",
+                contentType: "application/x-www-form-urlencoded",
+                traditional: true,
+                url: Liveurl,
+                dataType: "html",
+                success: function (data) {
+                    $(".divLinkList").html('');
+                    $(".divLinkList").html(data + "&nbsp;");
+                    $("#modalWindow,#ui-loader").hide();
+                }
+            });
+
+        });
+    });
+
+
+
+    function Sorting(ColumnName) {
+
+
+        var Pageindex = $("#lblPageindex").text();
+        var Sortorder = $("#hdnSortOrder").text();
+        if (ColumnName == 'First Name') {
+            ColumnName = 'FirstName';
+        }
+      
+        $("#hdnSortColumn").text(ColumnName);
+        var SortColumn = $("#hdnSortColumn").text();
+
+        if (Sortorder == '') {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        else if (Sortorder == 'ASC') {
+            Sortorder = 'DESC'
+            $("#hdnSortOrder").text('DESC');
+        }
+        else {
+            Sortorder = 'ASC'
+            $("#hdnSortOrder").text('ASC');
+        }
+        var LinkName = $('#FormSearchLinkDetail').find('#Name').val().trim();
+        if (LinkName == null) {
+            LinkName = "";
+        }
+
+
+        var pagesize = $("#ddlpagesize").val();
+        if (pagesize == "" || pagesize == undefined || pagesize == "0") {
+            pagesize = 50;
+        }
+        $("#modalWindow,#ui-loader").show();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "Link/LinkListPagingSortingList?LinkName=" + LinkName + "&pagesize=" + pagesize + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder;
+        $.ajax({
+            type: "GET",
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            traditional: true,
+            async: false,
+            url: Liveurl,
+            //url: "../FormList/SubmittedFormSummaryPagingSortingList?formtype=" + summaryform + "&fromDate=" + fromDate + "&toDate=" + toDate + "&Pageindex=" + Pageindex + "&columnName=" + SortColumn + "&sortOrder=" + Sortorder,
+            dataType: "html",
+            success: function (data) {
+                $(".divLinkList").html('');
+                $(".divLinkList").html(data + "&nbsp;");
+                $("#modalWindow,#ui-loader").hide();
+
+            }
+        });
+    }
+    function GeneratePagingFooter() {
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        var TotalRecord = $("#hdnTotalRecord").val();
+        var PageIndex = $("#hdnPageIndex").val();
+        var allheader = $('#tblLinkList th')
+        for (var a = 0; a < allheader.length; a++) {
+            var header = allheader[a];
+            var headertext = allheader[a].innerHTML.trim();
+            if (headertext != 'Action') {
+                allheader[a].innerHTML = '';
+                var createA = document.createElement('a');
+                var createAText = document.createTextNode(headertext);
+                createA.setAttribute('href', "#");
+                createA.setAttribute('onclick', "Sorting('" + headertext + "');");
+                createA.appendChild(createAText);
+                header.appendChild(createA);
+            }
+            if (headertext == 'TotalRecord') {
+                header.setAttribute('class', 'headerhide');
+            }
+            if (headertext == 'Pageindex') {
+                header.setAttribute('class', 'headerhide');
+            }
+        }
+
+        var Pagesize = '@EmployeeDirectory.Helper.ConfigurationProvider.WegGridPageSize';
+        if ($("#hdnTotalRecord").val()) {
+            var text = "<tr class='webgrid-footer'><td colspan='15'>";
+            text = text + " <div class='topheader' id='divpagging'><div style='width: 100%;' class='classClear tdRepeaterFooter'>";
+            text = text + "<div class='repeaterFooterLeft' style='width: 40%'> Page <label id='lblPageindex'></label> of <label id='lblMaxpage'></label> (Total Records: <label id='lblTotalRecord'></label>)</div>";
+            text = text + "<div class='repeaterFooterCenter' style='width: 20%'>";
+            text = text + "<a href='#' id='first'><img src='" + "/" + Liveurl + "img/FirstButton.gif' /></a>";
+            text = text + "<a href='#' id='Previous'><img src='" + "/" + Liveurl + "img/PreviousButton.gif' /></a>";
+            text = text + "<a href='#' id='Next'><img src='" + "/" + Liveurl + "img/NextButton.gif' /></a>";
+            text = text + "<a href='#' id='Last'><img src='" + "/" + Liveurl + "img/LastButton.gif' /></a></div>";
+            text = text + "<div class='repeaterFooterRight'><div class='divTextL'>Go To Page No</div>";
+            text = text + "<div class='divTextBoxM'><input type='text' id='txtGO' class='form-control' onkeypress='return IntegerValidation(event,this,8);' style='width:50px !important; height:23px !important; margin: 0 0 0 0 !important; ' /></div>";
+            text = text + "<div class='divButtonR'><a href='#' id='go'><img src='" + "/" + Liveurl + "img/GoButton.gif' /></a></div></div></div></div>";
+            text = text + "</td></tr>";
+            $('#tblLinkList tbody').append(text);
+
+            $("#lblPageindex").text(PageIndex);
+            $("#lblTotalRecord").text(TotalRecord);
+            var MaxPage = parseInt((TotalRecord == 0) ? 0 : ((TotalRecord % Pagesize == 0) ? (TotalRecord / Pagesize) : parseInt((TotalRecord / Pagesize)) + 1));
+            $("#lblMaxpage").text(MaxPage);
+        }
+    }
+
+</script>
+
+
+

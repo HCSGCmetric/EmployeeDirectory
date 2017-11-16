@@ -1,0 +1,269 @@
+﻿@model EmployeeDirectory.Entity.AssetEntity
+
+@{
+    ViewBag.Title = "Add Purchase Detail";
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Add Purchase Order</h3>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("SaveAssetPurchaseOrder", "AssetManagement", FormMethod.Post, new { @class = "validation-form-container row-fluid form-horizontal", @id = "FormAssetPurchaseOrder" }))
+                {
+                    @*@Html.ValidationSummary(true)*@
+                    <div class="col-md-12 box-body" style="margin-top: 20px;">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-4 control-label">PO #</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control", @style = "text-transform:uppercase" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-3 control-label">PO Date</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.PODate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Vendor</label>
+                                    <div class="col-sm-7">
+                                        <td>@Html.DropDownListFor(model => model.POVendorID, ViewBag.VendorDetailList as IEnumerable<SelectListItem>, new { id = "ddlVendorDetail", @class = "form-control" })</td>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Invoice Number</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.InvoiceNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSearchFacilityCode" class="col-sm-3 control-label">Invoice Date</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => m.InvoiceDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-md-12">
+
+                          @*<a href="#" class="col-xs-2 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-left text-center">Add Item</a>*@
+                          <button type="button" id="btnViewItemPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-left text-center" onclick="ViewItemPopUp(this)" style="padding: 7px 15px 7px 7px">Add Item</button>
+                          <button type="button" id="btnViewVendorPopUp" class="col-xs-1 DocumentAddbutton tablebutton Anchor-Button pull-right text-center" onclick="ViewVendorPopUp(this)" style="padding: 7px 15px 7px 7px">Add Vendor</button>
+
+                    </div>
+                            <!-- /.box-header -->
+
+                    <div class="table-responsive box-body" id="PartialAssetPurchase">
+                        @Html.Partial("_AddPurchaseOrder", Model)
+                    </div>
+
+                    <div class="col-md-12 box-body" style="margin-top: 20px;">
+                        <div class="col-md-9">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Tax</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.POTax, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Shipping</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.POShipping, new { @class = "form-control", onkeyup = "return validateFloatKeyPress(this,event);" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="txtSearchFacilityCode" class="col-sm-4 control-label">Total</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.POTotal, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                  
+
+
+
+                    <div class="footer-header">
+                        <div class="col-xs-12">
+                            @Html.HiddenFor(m => m.PurchaseOrderXML)
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="col-xs-3 pull-right">
+                                @*@Html.HiddenFor(m => m.isFormpermissionNull)
+                                    @Html.HiddenFor(m => m.isView)
+                                    @Html.HiddenFor(m => m.isAdd)
+                                    @Html.HiddenFor(m => m.isApprove)
+                                    @Html.HiddenFor(m => m.isEdit)
+                                    @Html.HiddenFor(m => m.isDelete)
+                                    @Html.HiddenFor(m => m.FormPermission)*@
+                                <button type="submit" id="btnSavePurchaseOrderDetail" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Save</button>
+                                <a href="~/AssetManagement/AssetPurchageOrderList" class="col-xs-6 DocumentAddbutton Announcement-button tablebutton Anchor-Button pull-right text-center">Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <input type='hidden' name='SortOrder' id='hdnSortOrder' value='' />
+            <input type='hidden' name='SortColumn' id='hdnSortColumn' value='' />
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $('#PODate,#InvoiceDate').datepicker();
+
+
+    
+    $('#FormAssetPurchaseOrder').find('#PONumber').live('focusout', function (e) {
+        var PONumber = $('#FormAssetPurchaseOrder').find('#PONumber').val();
+        PONumber = PONumber.substr(0, 3);
+        if (PONumber == 'IT_') {
+            POIntKeyPressQty(this, e);
+        }
+        else {
+            $('#PONumber').val("IT_");
+        }
+    });
+
+
+    function POIntKeyPressQty(el, e) {
+        var re = /^\d+$/;
+        var text = $(el).val();
+        text = text.substr(3, text.length);
+        
+        var isValid = (text.match(re) !== null);
+        if (isValid == true) {
+            return true;
+        }
+        else {
+            $(el).val("IT_");
+        }
+    }
+
+    $("#FormAssetPurchaseOrder").live('submit', function (e) {
+        e.preventDefault();
+        $(this).find("#ddlItemDetail,#Quantity").css('border', '');
+        var PONumber = $(this).find("#PONumber").val();
+        var PODate = $(this).find("#PODate").val();
+        var VendorId = $(this).find("#ddlVendorDetail").val();
+        var Id = $(this).find("#Id").val();
+        var PurchaseOrderXML = '<root>';
+        
+        if (PONumber.trim() == 'IT_') {
+            alert("PONumber format is not proper. \n Ex:- 'IT_1001'")
+            return false;
+        }
+
+        if ($(this).find(".trPurchaseOrder").length <= 1) {
+            alert('There are no Items to save');
+            return false;
+        }
+        var valid = true;
+        $(this).find(".trPurchaseOrder").each(function () {
+            var me = $(this);
+            if ($(this).index() != 0) {
+                var ItemId = $(this).find("#ddlItemDetail").val();
+                var ItemDescription = $(this).find("#ItemDescription").val();
+                var Quantity = $(this).find("#Quantity").val();
+                var Cost = $(this).find("#Cost").val();
+                var WarrantyCost = $(this).find("#WarrantyCost").val();
+                var WarrantyMonth = $(this).find("#AdditionalWarrantyMonth").val();
+                var Total = $(this).find("#Total").val();
+                var Availqty = Quantity;
+                if (ItemId == 0) {
+                    valid = false;
+                    $(this).find("#ddlItemDetail").css('border', 'red 1px solid');
+                }
+                if (Quantity == 0) {
+                    valid = false;
+                    $(this).find("#Quantity").css('border', 'red 1px solid');
+                }
+                if (Cost == 0) {
+                    valid = false;
+                    $(this).find("#Cost").css('border', 'red 1px solid');
+                }
+
+                PurchaseOrderXML += '<PurchaseOrder><ItemId>' + ItemId + '</ItemId><ItemDescription>' + ItemDescription + '</ItemDescription><Quantity>' + Quantity + '</Quantity><Cost>' + Cost + '</Cost><WarrantyCost>' + WarrantyCost + '</WarrantyCost><WarrantyMonth>' + WarrantyMonth + ' </WarrantyMonth><assignqty>' + 0 + ' </assignqty><ReturnQty>' + 0 + ' </ReturnQty><RetireQty>' + 0 + ' </RetireQty><Availqty>' + Availqty + ' </Availqty><POID>' + 0 + ' </POID></PurchaseOrder>'
+               
+            }
+        });
+
+        if (valid == false) {
+            return false;
+        }
+
+        PurchaseOrderXML += '</root>'
+
+        $(this).find("#PurchaseOrderXML").val(PurchaseOrderXML);
+        var form = $(this).serialize();
+        var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+        Liveurl = "/" + Liveurl + "AssetManagement/SaveAssetPurchaseOrder";
+        $.ajax({
+            url: Liveurl,
+            type: "POST",
+            cache: false,
+            data: form,
+            success: function (result) {
+                if (Id == result) {
+                    alert('Updated Successfully.');
+                    window.location = "../../AssetManagement/AssetPurchageOrderList";
+                }
+                else if (result > 0) {
+                    //AlertMessage([success,fail,warning],msg,Description) 
+                    alert('Inserted Successfully.');
+                    window.location = "../AssetManagement/AssetPurchageOrderList";
+
+                }
+                else if(result == -1){
+                    alert('This PONumber is arready exist. Please select another one.');
+                }
+                else {
+                    alert('An error is occured.');
+                }
+                
+            }
+        });
+
+    });
+
+</script>

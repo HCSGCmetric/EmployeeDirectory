@@ -1,0 +1,176 @@
+﻿@model EmployeeDirectory.Entity.AssetEntity
+@using EmployeeDirectory.Helper
+
+@{
+    ViewBag.Title = "Purchase Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /*td.details-control {
+        background: url('../../image/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.details td.details-control {
+        background: url('../../image/details_close.png') no-repeat center center;
+    }*/
+
+    /*tr.group,
+    tr.group:hover {
+        background-color: #ddd !important;
+    }*/
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-5 col-xs-12">
+                        <h3 class="box-title">Purchase Order List</h3>
+                    </div>
+
+                    <div class="col-sm-7 col-xs-12">
+                        @if (ViewBag.IsAdd != null)
+                        {
+                            if (ViewBag.IsAdd)
+                            {
+                                <a class="btneffect pull-right" style="margin-right: 10px; margin-top: 16px !important;" href="../AssetManagement/AddPurchaseOrder">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    Add
+                                </a>
+                            }
+                        }
+                    </div>
+
+
+                </div>
+
+
+                @using (Html.BeginForm("SearchPurchaseOrderDetail", "AssetManagement", FormMethod.Post, new { @class = "form-horizontal", @id = "FormSearchPurchaseOrderDetail", @style = "border-bottom: 2px solid rgb(204, 204, 204); padding: 20px 0px; background: rgb(229, 229, 229) none repeat scroll 0% 0%; margin-bottom: 11px;" }))
+                {
+                    @Html.ValidationSummary(true)
+
+                    <div class="col-md-12 box-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">PO Number<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.PONumber, new { @class = "form-control" })
+                                    @*@Html.DropDownListFor(m => m.FacilityCode, ViewBag.FacilityCodeList as List<SelectListItem>, new { @id = "ddlFacilityCodeList", @class = "form-control selectmultidata", @multiple = "multiple" })*@
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">Vendor Name<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(m => m.POVendorID, ViewBag.VendorDetailList as List<SelectListItem>, new { @id = "ddlVendorList", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">PO From Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.PODate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "POFromDate" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12 form-group">
+                                <label for="exampleInputEmail1" class="col-sm-6 control-label">PO To Date<span class="field-validation-error"></span></label>
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(m => m.PODate, "{0:MM/dd/yyyy}", new { @class = "form-control", @id = "POToDate" })
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="">
+
+                                    <div class="pull-right">
+                                        <div class="col-md-12">
+                                            <div class="col-sm-6">
+                                                <button type="button" id="SearchPurchaseOrderbyParam" data-style="slide-up" style="z-index: 10;" class="ladda-button btneffect pull-right">Search</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="~/AssetManagement/AssetPurchageOrderList" class="btneffect pull-right ladda-button">Clear</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+                <div class="DivPurchaseOrderList">
+                    <!-- /.box-header -->
+                    @Html.Partial("_AssetPurchageOrderList", Model.lstAssetEntity)
+
+                </div>
+
+
+                <!-- /.box-body -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#POFromDate,#POToDate').datepicker();
+    $(document).ready(function () {
+
+
+        //$('#ddlFacilityCodeList').multiselect({
+        //    numberDisplayed: 1,
+        //    buttonWidth: '100%',
+        //    maxHeight: 250,
+        //    includeSelectAllOption: true,
+
+        //});
+
+
+
+
+        //$('#EmployeeActionList tbody tr').find('#TERMDATE').live('focusin', function () {
+        //    var date = new Date();
+        //    var year = date.getFullYear(); //get year
+        //    var month = date.getMonth(); //get month
+        //    var day = date.getDate();
+        //    var minDate = new Date(year, month, day - 90);
+
+        //    $(this).datepicker({
+        //        startDate: minDate, //set it here
+        //        endDate: new Date()
+        //    });
+        //})
+
+        $('#SearchPurchaseOrderbyParam').on('click', function () {
+            var PoFromDate = $('#FormSearchPurchaseOrderDetail').find('#POFromDate').val().trim();
+            var PoToDate = $('#FormSearchPurchaseOrderDetail').find('#POToDate').val().trim();
+            var PONumber = $('#FormSearchPurchaseOrderDetail').find('#PONumber').val().trim();
+            var Vendorid = $('#FormSearchPurchaseOrderDetail').find('#ddlVendorList').val().trim();
+
+
+            var Liveurl = '@System.Configuration.ConfigurationManager.AppSettings["LivesubURL"]';
+            Liveurl = "/" + Liveurl + "AssetManagement/PurchaseOrderPagingSortingList?PONumber=" + PONumber + "&PoToDate=" + PoToDate + "&PoFromDate=" + PoFromDate + "&Vendorid=" + Vendorid;
+            $.ajax({
+                url: Liveurl,
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    $('.DivPurchaseOrderList').html(result);
+                }
+            });
+
+
+        });
+    });
+
+
+</script>
+
