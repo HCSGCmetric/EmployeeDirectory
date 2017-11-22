@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Corporate Users</title>
      <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="../css/bootstrap.min.css" rel="stylesheet"/>
     <link href="../css/sb-admin.css" rel="stylesheet"/>
