@@ -7,7 +7,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Add User</title>
 
     <script src="../js/jquery-1.10.2.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
